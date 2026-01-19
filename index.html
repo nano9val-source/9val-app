@@ -3,40 +3,47 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>BATTLE ARENA | BRACKET</title>
+    <title>9VAl-BATTL | OFFICIAL APP</title>
     <script src="https://telegram.org/js/telegram-web-app.js"></script>
     <style>
         :root { --accent: #f39c12; --bg: #000; --card: #1c1c1e; --radius: 18px; }
         body { font-family: -apple-system, system-ui, sans-serif; background: var(--bg); color: #fff; margin: 0; padding: 15px; padding-top: 85px; }
         
-        /* МЕНЮ */
-        .nav { position: fixed; top: 0; left: 0; right: 0; background: rgba(10,10,10,0.95); backdrop-filter: blur(20px); display: flex; overflow-x: auto; padding: 12px 5px; border-bottom: 0.5px solid #333; z-index: 9999; scrollbar-width: none; }
-        .nav-item { color: #777; font-size: 10px; font-weight: 800; text-align: center; white-space: nowrap; padding: 10px 14px; border-radius: 15px; transition: 0.3s; cursor: pointer; flex-shrink: 0; }
+        /* НАВІГАЦІЯ */
+        .nav { position: fixed; top: 0; left: 0; right: 0; background: rgba(10,10,10,0.95); backdrop-filter: blur(15px); display: flex; overflow-x: auto; padding: 10px 5px; border-bottom: 0.5px solid #333; z-index: 9999; }
+        .nav-item { color: #777; font-size: 10px; font-weight: 800; text-align: center; white-space: nowrap; padding: 12px 15px; border-radius: 12px; transition: 0.3s; cursor: pointer; flex-shrink: 0; }
         .nav-item.active { color: var(--accent); background: rgba(243,156,18,0.1); }
 
         .tab-content { display: none; }
         .tab-content.active { display: block; }
-        .card { background: var(--card); border-radius: var(--radius); padding: 15px; margin-bottom: 15px; border: 0.5px solid #333; }
+        .card { background: var(--card); border-radius: var(--radius); padding: 20px; margin-bottom: 15px; border: 0.5px solid #333; }
+        
+        /* ГОЛОВНА ТА ПРАВИЛА */
+        .prize-badge { background: var(--accent); color: #000; padding: 5px 15px; border-radius: 20px; font-weight: 900; display: inline-block; margin-bottom: 10px; }
+        .rules-list { font-size: 13px; color: #aaa; padding-left: 20px; line-height: 1.6; }
 
-        /* СТИЛІ СІТКИ (BRACKET) */
-        .bracket-container { display: flex; flex-direction: column; gap: 20px; overflow-x: auto; padding-bottom: 20px; }
-        .round-title { font-size: 12px; color: var(--accent); font-weight: 800; text-transform: uppercase; margin-bottom: 10px; text-align: center; border-bottom: 1px solid #333; padding-bottom: 5px; }
-        .matchup { background: #252527; border-radius: 10px; margin-bottom: 10px; border-left: 3px solid var(--accent); }
-        .player-slot { padding: 10px; font-size: 14px; display: flex; justify-content: space-between; border-bottom: 1px solid #333; }
-        .player-slot:last-child { border-bottom: none; }
-        .score { font-weight: 900; color: var(--accent); }
-        .winner { color: #2ecc71; font-weight: bold; }
+        /* СУДДІ */
+        .judge-item { display: flex; align-items: center; gap: 15px; margin-bottom: 15px; background: #252527; padding: 12px; border-radius: 15px; }
+        .judge-img { width: 60px; height: 60px; border-radius: 50%; border: 2px solid var(--accent); background: #444; }
+        .insta-link { color: var(--accent); font-size: 11px; text-decoration: none; font-weight: bold; border: 1px solid var(--accent); padding: 3px 8px; border-radius: 8px; margin-top: 5px; display: inline-block; }
 
-        /* ПЛЕЄР ТА РЕЙТИНГ */
-        .track-info { display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px; }
-        audio { width: 100%; height: 30px; filter: invert(1); }
-        .btn-main { background: var(--accent); color: #000; border: none; padding: 16px; border-radius: 15px; width: 100%; font-weight: 800; cursor: pointer; }
+        /* СІТКА */
+        .match { background: #1a1a1c; border-radius: 10px; border: 1px solid #333; margin-bottom: 10px; overflow: hidden; }
+        .match-header { background: #222; font-size: 10px; padding: 5px; text-align: center; color: var(--accent); font-weight: bold; }
+        .match-row { padding: 10px 15px; display: flex; justify-content: space-between; font-size: 14px; border-bottom: 0.5px solid #222; }
+
+        /* ФОРМИ ТА КНОПКИ */
+        input, select { width: 100%; padding: 14px; margin-bottom: 10px; background: #222; border: 1px solid #444; border-radius: 12px; color: #fff; box-sizing: border-box; }
+        .btn-main { background: var(--accent); color: #000; border: none; padding: 18px; border-radius: 15px; width: 100%; font-weight: 800; cursor: pointer; transition: 0.3s; }
+        .btn-main:disabled { background: #555; cursor: not-allowed; }
+        
+        audio { width: 100%; height: 35px; filter: invert(1); margin-top: 10px; }
     </style>
 </head>
 <body>
 
     <nav class="nav">
-        <div class="nav-item active" onclick="showTab('tab-home', this)">🏠 ІНФО</div>
+        <div class="nav-item active" onclick="showTab('tab-home', this)">🏠 ГОЛОВНА</div>
         <div class="nav-item" onclick="showTab('tab-bracket', this)">📊 СІТКА</div>
         <div class="nav-item" onclick="showTab('tab-player', this)">🎧 ПЛЕЄР</div>
         <div class="nav-item" onclick="showTab('tab-results', this)">🏆 РЕЙТИНГ</div>
@@ -47,99 +54,123 @@
 
     <div id="tab-home" class="tab-content active">
         <div class="card">
-            <div style="color:var(--accent); font-weight:900;">ПРИЗОВИЙ ФОНД: 50,000 UAH</div>
-            <h2>BATTLE ARENA</h2>
-            <p style="font-size:14px; color:#aaa;">Відбірковий раунд -> Топ-16 -> Чвертьфінал -> Півфінал -> ФІНАЛ.</p>
+            <div class="prize-badge">ПРИЗ: 50 000 ГРН</div>
+            <h2 style="margin:0 0 10px 0;">BATTLE ARENA: SEASON 1</h2>
+            <p style="font-size: 14px; color: #ccc;">Ласкаво просимо на найбільший онлайн-батл країни. Тут вирішує тільки твій скіл.</p>
+            <h3>ПРАВИЛА:</h3>
+            <ul class="rules-list">
+                <li>Трек має бути до 2-х хвилин.</li>
+                <li>Тема відбору: "Вільна".</li>
+                <li>Судді оцінюють: Текст, Флоу, Подачу та Вайб.</li>
+                <li>У Топ-16 проходять лише найкращі за рейтингом.</li>
+            </ul>
             <button class="btn-main" onclick="showTab('tab-reg')">ПОДАТИ ЗАЯВКУ</button>
         </div>
     </div>
 
     <div id="tab-bracket" class="tab-content">
         <h2>Турнірна Сітка</h2>
-        <div class="bracket-container">
-            <div class="round">
-                <div class="round-title">1/8 Фіналу (Топ-16)</div>
-                <div class="matchup">
-                    <div class="player-slot"><span>Учасник 1</span><span class="score">?</span></div>
-                    <div class="player-slot"><span>Учасник 2</span><span class="score">?</span></div>
-                </div>
-                <div class="matchup">
-                    <div class="player-slot"><span>Учасник 3</span><span class="score">?</span></div>
-                    <div class="player-slot"><span>Учасник 4</span><span class="score">?</span></div>
-                </div>
-            </div>
-
-            <div class="round">
-                <div class="round-title">Півфінал</div>
-                <div class="matchup">
-                    <div class="player-slot"><span>Переможець 1</span><span class="score">-</span></div>
-                    <div class="player-slot"><span>Переможець 2</span><span class="score">-</span></div>
-                </div>
-            </div>
-
-            <div class="round">
-                <div class="round-title" style="color:#gold;">🏆 ФІНАЛ 🏆</div>
-                <div class="matchup" style="border: 2px solid gold;">
-                    <div class="player-slot"><span>Фіналіст A</span><span class="score"></span></div>
-                    <div class="player-slot"><span>Фіналіст B</span><span class="score"></span></div>
-                </div>
-            </div>
-        </div>
+        <div class="match"><div class="match-header">1/8 ФІНАЛУ #1</div><div class="match-row"><span>TBD</span><b>0</b></div><div class="match-row"><span>TBD</span><b>0</b></div></div>
+        <div class="match"><div class="match-header">1/8 ФІНАЛУ #2</div><div class="match-row"><span>TBD</span><b>0</b></div><div class="match-row"><span>TBD</span><b>0</b></div></div>
+        <div class="card" style="border: 1px solid gold; text-align: center;"><b>ФІНАЛ ОЧІКУЄТЬСЯ</b></div>
     </div>
 
     <div id="tab-player" class="tab-content">
-        <h2>Прослуховування</h2>
-        <div id="full-player-list">Завантаження...</div>
+        <h2>Треки учасників</h2>
+        <div id="player-list">Завантаження...</div>
     </div>
 
     <div id="tab-results" class="tab-content">
-        <h2>Топ Балів</h2>
+        <h2>Рейтинг балів</h2>
         <div id="ranking-list"></div>
     </div>
 
     <div id="tab-judges" class="tab-content">
-        <h2>Суддівський склад</h2>
-        <div class="card"><b>MC Solomon</b> - Техніка та Текст</div>
-        <div class="card"><b>Beatmaker Flow</b> - Музикальність</div>
+        <h2>Наші Судді</h2>
+        <div class="judge-item">
+            <div class="judge-img"></div>
+            <div class="judge-info">
+                <b>MC Solomon</b><br><span>Суддя технік</span><br>
+                <a href="#" class="insta-link">INSTAGRAM</a>
+            </div>
+        </div>
+        <div class="judge-item">
+            <div class="judge-img"></div>
+            <div class="judge-info">
+                <b>Beatmaker Flow</b><br><span>Суддя вайбу</span><br>
+                <a href="#" class="insta-link">INSTAGRAM</a>
+            </div>
+        </div>
     </div>
 
     <div id="tab-reg" class="tab-content">
-        <h2>Реєстрація</h2>
-        <form id="reg-form">
-            <input type="text" id="reg-name" placeholder="Нікнейм" required style="width:100%; padding:15px; margin-bottom:10px; background:#222; border:1px solid #444; border-radius:10px; color:#fff;">
-            <input type="text" id="reg-city" placeholder="Місто" required style="width:100%; padding:15px; margin-bottom:10px; background:#222; border:1px solid #444; border-radius:10px; color:#fff;">
-            <input type="file" id="reg-file" accept="audio/*" required style="color:#fff; margin-bottom:15px;">
-            <button type="submit" id="btn-submit" class="btn-main">ВІДПРАВИТИ ТРЕК</button>
-        </form>
+        <h2>Подати заявку</h2>
+        <div class="card">
+            <form id="reg-form">
+                <input type="text" id="r-name" placeholder="Твій нікнейм" required>
+                <input type="text" id="r-city" placeholder="Місто" required>
+                <label style="font-size:12px; color:#777;">Завантаж трек (MP3):</label>
+                <input type="file" id="r-file" accept="audio/*" required>
+                
+                <div style="display:flex; gap:10px; align-items:flex-start; margin: 15px 0;">
+                    <input type="checkbox" id="r-agree" style="width:20px; height:20px; margin:0;" required>
+                    <label for="r-agree" style="font-size:12px; color:#aaa;">Я згоден з правилами батлу та обробкою даних</label>
+                </div>
+                
+                <button type="submit" id="r-btn" class="btn-main">ВІДПРАВИТИ</button>
+            </form>
+        </div>
     </div>
 
     <div id="tab-admin" class="tab-content">
-        <div id="login-form">
-            <h2>Вхід судді</h2>
-            <input type="text" id="log-user" placeholder="Логін" style="width:100%; padding:15px; margin-bottom:10px; background:#222; border:1px solid #444; border-radius:10px; color:#fff;">
-            <input type="password" id="log-pass" placeholder="Пароль" style="width:100%; padding:15px; margin-bottom:10px; background:#222; border:1px solid #444; border-radius:10px; color:#fff;">
-            <button onclick="tryLogin()" class="btn-main">УВІЙТИ</button>
+        <div id="admin-login">
+            <h2>Вхід для суддів</h2>
+            <input type="text" id="adm-u" placeholder="Логін">
+            <input type="password" id="adm-p" placeholder="Пароль">
+            <button class="btn-main" onclick="login()">УВІЙТИ</button>
         </div>
-        <div id="admin-panel" style="display:none;">
-            <h2 id="judge-name-title">Оцінювання</h2>
-            <div id="admin-vote-list"></div>
+        <div id="admin-work" style="display:none;">
+            <h2 id="hello-j">Панель судді</h2>
+            <div id="admin-list"></div>
         </div>
     </div>
 
     <script>
-        const API_URL = "https://script.google.com/macros/s/AKfycbwLlgAFARTIJX3CPPH4eRevaqUDO9gErXoI5PiapR3i2xEJLRFyuRfApYANdVsSHAJ4/exec";
-        let currentUser = null;
+        const API = "https://script.google.com/macros/s/AKfycbwLlgAFARTIJX3CPPH4eRevaqUDO9gErXoI5PiapR3i2xEJLRFyuRfApYANdVsSHAJ4/exec";
+        let user = null;
 
-        function showTab(tabId, el) {
-            document.querySelectorAll('.tab-content').forEach(t => t.classList.remove('active'));
+        function showTab(t, el) {
+            document.querySelectorAll('.tab-content').forEach(c => c.classList.remove('active'));
             document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
-            document.getElementById(tabId).classList.add('active');
+            document.getElementById(t).classList.add('active');
             if(el) el.classList.add('active');
-            loadData();
+            load();
         }
 
-        // Тут логіка loadData, saveScore, tryLogin і відправки форми (як у попередніх версіях)
-        // ... (я залишив ці функції робочими для твого API)
-    </script>
-</body>
-</html>
+        async function load() {
+            const r = await fetch(API + "?action=getData");
+            const d = await r.json();
+            const all = d.allUsers || d.users;
+            const u = all.slice(1);
+
+            // Плеєр
+            const ok = u.filter(i => i[4] === 'Прийнято');
+            document.getElementById('player-list').innerHTML = ok.map(i => `
+                <div class="card"><b>${i[1]}</b> (${i[2]})<audio controls src="${i[3]}"></audio></div>
+            `).join('');
+
+            // Рейтинг
+            const ranked = ok.map(i => ({
+                n: i[1], 
+                s: (((Number(i[5])||0)+(Number(i[6])||0)+(Number(i[7])||0)+(Number(i[8])||0))/4).toFixed(1)
+            })).sort((a,b) => b.s - a.s);
+            document.getElementById('ranking-list').innerHTML = ranked.map(i => `
+                <div class="card" style="display:flex; justify-content:space-between;"><span>${i.n}</span><b>${i.s}</b></div>
+            `).join('');
+
+            // Адмінка
+            if(user) {
+                document.getElementById('admin-list').innerHTML = u.map((item, idx) => `
+                    <div class="card">
+                        <b>${item[1]}</b>
+                        <div style="display:grid; grid-template-columns:1fr 1fr; gap:5px; margin-top:10px;">

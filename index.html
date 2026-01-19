@@ -29,18 +29,18 @@
         /* ПЛЕЄР */
         audio { width: 100%; height: 40px; margin: 15px 0; border-radius: 12px; filter: invert(100%) hue-rotate(180deg) brightness(1.4); }
         
-        /* ІНПУТИ ТА КНОПКИ (Круглі) */
+        /* ІНПУТИ ТА КНОПКИ */
         input { background: #2c2c2e; border: none; color: #fff; padding: 16px; border-radius: 16px; width: 100%; box-sizing: border-box; margin-bottom: 15px; font-size: 16px; }
         button { background: var(--accent); color: #000; border: none; padding: 18px; border-radius: 30px; width: 100%; font-weight: 800; font-size: 16px; cursor: pointer; transition: 0.3s; }
         button:active { transform: scale(0.96); }
 
-        /* ЧЕКБОКС */
+        /* ЧЕКБОКС (iOS Style) */
         .rules-row { display: flex; align-items: center; gap: 12px; margin: 10px 0 25px 0; font-size: 14px; color: #aaa; line-height: 1.4; }
-        .rules-row input[type="checkbox"] { width: 24px; height: 24px; margin: 0; accent-color: var(--accent); cursor: pointer; }
+        .rules-row input { width: 24px; height: 24px; margin: 0; accent-color: var(--accent); cursor: pointer; }
 
         /* СІТКА ДЛЯ ОЦІНОК */
         .judge-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-top: 15px; background: #2c2c2e; padding: 15px; border-radius: 15px; }
-        .judge-grid label { font-size: 10px; color: #999; font-weight: 700; text-transform: uppercase; display: block; margin-bottom: 5px; }
+        .judge-grid label { font-size: 10px; color: #999; font-weight: 700; text-transform: uppercase; display: block; margin-bottom: 5px; margin-left: 2px; }
         .judge-grid input { margin-bottom: 0; padding: 10px; border-radius: 10px; text-align: center; font-weight: 700; }
     </style>
 </head>
@@ -54,20 +54,20 @@
 
     <div id="tab-results" class="tab-content active">
         <h2>Турнірна таблиця</h2>
-        <div id="results-list">Завантаження результатів...</div>
+        <div id="results-list">Завантаження...</div>
     </div>
 
     <div id="tab-reg" class="tab-content">
         <h2>Реєстрація</h2>
         <form id="reg-form">
-            <input type="text" id="reg-name" placeholder="Твій нікнейм" required>
+            <input type="text" id="reg-name" placeholder="Твій нік" required>
             <input type="text" id="reg-city" placeholder="Твоє місто" required>
-            <label style="font-size: 13px; color: #888; display: block; margin-bottom: 8px;">Вибери трек (аудіо):</label>
+            <label style="font-size: 13px; color: #888; display: block; margin-bottom: 8px;">Обери аудіо (MP3):</label>
             <input type="file" id="reg-file" accept="audio/*" required style="background: transparent; padding: 0;">
             
             <div class="rules-row">
                 <input type="checkbox" id="reg-rules" required>
-                <span>Я згоден з правилами баттлу та рішенням суддів</span>
+                <span>Я ознайомлений з правилами та готовий до баттлу</span>
             </div>
             
             <button type="submit" id="btn-submit">ПОДАТИ ЗАЯВКУ</button>
@@ -112,7 +112,7 @@
                 const res = await fetch(API_URL + "?action=getData");
                 const data = await res.json();
                 
-                // Відображення рейтингу (тільки "Прийнято")
+                // РЕЙТИНГ (тільки "Прийнято")
                 const acceptedUsers = data.users.filter(u => u[5] === "Прийнято");
                 document.getElementById('results-list').innerHTML = acceptedUsers.length > 0 ? 
                 acceptedUsers.map(u => `
@@ -121,9 +121,9 @@
                         <div class="city-tag">📍 ${u[2]}</div>
                         <audio controls src="${formatDriveUrl(u[3])}"></audio>
                     </div>
-                `).join('') : "<p style='text-align:center; color:#555;'>Учасників ще не прийнято</p>";
+                `).join('') : "<p style='text-align:center; color:#555;'>Немає активних учасників</p>";
 
-                // Відображення адмінки
+                // АДМІНКА (всі заявки)
                 if(currentUser) {
                     const allUsers = data.users.slice(1);
                     document.getElementById('admin-list').innerHTML = allUsers.map((u, i) => `
@@ -136,7 +136,7 @@
                                 <div><label>Подача</label><input type="number" value="0"></div>
                                 <div><label>Вайб</label><input type="number" value="0"></div>
                             </div>
-                            <button style="margin-top:15px; border-radius:15px; font-size:14px;" onclick="alert('Бали збережено!')">ЗБЕРЕГТИ</button>
+                            <button style="margin-top:15px; border-radius:15px; font-size:14px;" onclick="alert('Бали збережено в системі!')">ЗБЕРЕГТИ ОЦІНКУ</button>
                         </div>
                     `).join('');
                 }
@@ -146,18 +146,16 @@
         async function tryLogin() {
             const u = document.getElementById('log-user').value;
             const p = document.getElementById('log-pass').value;
-            try {
-                const res = await fetch(API_URL + "?action=getData");
-                const data = await res.json();
-                const judge = data.judges.find(j => j[0] == u && j[1] == p);
-                if(judge) {
-                    currentUser = judge[2];
-                    document.getElementById('login-form').style.display = 'none';
-                    document.getElementById('admin-panel').style.display = 'block';
-                    document.getElementById('judge-name').innerText = "Суддя: " + currentUser;
-                    loadData();
-                } else { alert("Помилка входу!"); }
-            } catch(e) { alert("Помилка зв'язку з сервером"); }
+            const res = await fetch(API_URL + "?action=getData");
+            const data = await res.json();
+            const judge = data.judges.find(j => j[0] == u && j[1] == p);
+            if(judge) {
+                currentUser = judge[2];
+                document.getElementById('login-form').style.display = 'none';
+                document.getElementById('admin-panel').style.display = 'block';
+                document.getElementById('judge-name').innerText = "Суддя: " + currentUser;
+                loadData();
+            } else { alert("Помилка входу!"); }
         }
 
         document.getElementById('reg-form').onsubmit = async (e) => {
@@ -176,11 +174,9 @@
                     fileName: file.name,
                     mimeType: file.type
                 };
-                try {
-                    await fetch(API_URL, { method: 'POST', body: JSON.stringify(payload) });
-                    alert("Успіх! Твій трек вже на розгляді.");
-                    document.getElementById('reg-form').reset();
-                } catch(err) { alert("Помилка завантаження"); }
+                await fetch(API_URL, { method: 'POST', body: JSON.stringify(payload) });
+                alert("Успіх! Твій трек вже у суддів.");
+                document.getElementById('reg-form').reset();
                 btn.innerText = "ПОДАТИ ЗАЯВКУ";
                 btn.disabled = false;
             };

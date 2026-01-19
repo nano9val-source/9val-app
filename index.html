@@ -6,113 +6,73 @@
     <title>9VAL BATTLE ARENA</title>
     <script src="https://telegram.org/js/telegram-web-app.js"></script>
     <style>
-        body { font-family: 'Segoe UI', sans-serif; background: #050505; color: #fff; margin: 0; padding: 0; }
-        .header { background: #111; padding: 20px; text-align: center; border-bottom: 2px solid #f39c12; }
-        .nav { display: flex; overflow-x: auto; background: #1a1a1a; position: sticky; top: 0; z-index: 100; }
-        .nav-item { padding: 15px 20px; cursor: pointer; white-space: nowrap; color: #888; font-weight: bold; }
-        .nav-item.active { color: #f39c12; border-bottom: 3px solid #f39c12; }
-        .content { padding: 15px; }
+        body { font-family: 'Segoe UI', sans-serif; background: #050505; color: #fff; margin: 0; padding: 15px; }
+        .nav { display: flex; justify-content: space-around; background: #1a1a1a; padding: 10px; border-radius: 10px; margin-bottom: 20px; }
+        .nav div { cursor: pointer; color: #888; font-weight: bold; }
+        .nav div.active { color: #f39c12; border-bottom: 2px solid #f39c12; }
         .card { background: #151515; border-radius: 12px; padding: 15px; margin-bottom: 15px; border-left: 5px solid #f39c12; }
-        .btn { width: 100%; padding: 12px; background: #f39c12; color: #000; border: none; border-radius: 8px; font-weight: bold; margin-top: 10px; cursor: pointer; }
-        input { width: 92%; padding: 10px; margin: 5px 0; background: #222; border: 1px solid #333; color: #fff; border-radius: 5px; }
+        .btn { width: 100%; padding: 12px; background: #f39c12; color: #000; border: none; border-radius: 8px; font-weight: bold; cursor: pointer; margin-top: 10px; }
+        input { width: 90%; padding: 10px; margin: 10px 0; background: #222; border: 1px solid #333; color: #fff; border-radius: 5px; }
         .hidden { display: none; }
-        .status-badge { font-size: 12px; padding: 3px 8px; border-radius: 5px; background: #333; color: #f39c12; }
     </style>
 </head>
 <body>
-    <div class="header"><h1>9VAL BATTLE</h1></div>
-    
     <div class="nav">
-        <div class="nav-item active" onclick="showTab('reg')">РЕЄСТРАЦІЯ</div>
-        <div class="nav-item" onclick="showTab('players')">УЧАСНИКИ</div>
-        <div class="nav-item" onclick="showTab('rounds')">РАУНДИ</div>
+        <div id="n-reg" class="active" onclick="showTab('reg')">РЕЄСТРАЦІЯ</div>
+        <div id="n-list" onclick="showTab('list')">УЧАСНИКИ</div>
     </div>
 
-    <div class="content">
-        <div id="tab-reg">
-            <div class="card">
-                <h3>АНКЕТА УЧАСНИКА</h3>
-                <input type="text" id="name" placeholder="Твій Нікнейм">
-                <input type="text" id="city" placeholder="Місто">
-                <input type="text" id="track" placeholder="Посилання на трек">
-                <button class="btn" id="regBtn" onclick="sendData()">ПОДАТИ ЗАЯВКУ</button>
-            </div>
+    <div id="tab-reg">
+        <div class="card">
+            <h3>ПОДАТИ ЗАЯВКУ</h3>
+            <input type="text" id="name" placeholder="Твій Нікнейм">
+            <input type="text" id="city" placeholder="Місто">
+            <p style="color:#f39c12; font-size: 12px; margin-bottom: 5px;">ОБЕРИ ТРЕК (MP3/WAV):</p>
+            <input type="file" id="trackFile" accept="audio/*">
+            <button class="btn" id="sendBtn" onclick="upload()">ВІДПРАВИТИ ЗАЯВКУ</button>
         </div>
+    </div>
 
-        <div id="tab-players" class="hidden">
-            <h3>СПИСОК АРТИСТІВ</h3>
-            <div id="players-list">Завантаження учасників...</div>
-        </div>
-
-        <div id="tab-rounds" class="hidden">
-            <h3>ТУРНІРНА СІТКА</h3>
-            <div id="rounds-list">Розклад з'явиться після жеребкування.</div>
-        </div>
+    <div id="tab-list" class="hidden">
+        <h3>УЧАСНИКИ БАТТЛУ</h3>
+        <div id="users-list">Завантаження...</div>
     </div>
 
     <script>
         const tg = window.Telegram.WebApp;
         tg.expand();
-        const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbwjaiam_syBlJlYi8l8SBzhVjmcwgKNqFHOHFpUS4YqortLNz8DhEAxqA1vfD19jBAy/exec";
+        const URL = "https://script.google.com/macros/s/AKfycbw8IQYUeoibpyzl714JiRr7Cpk9Gd_KoPs55l-EM54jR7zGMYs5-ljKhjCoHNOKVwtG/exec";
 
-        function showTab(name) {
-            document.querySelectorAll('.content > div').forEach(d => d.classList.add('hidden'));
-            document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
-            document.getElementById('tab-' + name).classList.remove('hidden');
-            event.currentTarget.classList.add('active');
-            if(name === 'players') loadData();
+        function showTab(t) {
+            document.getElementById('tab-reg').classList.toggle('hidden', t !== 'reg');
+            document.getElementById('tab-list').classList.toggle('hidden', t !== 'list');
+            document.getElementById('n-reg').classList.toggle('active', t === 'reg');
+            document.getElementById('n-list').classList.toggle('active', t === 'list');
+            if(t === 'list') loadUsers();
         }
 
-        async function sendData() {
+        function upload() {
             const name = document.getElementById('name').value;
             const city = document.getElementById('city').value;
-            const track = document.getElementById('track').value;
-            const btn = document.getElementById('regBtn');
+            const fileInput = document.getElementById('trackFile');
+            const btn = document.getElementById('sendBtn');
 
-            if(!name || !city || !track) return alert("Заповни всі поля!");
+            if(!name || !fileInput.files[0]) return alert("Заповни ім'я та обери файл!");
 
-            btn.innerText = "ВІДПРАВКА...";
+            btn.innerText = "ЗАВАНТАЖЕННЯ...";
             btn.disabled = true;
 
-            const payload = {
-                action: 'register',
-                id: tg.initDataUnsafe?.user?.id || "000",
-                name: name,
-                city: city,
-                track: track
-            };
+            const file = fileInput.files[0];
+            const reader = new FileReader();
+            reader.onload = async function() {
+                const payload = {
+                    action: 'register',
+                    id: tg.initDataUnsafe?.user?.id || "USER",
+                    name: name,
+                    city: city,
+                    fileName: file.name,
+                    fileData: reader.result
+                };
 
-            try {
-                await fetch(SCRIPT_URL, {
-                    method: 'POST',
-                    mode: 'no-cors',
-                    body: JSON.stringify(payload)
-                });
-                alert("Готово! Твоя заявка в таблиці.");
-                btn.innerText = "ПОДАТИ ЗАЯВКУ";
-                btn.disabled = false;
-            } catch (e) {
-                alert("Помилка! Спробуй ще раз.");
-            }
-        }
-
-        async function loadData() {
-            const list = document.getElementById('players-list');
-            try {
-                const response = await fetch(SCRIPT_URL + "?action=getData");
-                const res = await response.json();
-                list.innerHTML = "";
-                // Пропускаем первую строку заголовков
-                res.users.slice(1).forEach(user => {
-                    list.innerHTML += `<div class="card">
-                        <p><b>${user[1]}</b> (${user[2]}) <span class="status-badge">${user[5]}</span></p>
-                        <a href="${user[3]}" target="_blank" style="color:#f39c12; text-decoration:none;">🎧 Слухати трек</a>
-                    </div>`;
-                });
-            } catch (e) {
-                list.innerText = "Помилка завантаження даних.";
-            }
-        }
-    </script>
-</body>
-</html>
+                try {
+                    await fetch(URL, { method: 'POST', body:

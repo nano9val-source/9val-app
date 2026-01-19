@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://telegram.org/js/telegram-web-app.js"></script>
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
+        import { getFirestore, doc, setDoc } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
+
+        const firebaseConfig = {
+            apiKey: "AIzaSyBWYGmKh1PVswbmymOo9urGl-g6Dtnu4pA",
+            authDomain: "valbattl.firebaseapp.com",
+            projectId: "valbattl",
+            storageBucket: "valbattl.firebasestorage.app",
+            messagingSenderId: "397888194127",
+            appId: "1:397888194127:web:73cd74e34aa3615a398c3a"
+        };
+
+        const app = initializeApp(firebaseConfig);
+        const db = getFirestore(app);
+        const tg = window.Telegram.WebApp;
+        tg.expand();
+
+        window.submitReg = async () => {
+            const user = tg.initDataUnsafe.user;
+            const city = document.getElementById('city').value;
+            const social = document.getElementById('social').value;
+
+            if (!city || !social) {
+                alert("Заповніть всі поля!");
+                return;
+            }
+
+            if (user) {
+                await setDoc(doc(db, "users", user.id.toString()), {
+                    name: user.first_name,
+                    username: user.username || "no_nick",
+                    city: city,
+                    social: social,
+                    status: "on_selection", // Статус: на отборе
+                    regDate: new Date().toISOString()
+                }, { merge: true });
+                
+                document.getElementById('regForm').innerHTML = "<h3>✅ Заявка подана!</h3><p>Очікуйте на результати відбору.</p>";
+            }
+        };
+    </script>
+    <style>
+        body { background: #000; color: #00f0ff; font-family: 'Arial', sans-serif; padding: 15px; text-align: center; }
+        .header { border: 2px solid #ff0055; border-radius: 15px; padding: 15px; margin-bottom: 20px; box-shadow: 0 0 10px #ff0055; }
+        .prize { color: #fff; font-size: 1.5em; font-weight: bold; margin: 10px 0; }
+        .card { background: #111; border: 1px solid #333; padding: 15px; border-radius: 12px; margin-bottom: 15px; text-align: left; }
+        input { width: 90%; padding: 10px; margin: 10px 0; background: #222; border: 1px solid #00f0ff; color: #fff; border-radius: 5px; }
+        .btn { background: #00f0ff; color: #000; border: none; padding: 15px; width: 100%; border-radius: 8px; font-weight: bold; cursor: pointer; }
+        .rules { font-size: 0.9em; color: #ccc; line-height: 1.4; }
+        b { color: #ff0055; }
+    </style>
+</head>
+<body>
+
+<div class="header">
+    <h1>9VAL BATTLE</h1>
+    <div class="prize">ПРИЗОВИЙ ФОНД: 50 000 ГРН</div>
+</div>
+
+<div class="card" id="regForm">
+    <h3>📝 РЕЄСТРАЦІЯ (ВІДБІР)</h3>
+    <p class="rules">Тільки для артистів з <b>України</b>. Пріоритет — українська мова.</p>
+    <input type="text" id="city" placeholder="Ваше місто в Україні">
+    <input type="text" id="social" placeholder="Посилання на Instagram / SoundCloud">
+    <button class="btn" onclick="submitReg()">ПОДАТИ ЗАЯВКУ НА ВІДБІР</button>
+</div>
+
+<div class="card">
+    <h3>📋 ПРАВИЛА ТА УМОВИ</h3>
+    <ul class="rules">
+        <li>Брати участь можуть лише жителі <b>України</b>.</li>
+        <li>Мова виконання: переважно <b>Українська</b> (RU допускається).</li>
+        <li>Відбір проводиться на основі ваших демо-записів та соцмереж.</li>
+        <li><b>1 місце — 50 000 грн.</b></li>
+    </ul>
+</div>
+
+</body>
+</html>

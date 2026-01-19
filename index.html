@@ -3,33 +3,30 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>9VAl-BATTL | PRO EDITION</title>
+    <title>9VAl-BATTL | OFFICIAL APP</title>
     <script src="https://telegram.org/js/telegram-web-app.js"></script>
     <style>
         :root { --accent: #f39c12; --bg: #000; --card: #1c1c1e; --radius: 18px; }
         body { font-family: -apple-system, system-ui, sans-serif; background: var(--bg); color: #fff; margin: 0; padding: 15px; padding-top: 85px; }
-        
         .nav { position: fixed; top: 0; left: 0; right: 0; background: rgba(10,10,10,0.95); backdrop-filter: blur(15px); display: flex; overflow-x: auto; padding: 10px 5px; border-bottom: 0.5px solid #333; z-index: 9999; scrollbar-width: none; }
         .nav-item { color: #777; font-size: 10px; font-weight: 800; text-align: center; white-space: nowrap; padding: 12px 15px; border-radius: 12px; transition: 0.3s; cursor: pointer; flex-shrink: 0; }
         .nav-item.active { color: var(--accent); background: rgba(243,156,18,0.1); }
-
         .tab-content { display: none; }
         .tab-content.active { display: block; }
         .card { background: var(--card); border-radius: var(--radius); padding: 20px; margin-bottom: 15px; border: 0.5px solid #333; }
+        .prize-badge { background: var(--accent); color: #000; padding: 5px 15px; border-radius: 20px; font-weight: 900; display: inline-block; margin-bottom: 10px; }
+        .rules-list { font-size: 13px; color: #aaa; padding-left: 20px; line-height: 1.6; }
+        .match { background: #1a1a1c; border-radius: 10px; border: 1px solid #333; margin-bottom: 10px; overflow: hidden; }
+        .match-header { background: #222; font-size: 10px; padding: 5px; text-align: center; color: var(--accent); font-weight: bold; }
+        .match-row { padding: 10px 15px; display: flex; justify-content: space-between; font-size: 14px; border-bottom: 0.5px solid #222; }
+        input, select { width: 100%; padding: 14px; margin-bottom: 10px; background: #222; border: 1px solid #444; border-radius: 12px; color: #fff; box-sizing: border-box; }
+        .btn-main { background: var(--accent); color: #000; border: none; padding: 18px; border-radius: 15px; width: 100%; font-weight: 800; cursor: pointer; transition: 0.3s; }
+        audio { width: 100%; height: 35px; filter: invert(1); margin-top: 10px; }
         
-        /* КРИТЕРІЇ В АДМІНЦІ */
-        .vote-group { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-top: 10px; }
-        .vote-field { background: #222; padding: 8px; border-radius: 10px; border: 1px solid #444; }
-        .vote-field label { font-size: 10px; color: var(--accent); display: block; margin-bottom: 4px; text-transform: uppercase; }
-        .vote-field input { width: 100%; background: transparent; border: none; color: #fff; font-size: 16px; font-weight: bold; outline: none; }
-
-        .btn-main { background: var(--accent); color: #000; border: none; padding: 18px; border-radius: 15px; width: 100%; font-weight: 800; cursor: pointer; transition: 0.3s; margin-top: 10px; }
-        .btn-main:disabled { background: #555; cursor: not-allowed; }
-        
-        audio { width: 100%; height: 35px; filter: invert(1); margin: 10px 0; }
-        input[type="text"], input[type="password"] { width: 100%; padding: 14px; margin-bottom: 10px; background: #222; border: 1px solid #444; border-radius: 12px; color: #fff; box-sizing: border-box; }
-        
-        .leader-row { display: flex; justify-content: space-between; border-bottom: 1px solid #333; padding: 10px 0; }
+        /* Спеціально для адмінки */
+        .admin-score-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-top: 10px; }
+        .score-box { background: #111; padding: 5px; border-radius: 8px; border: 1px solid #333; }
+        .score-box label { font-size: 9px; color: var(--accent); display: block; }
     </style>
 </head>
 <body>
@@ -46,52 +43,59 @@
 
     <div id="tab-home" class="tab-content active">
         <div class="card">
-            <div style="background:var(--accent); color:#000; padding:5px 15px; border-radius:20px; font-weight:900; display:inline-block; margin-bottom:10px;">ПРИЗ: 50 000 ГРН</div>
-            <h2>9VAl-BATTL: SEASON 1</h2>
-            <p style="color:#aaa; font-size:14px;">Максимальний бал за кожен критерій — 10. Перемагає найсильніший.</p>
-            <button class="btn-main" onclick="showTab('tab-reg')">ПОДАТИ ЗАЯВКУ</button>
+            <div class="prize-badge">ПРИЗ: 50 000 ГРН</div>
+            <h2>9VAL BATTLE: SEASON 1</h2>
+            <p>Ласкаво просимо на найбільший онлайн-батл країни.</p>
+            <h3>ПРАВИЛА:</h3>
+            <ul class="rules-list">
+                <li>Трек до 2-х хвилин.</li>
+                <li>Тема: "Вільна".</li>
+                <li>Судді оцінюють: Текст, Флоу, Подачу, Вайб.</li>
+            </ul>
         </div>
     </div>
 
     <div id="tab-bracket" class="tab-content">
         <h2>Турнірна Сітка</h2>
-        <div class="card" style="text-align:center;">Блок у розробці...</div>
+        <div class="match"><div class="match-header">1/8 ФІНАЛУ #1</div><div class="match-row"><span>TBD</span><b>0</b></div></div>
     </div>
 
     <div id="tab-player" class="tab-content">
-        <h2>Всі учасники</h2>
+        <h2>Треки учасників</h2>
         <div id="player-list">Завантаження...</div>
     </div>
 
     <div id="tab-results" class="tab-content">
         <h2>Рейтинг балів</h2>
-        <div id="ranking-list" class="card"></div>
+        <div id="ranking-list"></div>
     </div>
 
-    <div id="tab-admin" class="tab-content">
-        <div id="admin-login">
-            <div class="card">
-                <h2>Вхід Судді</h2>
-                <input type="text" id="adm-u" placeholder="Логін">
-                <input type="password" id="adm-p" placeholder="Пароль">
-                <button class="btn-main" onclick="login()">УВІЙТИ</button>
-            </div>
-        </div>
-        <div id="admin-work" style="display:none;">
-            <h2 id="hello-j">Панель оцінювання</h2>
-            <div id="admin-list"></div>
-        </div>
+    <div id="tab-judges" class="tab-content">
+        <h2>Наші Судді</h2>
+        <div class="card">MC Solomon & Flow</div>
     </div>
 
     <div id="tab-reg" class="tab-content">
         <h2>Реєстрація</h2>
         <div class="card">
             <form id="reg-form">
-                <input type="text" id="r-name" placeholder="Нікнейм" required>
+                <input type="text" id="r-name" placeholder="Твій нікнейм" required>
                 <input type="text" id="r-city" placeholder="Місто" required>
                 <input type="file" id="r-file" accept="audio/*" required>
                 <button type="submit" id="r-btn" class="btn-main">ВІДПРАВИТИ</button>
             </form>
+        </div>
+    </div>
+
+    <div id="tab-admin" class="tab-content">
+        <div id="admin-login">
+            <input type="text" id="adm-u" placeholder="Логін">
+            <input type="password" id="adm-p" placeholder="Пароль">
+            <button class="btn-main" onclick="login()">УВІЙТИ</button>
+        </div>
+        <div id="admin-work" style="display:none;">
+            <h2 id="hello-j">Панель судді</h2>
+            <div id="admin-list"></div>
         </div>
     </div>
 
@@ -111,40 +115,41 @@
             try {
                 const r = await fetch(API + "?action=getData");
                 const d = await r.json();
-                const u = (d.allUsers || d.users).slice(1);
+                const all = d.allUsers || d.users || [];
+                const u = all.slice(1);
                 const ok = u.filter(i => i[4] === 'Прийнято');
 
                 // Плеєр загальний
                 document.getElementById('player-list').innerHTML = ok.map(i => `
-                    <div class="card"><b>${i[1]}</b> (${i[2]})<audio controls src="${i[3]}"></audio></div>
+                    <div class="card"><b>${i[1]}</b><audio controls src="${i[3]}"></audio></div>
                 `).join('');
 
                 // Рейтинг
-                const ranked = ok.map(i => ({
-                    n: i[1], 
-                    s: (((Number(i[5])||0)+(Number(i[6])||0)+(Number(i[7])||0)+(Number(i[8])||0))/4).toFixed(1)
-                })).sort((a,b) => b.s - a.s);
-                document.getElementById('ranking-list').innerHTML = ranked.map((i, idx) => `
-                    <div class="leader-row"><span>${idx+1}. ${i.n}</span><b>${i.s}</b></div>
-                `).join('');
+                document.getElementById('ranking-list').innerHTML = ok.map(i => {
+                    const s = (((Number(i[5])||0)+(Number(i[6])||0)+(Number(i[7])||0)+(Number(i[8])||0))/4).toFixed(1);
+                    return `<div class="card" style="display:flex; justify-content:space-between;"><span>${i[1]}</span><b>${s}</b></div>`;
+                }).join('');
 
-                // Адмінка з плеєром та критеріями
-                if(user) {
-                    document.getElementById('admin-list').innerHTML = u.map((item, idx) => `
+                // АДМІНКА (Ось тут зміни, які ти просив)
+                if(user && document.getElementById('admin-list')) {
+                    document.getElementById('admin-list').innerHTML = u.map((item, idx) => {
+                        // Робимо посилання прямим для плеєра
+                        const streamUrl = item[3] ? item[3].replace("open?id=", "uc?export=download&id=") : "";
+                        return `
                         <div class="card">
-                            <b>${item[1]}</b> <small style="color:#777;">[${item[4]}]</small>
-                            <audio controls src="${item[3]}"></audio>
-                            <div class="vote-group">
-                                <div class="vote-field"><label>Текст</label><input type="number" id="t1-${idx}" value="${item[5]||0}"></div>
-                                <div class="vote-field"><label>Флоу</label><input type="number" id="t2-${idx}" value="${item[6]||0}"></div>
-                                <div class="vote-field"><label>Подача</label><input type="number" id="t3-${idx}" value="${item[7]||0}"></div>
-                                <div class="vote-field"><label>Вайб</label><input type="number" id="t4-${idx}" value="${item[8]||0}"></div>
+                            <b>${item[1]}</b> [${item[4]}]
+                            <audio controls src="${streamUrl}"></audio>
+                            <div class="admin-score-grid">
+                                <div class="score-box"><label>Текст</label><input type="number" id="t1-${idx}" value="${item[5]||0}"></div>
+                                <div class="score-box"><label>Флоу</label><input type="number" id="t2-${idx}" value="${item[6]||0}"></div>
+                                <div class="score-box"><label>Подача</label><input type="number" id="t3-${idx}" value="${item[7]||0}"></div>
+                                <div class="score-box"><label>Вайб</label><input type="number" id="t4-${idx}" value="${item[8]||0}"></div>
                             </div>
-                            <button class="btn-main" style="padding:10px; font-size:12px;" onclick="vote(${idx+2}, ${idx})">ЗБЕРЕГТИ</button>
-                        </div>
-                    `).join('');
+                            <button class="btn-main" style="padding:10px; margin-top:10px;" onclick="vote(${idx+2}, ${idx})">ЗБЕРЕГТИ</button>
+                        </div>`;
+                    }).join('');
                 }
-            } catch(e) {}
+            } catch(e) { console.log(e); }
         }
 
         async function login() {
@@ -155,7 +160,6 @@
                 user = j[2];
                 document.getElementById('admin-login').style.display = 'none';
                 document.getElementById('admin-work').style.display = 'block';
-                document.getElementById('hello-j').innerText = "Суддя: " + user;
                 load();
             } else alert("Помилка!");
         }
@@ -169,22 +173,8 @@
                 vibe: document.getElementById(`t4-${i}`).value
             };
             await fetch(API, { method: 'POST', body: JSON.stringify(p) });
-            alert("Оцінено!"); load();
+            alert("Збережено!"); load();
         }
-
-        document.getElementById('reg-form').onsubmit = async (e) => {
-            e.preventDefault();
-            const b = document.getElementById('r-btn');
-            b.disabled = true; b.innerText = "ВІДПРАВКА...";
-            const f = document.getElementById('r-file').files[0];
-            const rd = new FileReader();
-            rd.onload = async () => {
-                const p = { action: "register", name: document.getElementById('r-name').value, city: document.getElementById('r-city').value, fileData: rd.result.split(',')[1], fileName: f.name, mimeType: f.type };
-                await fetch(API, { method: 'POST', body: JSON.stringify(p) });
-                alert("Успішно!"); location.reload();
-            };
-            rd.readAsDataURL(f);
-        };
 
         window.onload = load;
     </script>

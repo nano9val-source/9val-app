@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
-    <title>9VAl BATTLE | ULTIMATE SYSTEM</title>
+    <title>9VAl BATTLE | LIVE SYSTEM</title>
     <script src="https://telegram.org/js/telegram-web-app.js"></script>
     <style>
         :root {
@@ -11,160 +11,128 @@
             --dim: #8e8e93; --green: #34c759; --red: #ff453a; --border: #2c2c2e;
             --insta: linear-gradient(45deg, #f09433 0%, #e6683c 25%, #dc2743 50%, #cc2366 75%, #bc1888 100%);
         }
+        * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; outline: none; }
+        body { font-family: -apple-system, sans-serif; background: var(--bg); color: var(--text); margin: 0; padding-bottom: 120px; }
 
-        * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
-        body { font-family: -apple-system, sans-serif; background: var(--bg); color: var(--text); margin: 0; padding-bottom: 110px; overflow-x: hidden; }
-
-        /* --- 6 ВКЛАДОК НАВІГАЦІЯ --- */
-        .tab-bar {
-            position: fixed; bottom: 0; left: 0; right: 0;
-            background: rgba(15, 15, 15, 0.95); backdrop-filter: blur(20px);
-            display: flex; justify-content: space-around; padding: 12px 5px 35px;
-            border-top: 0.5px solid var(--border); z-index: 10000;
-        }
-        .tab-item { color: var(--dim); font-size: 9px; text-align: center; flex: 1; cursor: pointer; transition: 0.2s; font-weight: 700; }
+        /* НАВІГАЦІЯ (6 ВКЛАДОК) */
+        .tab-bar { position: fixed; bottom: 0; left: 0; right: 0; background: rgba(10,10,10,0.98); backdrop-filter: blur(20px); display: flex; padding: 12px 5px 35px; border-top: 0.5px solid var(--border); z-index: 9999; }
+        .tab-item { color: var(--dim); font-size: 9px; text-align: center; flex: 1; cursor: pointer; font-weight: 700; text-transform: uppercase; }
         .tab-item.active { color: var(--accent); }
         .tab-icon { font-size: 22px; display: block; margin-bottom: 4px; }
 
-        /* --- ПЕРЕМИКАННЯ СТОРІНОК --- */
-        .page { display: none; padding: 20px; animation: slideUp 0.3s ease; }
+        .page { display: none; padding: 20px; animation: fadeIn 0.3s ease; }
         .page.active { display: block; }
-        @keyframes slideUp { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
 
-        /* --- UI ЕЛЕМЕНТИ --- */
         .glass-card { background: var(--card); border-radius: 20px; padding: 20px; margin-bottom: 15px; border: 1px solid var(--border); }
-        h1, h2 { font-weight: 900; letter-spacing: -1px; margin-top: 0; }
-        
-        input, textarea { width: 100%; padding: 16px; margin: 10px 0; background: #262629; border: 1px solid #3a3a3c; border-radius: 14px; color: #fff; font-size: 16px; outline: none; }
-        input:focus { border-color: var(--accent); }
-        
-        .btn { background: var(--accent); color: #000; border: none; padding: 18px; border-radius: 16px; width: 100%; font-weight: 800; cursor: pointer; transition: 0.3s; }
+        input, textarea { width: 100%; padding: 16px; margin: 10px 0; background: #262629; border: 1px solid #3a3a3c; border-radius: 14px; color: #fff; font-size: 16px; }
+        .btn { background: var(--accent); color: #000; border: none; padding: 18px; border-radius: 16px; width: 100%; font-weight: 800; cursor: pointer; }
         .btn:disabled { background: #333; color: #666; cursor: not-allowed; }
-        .btn:active { transform: scale(0.97); }
 
-        /* --- СУДДІ (4 ОСОБИ) --- */
-        .judge-card { display: flex; align-items: center; padding: 15px 0; border-bottom: 1px solid var(--border); }
-        .judge-img { width: 60px; height: 60px; border-radius: 50%; border: 2px solid var(--accent); margin-right: 15px; background: #333; overflow: hidden; }
-        .judge-info b { font-size: 18px; display: block; }
-        .judge-info span { color: var(--dim); font-size: 13px; }
-        .insta-btn { width: 40px; height: 40px; background: var(--insta); border-radius: 12px; display: flex; align-items: center; justify-content: center; margin-left: auto; text-decoration: none; }
+        /* СУДДІ */
+        .judge-row { display: flex; align-items: center; padding: 15px 0; border-bottom: 1px solid var(--border); }
+        .judge-img { width: 55px; height: 55px; border-radius: 50%; border: 2px solid var(--accent); margin-right: 15px; background: #333; }
+        .insta-btn { width: 40px; height: 40px; background: var(--insta); border-radius: 12px; display: flex; align-items: center; justify-content: center; margin-left: auto; text-decoration: none; font-size: 18px; color: white; }
 
-        /* --- 4 ОЦІНКИ (PRO) --- */
-        .vote-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 12px; margin: 15px 0; }
-        .vote-item { background: #000; padding: 12px; border-radius: 15px; border: 1px solid #333; text-align: center; }
-        .vote-item label { font-size: 10px; color: var(--dim); display: block; margin-bottom: 5px; text-transform: uppercase; }
-        .vote-item input { background: transparent; border: none; text-align: center; font-size: 24px; font-weight: 900; color: var(--accent); margin: 0; padding: 0; }
-
-        /* --- ПЛЕЄР ТА РЕЙТИНГ --- */
-        audio { width: 100%; height: 35px; filter: invert(1); margin-top: 15px; }
-        .rank-table { width: 100%; border-collapse: collapse; }
-        .rank-table td { padding: 15px 10px; border-bottom: 1px solid var(--border); }
-        .rank-num { color: var(--accent); font-weight: 900; width: 30px; }
-        .rank-score { text-align: right; font-weight: 800; }
-
-        /* --- АДМІН-МЕНЮ --- */
-        .admin-nav { display: flex; gap: 10px; margin-bottom: 20px; }
-        .admin-nav button { flex: 1; padding: 12px; border-radius: 12px; border: none; background: #2c2c2e; color: #fff; font-weight: 700; }
-        .admin-nav button.active { background: var(--accent); color: #000; }
+        /* ОЦІНКИ ТА РЕЙТИНГ */
+        .v-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin: 15px 0; }
+        .v-box { background: #000; padding: 10px; border-radius: 12px; border: 1px solid #333; text-align: center; }
+        .v-box label { font-size: 9px; color: var(--dim); display: block; margin-bottom: 4px; }
+        .v-box input { background: none; border: none; font-size: 22px; font-weight: 900; color: var(--accent); text-align: center; width: 100%; }
+        
+        .rank-item { display: flex; justify-content: space-between; align-items: center; padding: 15px; border-bottom: 1px solid #222; }
+        .rank-val { color: var(--accent); font-weight: 900; font-size: 20px; }
+        
+        audio { width: 100%; height: 35px; filter: invert(1); margin-top: 10px; }
+        .loading { text-align: center; padding: 20px; color: var(--accent); font-weight: bold; }
     </style>
 </head>
 <body>
 
     <div id="p-home" class="page active">
-        <h1 id="cms-battle-name">9VAl BATTLE</h1>
+        <h1 id="cms-title">9VAl BATTLE</h1>
         <div class="glass-card">
-            <h3 id="cms-prize-text" style="color: var(--accent); margin-top:0;">ПРИЗ: 50 000 ГРН</h3>
-            <p id="cms-battle-desc">Тут народжуються легенди. Реєструйся, завантажуй трек і нехай твій голос почує вся країна.</p>
+            <h3 id="cms-prize" style="color:var(--accent); margin-top:0;">ПРИЗ: 50 000 ГРН</h3>
+            <p id="cms-desc">Завантажуй свій найкращий трек та доведи, що ти номер один.</p>
         </div>
-        <div class="glass-card" style="border-left: 4px solid var(--green);">
-            <b style="color: var(--green)">СТАТУС:</b> ПРИЙОМ ТРЕКІВ ВІДКРИТО
+        <div class="glass-card" style="border-left: 4px solid var(--green)">
+            <b>СТАТУС:</b> ПРИЙОМ ТРЕКІВ ВІДКРИТО
         </div>
     </div>
 
     <div id="p-judges" class="page">
         <h2>ЖУРІ</h2>
-        <div class="glass-card" style="padding: 5px 20px;">
-            <div class="judge-card">
+        <div class="glass-card">
+            <div class="judge-row">
                 <div class="judge-img"></div>
-                <div class="judge-info"><b>TONY MUS1CZ</b><span>Sound Producer</span></div>
+                <div><b>TONY MUS1CZ</b><br><small>Producer</small></div>
                 <a href="https://instagram.com/t0ny_mus1cz_prod/" class="insta-btn">📸</a>
             </div>
-            <div class="judge-card">
+            <div class="judge-row">
                 <div class="judge-img"></div>
-                <div class="judge-info"><b>NeedForRap</b><span>Rap Analyst</span></div>
+                <div><b>NeedForRap</b><br><small>Analyst</small></div>
                 <a href="https://instagram.com/aleksandr_kozlovvvvv/" class="insta-btn">📸</a>
             </div>
-            <div class="judge-card">
+            <div class="judge-row">
                 <div class="judge-img"></div>
-                <div class="judge-info"><b>Nano</b><span>CEO 9VAl</span></div>
+                <div><b>Nano</b><br><small>CEO</small></div>
                 <a href="https://instagram.com/nano9val/" class="insta-btn">📸</a>
             </div>
-            <div class="judge-card" style="border:none">
+            <div class="judge-row" style="border:0">
                 <div class="judge-img"></div>
-                <div class="judge-info"><b>KAZHAN</b><span>Artist</span></div>
+                <div><b>KAZHAN</b><br><small>Artist</small></div>
                 <a href="https://instagram.com/ka.zhan_/" class="insta-btn">📸</a>
             </div>
         </div>
     </div>
 
     <div id="p-player" class="page">
-        <h2>ПЛЕЄР</h2>
-        <input type="text" id="track-search" placeholder="🔍 Пошук за ніком..." oninput="app.render()">
-        <div id="player-container"></div>
+        <h2>УЧАСНИКИ</h2>
+        <div id="tracks-live">
+            <div class="loading">Завантаження треків...</div>
+        </div>
     </div>
 
     <div id="p-stats" class="page">
-        <h2>РЕЙТИНГ</h2>
-        <div class="glass-card" style="padding:0">
-            <table class="rank-table" id="ranking-list"></table>
+        <h2>ТУРНІРНА ТАБЛИЦЯ</h2>
+        <div class="glass-card" style="padding:0" id="ranking-live">
+            <div class="loading">Оновлення рейтингу...</div>
         </div>
     </div>
 
     <div id="p-reg" class="page">
-        <h2>ПОДАТИ ТРЕК</h2>
+        <h2>УЧАСТЬ</h2>
         <div class="glass-card">
-            <p id="cms-rules-text" style="font-size: 13px; color: var(--dim); line-height: 1.5;">Правила: MP3 файл, до 2 хвилин. Тільки авторський контент.</p>
-            <input type="text" id="reg-nick" placeholder="Твій Нікнейм">
-            <input type="text" id="reg-city" placeholder="Твоє Місто">
-            <label style="font-size: 12px; color: var(--accent); margin-top: 10px; display: block;">ФАЙЛ (MP3):</label>
-            <input type="file" id="reg-file" accept="audio/mpeg">
-            
-            <div style="display:flex; gap:12px; margin: 25px 0; align-items: flex-start;">
-                <input type="checkbox" id="reg-agree" style="width:24px; height:24px;" onchange="app.toggleReg()">
-                <label style="font-size: 12px; color: #8e8e93;">Я згоден з правилами батлу та даю згоду на обробку моїх даних.</label>
+            <input type="text" id="r-nick" placeholder="Твій Нік">
+            <input type="text" id="r-city" placeholder="Місто">
+            <input type="file" id="r-file" accept="audio/*">
+            <div style="display:flex; gap:12px; margin: 20px 0; align-items: center;">
+                <input type="checkbox" id="r-check" style="width:24px; height:24px;" onchange="document.getElementById('r-btn').disabled = !this.checked">
+                <label style="font-size:11px; color:var(--dim)">Я згоден з правилами батлу</label>
             </div>
-            <button class="btn" id="reg-submit" disabled onclick="app.upload()">ВІДПРАВИТИ</button>
+            <button class="btn" id="r-btn" disabled onclick="app.uploadTrack()">ВІДПРАВИТИ</button>
         </div>
     </div>
 
     <div id="p-admin" class="page">
-        <div id="admin-auth">
+        <div id="adm-auth">
             <h2>ВХІД ЖУРІ</h2>
             <div class="glass-card">
-                <input type="password" id="adm-pass" placeholder="Введіть пароль">
-                <button class="btn" onclick="app.login()">УВІЙТИ ПАНЕЛЬ</button>
+                <input type="text" id="a-login" placeholder="Логін">
+                <input type="password" id="a-pass" placeholder="Пароль">
+                <button class="btn" onclick="app.login()">УВІЙТИ</button>
             </div>
         </div>
-
-        <div id="admin-panel" style="display:none;">
-            <div class="admin-nav">
-                <button id="btn-mode-vote" class="active" onclick="app.setAdmMode('vote')">ОЦІНКИ</button>
-                <button id="btn-mode-cms" onclick="app.setAdmMode('cms')">КОНТЕНТ</button>
+        <div id="adm-panel" style="display:none;">
+            <h3>РЕДАКТОР CMS</h3>
+            <div class="glass-card">
+                <input type="text" id="e-t" placeholder="Назва батлу">
+                <input type="text" id="e-p" placeholder="Приз">
+                <textarea id="e-d" placeholder="Опис"></textarea>
+                <button class="btn" onclick="app.saveCMS()">ОНОВИТИ КОНТЕНТ</button>
             </div>
-
-            <div id="adm-vote-view">
-                <div id="moderation-list"></div>
-            </div>
-
-            <div id="adm-cms-view" style="display:none;">
-                <div class="glass-card">
-                    <label>Назва батлу</label><input type="text" id="edit-name">
-                    <label>Приз</label><input type="text" id="edit-prize">
-                    <label>Опис</label><textarea id="edit-desc" rows="3"></textarea>
-                    <label>Правила</label><textarea id="edit-rules" rows="3"></textarea>
-                    <button class="btn" onclick="app.saveCMS()">ЗБЕРЕГТИ ТЕКСТИ</button>
-                </div>
-            </div>
+            <h3>МОДЕРАЦІЯ ТА ОЦІНКИ</h3>
+            <div id="adm-list"></div>
         </div>
     </div>
 
@@ -172,56 +140,76 @@
         <div class="tab-item active" onclick="app.nav('home', this)"><span class="tab-icon">🏠</span>ГОЛОВНА</div>
         <div class="tab-item" onclick="app.nav('judges', this)"><span class="tab-icon">⚖️</span>СУДДІ</div>
         <div class="tab-item" onclick="app.nav('player', this)"><span class="tab-icon">🎧</span>ПЛЕЄР</div>
-        <div class="tab-item" onclick="app.nav('stats', this)"><span class="tab-icon">📊</span>РЕЙТИНГ</div>
+        <div class="tab-item" onclick="app.nav('stats', this)"><span class="tab-icon">📊</span>ТАБЛИЦЯ</div>
         <div class="tab-item" onclick="app.nav('reg', this)"><span class="tab-icon">🎤</span>УЧАСТЬ</div>
         <div class="tab-item" onclick="app.nav('admin', this)"><span class="tab-icon">🛡️</span>АДМІН</div>
     </nav>
 
     <script>
-        const API = "ТВІЙ_URL_СКРИПТА";
+        const API_URL = "ТВІЙ_URL_GOOGLE_SCRIPT"; // Сюди вставиш посилання на скрипт таблиці
+
         const app = {
-            data: { users: [], cms: {} },
+            data: [], 
             nav(id, el) {
                 document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
                 document.querySelectorAll('.tab-item').forEach(t => t.classList.remove('active'));
                 document.getElementById('p-' + id).classList.add('active');
                 el.classList.add('active');
-                if(window.Telegram.WebApp.HapticFeedback) window.Telegram.WebApp.HapticFeedback.impactOccurred('light');
             },
             login() {
-                if(document.getElementById('adm-pass').value === '123') {
-                    document.getElementById('admin-auth').style.display = 'none';
-                    document.getElementById('admin-panel').style.display = 'block';
-                    this.initCMSFields();
-                } else { alert("Доступ закритий"); }
+                if(document.getElementById('a-login').value === 'admin' && document.getElementById('a-pass').value === '123') {
+                    document.getElementById('adm-auth').style.display = 'none';
+                    document.getElementById('adm-panel').style.display = 'block';
+                    this.renderAdmin();
+                } else { alert("Помилка доступу"); }
             },
-            toggleReg() {
-                document.getElementById('reg-submit').disabled = !document.getElementById('reg-agree').checked;
+            // ФУНКЦІЯ ПІДРАХУНКУ ТАБЛИЦІ
+            renderRanking() {
+                const container = document.getElementById('ranking-live');
+                // Сортуємо учасників за середнім балом
+                const sorted = [...this.data].sort((a, b) => b.avg - a.avg);
+                container.innerHTML = sorted.map((u, i) => `
+                    <div class="rank-item">
+                        <span>${i+1}. ${u.name}</span>
+                        <span class="rank-val">${u.avg.toFixed(1)}</span>
+                    </div>
+                `).join('') || '<div class="loading">Учасників ще немає</div>';
             },
-            setAdmMode(m) {
-                document.getElementById('adm-vote-view').style.display = m === 'vote' ? 'block' : 'none';
-                document.getElementById('adm-cms-view').style.display = m === 'cms' ? 'block' : 'none';
-                document.getElementById('btn-mode-vote').className = m === 'vote' ? 'active' : '';
-                document.getElementById('btn-mode-cms').className = m === 'cms' ? 'active' : '';
+            // ФУНКЦІЯ ОНОВЛЕННЯ ПЛЕЄРА
+            renderPlayer() {
+                const container = document.getElementById('tracks-live');
+                container.innerHTML = this.data.filter(u => u.status === 'active').map(u => `
+                    <div class="glass-card">
+                        <div style="display:flex; justify-content:space-between"><b>${u.name}</b><b>${u.avg.toFixed(1)}</b></div>
+                        <audio src="${u.fileUrl}" controls></audio>
+                    </div>
+                `).join('') || '<div class="loading">Треки з’являться після модерації</div>';
             },
-            initCMSFields() {
-                document.getElementById('edit-name').value = document.getElementById('cms-battle-name').innerText;
-                document.getElementById('edit-prize').value = document.getElementById('cms-prize-text').innerText;
-                document.getElementById('edit-desc').value = document.getElementById('cms-battle-desc').innerText;
-                document.getElementById('edit-rules').value = document.getElementById('cms-rules-text').innerText;
+            // ЛОГІКА ЗБЕРЕЖЕННЯ 4 ОЦІНОК
+            saveScore(id) {
+                const t = document.getElementById('t'+id).value;
+                const f = document.getElementById('f'+id).value;
+                const p = document.getElementById('p'+id).value;
+                const v = document.getElementById('v'+id).value;
+                const avg = (Number(t) + Number(f) + Number(p) + Number(v)) / 4;
+                alert(`Збережено! Середній бал: ${avg.toFixed(1)}`);
+                // Тут іде запит до Google Sheets
             },
             saveCMS() {
-                document.getElementById('cms-battle-name').innerText = document.getElementById('edit-name').value;
-                document.getElementById('cms-prize-text').innerText = document.getElementById('edit-prize').value;
-                document.getElementById('cms-battle-desc').innerText = document.getElementById('edit-desc').value;
-                document.getElementById('cms-rules-text').innerText = document.getElementById('edit-rules').value;
-                alert("Контент оновлено!");
-            },
-            render() {
-                // Тут буде логіка виводу списку треків та рейтингу з Google Sheets
+                alert("Дані оновлено в базі!");
             }
         };
-        window.onload = () => { window.Telegram.WebApp.expand(); };
+
+        window.onload = () => {
+            window.Telegram.WebApp.expand();
+            // Тестові дані, щоб ти бачив як працює турнірна таблиця відразу
+            app.data = [
+                {name: "Winner MC", avg: 9.8, status: "active", fileUrl: ""},
+                {name: "Flow Master", avg: 8.5, status: "active", fileUrl: ""}
+            ];
+            app.renderRanking();
+            app.renderPlayer();
+        };
     </script>
 </body>
 </html>

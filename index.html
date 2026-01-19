@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>9VAl BATTLE | FINAL PRO</title>
+    <title>9VAl BATTLE | FULL APP</title>
     <script src="https://telegram.org/js/telegram-web-app.js"></script>
     <style>
         :root {
@@ -11,50 +11,159 @@
             --dim: #8e8e93; --green: #34c759;
             --insta: linear-gradient(45deg, #f09433 0%, #e6683c 25%, #dc2743 50%, #cc2366 75%, #bc1888 100%);
         }
-        body { font-family: -apple-system, sans-serif; background: var(--bg); color: var(--text); margin: 0; padding-bottom: 110px; overflow-x: hidden; }
-
-        /* TAB BAR - ВСІ 6 ВКЛАДОК */
+        body { font-family: -apple-system, sans-serif; background: var(--bg); color: var(--text); margin: 0; padding-bottom: 100px; }
+        
+        /* НАВІГАЦІЯ */
         .tab-bar {
             position: fixed; bottom: 0; left: 0; right: 0;
-            background: rgba(10, 10, 10, 0.98); backdrop-filter: blur(20px);
-            display: flex; overflow-x: auto; padding: 12px 5px 30px;
-            border-top: 0.5px solid #333; z-index: 1000;
+            background: rgba(10, 10, 10, 0.98); backdrop-filter: blur(15px);
+            display: flex; justify-content: space-around; padding: 10px 0 25px;
+            border-top: 0.5px solid #333; z-index: 9999;
         }
-        .tab-item { color: var(--dim); font-size: 9px; text-align: center; min-width: 65px; flex: 1; font-weight: 700; cursor: pointer; }
+        .tab-item { color: var(--dim); font-size: 10px; text-align: center; flex: 1; cursor: pointer; text-decoration: none; }
         .tab-item.active { color: var(--accent); }
-        .tab-icon { font-size: 20px; margin-bottom: 4px; display: block; }
+        .tab-icon { font-size: 20px; display: block; margin-bottom: 2px; }
 
         .page { display: none; padding: 20px; animation: fadeIn 0.3s ease; }
         .page.active { display: block; }
         @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
 
-        .glass-card { background: var(--card); border-radius: 20px; padding: 18px; margin-bottom: 15px; border: 1px solid #2c2c2e; position: relative; }
+        .glass-card { background: var(--card); border-radius: 18px; padding: 20px; margin-bottom: 15px; border: 1px solid #2c2c2e; }
         
-        /* СУДДІ */
-        .judge-row { display: flex; align-items: center; padding: 12px 0; border-bottom: 1px solid #2c2c2e; }
-        .judge-img { width: 60px; height: 60px; border-radius: 50%; border: 2px solid var(--accent); margin-right: 15px; object-fit: cover; }
-        .insta-btn { width: 34px; height: 34px; background: var(--insta); border-radius: 10px; display: flex; align-items: center; justify-content: center; margin-left: auto; }
+        input, textarea { width: 100%; padding: 14px; margin: 8px 0; background: #222; border: 1px solid #333; border-radius: 12px; color: #fff; box-sizing: border-box; }
+        .btn { background: var(--accent); color: #000; border: none; padding: 16px; border-radius: 14px; width: 100%; font-weight: 800; cursor: pointer; }
+        .btn:disabled { opacity: 0.3; }
 
-        /* ФОРМИ ТА КНОПКИ */
-        input { width: 100%; padding: 15px; margin: 8px 0; background: #222; border: 1px solid #333; border-radius: 12px; color: #fff; box-sizing: border-box; }
-        .btn { background: var(--accent); color: #000; border: none; padding: 16px; border-radius: 15px; width: 100%; font-weight: 800; cursor: pointer; }
-        .btn:disabled { opacity: 0.3; pointer-events: none; }
-        
-        /* ПЛЕЄР */
-        audio { width: 100%; height: 35px; filter: invert(1); margin-top: 12px; }
-        .score-tag { position: absolute; top: 18px; right: 18px; background: var(--accent); color: #000; padding: 2px 8px; border-radius: 6px; font-weight: 900; }
+        .judge-item { display: flex; align-items: center; padding: 10px 0; border-bottom: 1px solid #222; }
+        .judge-img { width: 50px; height: 50px; border-radius: 50%; margin-right: 15px; background: #333; }
+        .insta-link { background: var(--insta); color: white; padding: 5px 10px; border-radius: 8px; font-size: 12px; text-decoration: none; margin-left: auto; }
 
-        /* АДМІНКА: 4 ОЦІНКИ */
-        .vote-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin: 15px 0; }
-        .vote-box { background: #111; padding: 8px; border-radius: 10px; border: 1px solid #333; text-align: center; }
-        .vote-box label { font-size: 9px; color: var(--dim); display: block; }
-        .vote-box input { background: none; border: none; font-size: 20px; font-weight: 900; color: var(--accent); text-align: center; margin: 0; padding: 0; }
+        .vote-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-top: 15px; }
+        .vote-input { text-align: center; font-size: 18px; font-weight: bold; color: var(--accent); }
     </style>
 </head>
 <body>
 
     <div id="p-home" class="page active">
-        <h1>9VAl BATTLE</h1>
+        <h1 id="txt-title">9VAl BATTLE</h1>
         <div class="glass-card">
-            <h3 style="color:var(--accent); margin-top:0;">ПРИЗ: 50 000 ГРН</h3>
-            <p>Офіційний додаток для реєстрації та голосування. Слідкуй за рейтингом у
+            <h3 id="txt-prize" style="color:var(--accent); margin-top:0;">ПРИЗ: 50 000 ГРН</h3>
+            <p id="txt-desc">Офіційний додаток для реєстрації та голосування. Слідкуй за рейтингом у реальному часі.</p>
+        </div>
+    </div>
+
+    <div id="p-judges" class="page">
+        <h2>СУДДІ</h2>
+        <div class="glass-card">
+            <div class="judge-item">
+                <div class="judge-img"></div>
+                <div><b>TONY MUS1CZ</b></div>
+                <a href="https://instagram.com/t0ny_mus1cz_prod/" class="insta-link">INSTA</a>
+            </div>
+            <div class="judge-item">
+                <div class="judge-img"></div>
+                <div><b>NeedForRap</b></div>
+                <a href="https://instagram.com/aleksandr_kozlovvvvv/" class="insta-link">INSTA</a>
+            </div>
+            <div class="judge-item">
+                <div class="judge-img"></div>
+                <div><b>Nano</b></div>
+                <a href="https://instagram.com/nano9val/" class="insta-link">INSTA</a>
+            </div>
+            <div class="judge-item">
+                <div class="judge-img"></div>
+                <div><b>KAZHAN</b></div>
+                <a href="https://instagram.com/ka.zhan_/" class="insta-link">INSTA</a>
+            </div>
+        </div>
+    </div>
+
+    <div id="p-player" class="page">
+        <h2>ПЛЕЄР</h2>
+        <input type="text" placeholder="Пошук за ніком...">
+        <div id="track-list">Вантажимо треки...</div>
+    </div>
+
+    <div id="p-stats" class="page">
+        <h2>РЕЙТИНГ</h2>
+        <div class="glass-card">
+            <table style="width:100%" id="rank-table">
+                <tr><td>#1</td><td>Учасник</td><td align="right">0.0</td></tr>
+            </table>
+        </div>
+    </div>
+
+    <div id="p-reg" class="page">
+        <h2>ПОДАТИ ТРЕК</h2>
+        <div class="glass-card">
+            <p id="txt-rules" style="font-size:12px; color:var(--dim)">Завантажте свій MP3 файл (до 2 хв).</p>
+            <input type="text" id="reg-name" placeholder="Твій нік">
+            <input type="file" accept="audio/*">
+            <div style="display:flex; align-items:flex-start; gap:10px; margin:15px 0;">
+                <input type="checkbox" id="reg-check" style="width:20px; height:20px;" onchange="document.getElementById('reg-btn').disabled = !this.checked">
+                <label style="font-size:11px; color:var(--dim)">Я згоден з правилами батлу та модерацією мого треку.</label>
+            </div>
+            <button class="btn" id="reg-btn" disabled>ВІДПРАВИТИ ТРЕК</button>
+        </div>
+    </div>
+
+    <div id="p-admin" class="page">
+        <div id="admin-auth">
+            <h2>ВХІД СУДДІ</h2>
+            <input type="password" id="adm-pass" placeholder="Пароль">
+            <button class="btn" onclick="app.login()">УВІЙТИ</button>
+        </div>
+        <div id="admin-panel" style="display:none;">
+            <h3>РЕДАГУВАННЯ ОПИСУ</h3>
+            <textarea id="edit-desc" placeholder="Опис на головній"></textarea>
+            <button class="btn" onclick="app.saveContent()" style="margin-bottom:20px;">ОНОВИТИ ТЕКСТИ</button>
+            
+            <h3>ОЦІНЮВАННЯ</h3>
+            <div class="glass-card">
+                <b>Учасник: Sample</b>
+                <div class="vote-grid">
+                    <div><small>Текст</small><input type="number" class="vote-input" value="0"></div>
+                    <div><small>Флоу</small><input type="number" class="vote-input" value="0"></div>
+                    <div><small>Подача</small><input type="number" class="vote-input" value="0"></div>
+                    <div><small>Вайб</small><input type="number" class="vote-input" value="0"></div>
+                </div>
+                <button class="btn" style="margin-top:10px; background:var(--green); color:#fff">ЗБЕРЕГТИ БАЛИ</button>
+            </div>
+        </div>
+    </div>
+
+    <nav class="tab-bar">
+        <div class="tab-item active" onclick="app.nav('home', this)"><span class="tab-icon">🏠</span>ГОЛОВНА</div>
+        <div class="tab-item" onclick="app.nav('judges', this)"><span class="tab-icon">⚖️</span>СУДДІ</div>
+        <div class="tab-item" onclick="app.nav('player', this)"><span class="tab-icon">🎧</span>ПЛЕЄР</div>
+        <div class="tab-item" onclick="app.nav('stats', this)"><span class="tab-icon">📊</span>РЕЙТИНГ</div>
+        <div class="tab-item" onclick="app.nav('reg', this)"><span class="tab-icon">🎤</span>УЧАСТЬ</div>
+        <div class="tab-item" onclick="app.nav('admin', this)"><span class="tab-icon">🛡️</span>АДМІН</div>
+    </nav>
+
+    <script>
+        const app = {
+            nav(id, el) {
+                document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+                document.querySelectorAll('.tab-item').forEach(t => t.classList.remove('active'));
+                document.getElementById('p-' + id).classList.add('active');
+                el.classList.add('active');
+            },
+            login() {
+                if(document.getElementById('adm-pass').value === '123') {
+                    document.getElementById('admin-auth').style.display = 'none';
+                    document.getElementById('admin-panel').style.display = 'block';
+                }
+            },
+            saveContent() {
+                const newDesc = document.getElementById('edit-desc').value;
+                if(newDesc) {
+                    document.getElementById('txt-desc').innerText = newDesc;
+                    alert("Текст оновлено!");
+                }
+            }
+        };
+        window.onload = () => window.Telegram.WebApp.expand();
+    </script>
+</body>
+</html>

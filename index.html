@@ -3,122 +3,185 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>9VAL BATTLE</title>
+    <title>9VAL BATTLE ARENA</title>
     <script src="https://telegram.org/js/telegram-web-app.js"></script>
     <style>
-        body { font-family: sans-serif; background: #0a0a0a; color: #fff; margin: 0; padding-bottom: 80px; }
-        .card { background: #151515; border-radius: 12px; padding: 15px; margin: 15px; border-left: 4px solid #f39c12; }
-        .btn { width: 100%; padding: 15px; background: #f39c12; border: none; border-radius: 8px; font-weight: bold; cursor: pointer; }
-        input { width: 90%; padding: 12px; margin: 10px 0; background: #222; border: 1px solid #333; color: #fff; border-radius: 8px; }
-        .bottom-nav { position: fixed; bottom: 0; width: 100%; background: #111; display: flex; padding: 10px 0; border-top: 1px solid #333; }
-        .nav-item { flex: 1; text-align: center; color: #888; font-size: 12px; }
+        body { font-family: 'Segoe UI', sans-serif; background: #0a0a0a; color: #fff; margin: 0; padding-bottom: 80px; overflow-x: hidden; }
+        .hero { background: linear-gradient(rgba(0,0,0,0.8), rgba(0,0,0,0.8)), url('https://images.unsplash.com/photo-1516280440614-37939bbacd81?q=80&w=1000&auto=format&fit=crop'); background-size: cover; padding: 40px 20px; text-align: center; border-bottom: 2px solid #f39c12; }
+        .card { background: #151515; border-radius: 15px; padding: 20px; margin: 15px; border: 1px solid #222; border-left: 5px solid #f39c12; }
+        .btn { width: 100%; padding: 16px; background: #f39c12; color: #000; border: none; border-radius: 10px; font-weight: bold; cursor: pointer; font-size: 16px; transition: 0.2s; }
+        .btn:disabled { background: #444; color: #777; cursor: not-allowed; }
+        input { width: 92%; padding: 12px; margin: 8px 0; background: #222; border: 1px solid #333; color: #fff; border-radius: 8px; }
+        .bottom-nav { position: fixed; bottom: 0; width: 100%; background: #111; display: flex; padding: 12px 0; border-top: 1px solid #333; z-index: 1000; }
+        .nav-item { flex: 1; text-align: center; color: #888; font-size: 11px; cursor: pointer; }
         .nav-item.active { color: #f39c12; }
-        .judge-row { display: flex; justify-content: space-between; align-items: center; padding: 10px 0; border-bottom: 1px solid #222; }
-        .soc-btn { color: #f39c12; text-decoration: none; border: 1px solid #f39c12; padding: 3px 7px; border-radius: 4px; font-size: 11px; }
+        .judge-row { display: flex; align-items: center; justify-content: space-between; padding: 10px 0; border-bottom: 1px solid #222; }
+        .soc-link { color: #f39c12; text-decoration: none; font-size: 11px; border: 1px solid #f39c12; padding: 4px 8px; border-radius: 5px; font-weight: bold; }
+        .score-input { width: 50px !important; margin: 0 !important; text-align: center; padding: 8px !important; font-size: 12px; }
         .hidden { display: none; }
+        h3 { margin-top: 0; color: #f39c12; }
     </style>
 </head>
 <body>
 
     <div id="tab-home">
-        <div style="padding: 20px; text-align: center; background: #111;">
-            <h1 style="color:#f39c12; margin:0;">9VAL BATTLE</h1>
-            <p style="font-size:12px; color:#666;">SEASON 1 | QUALIFICATION</p>
+        <div class="hero"><h1>9VAL BATTLE</h1><p>QUALIFICATION ROUND</p></div>
+        <div class="card">
+            <h3>ПРО БАТТЛ</h3>
+            <p style="font-size: 14px; color:#ccc;">Покажи свій максимум. Відбірковий турнір відкритий для кожного.</p>
+            <p style="font-size: 13px; color:#f39c12;">✓ Трек до 13 МБ <br>✓ Формат MP3/WAV <br>✓ Авторський текст</p>
+            <label style="display:flex; gap:10px; font-size:13px; margin: 20px 0; color:#ccc;">
+                <input type="checkbox" id="agree" style="width:auto;" onchange="document.getElementById('toRegBtn').disabled = !this.checked"> Я прочитав правила та згоден з ними
+            </label>
+            <button class="btn" id="toRegBtn" disabled onclick="showTab('reg')">ПРИЙНЯТИ УЧАСТЬ</button>
         </div>
         <div class="card">
             <h3>СУДДІВСЬКИЙ СКЛАД</h3>
             <div id="judges-list">Завантаження суддів...</div>
-        </div>
-        <div class="card">
-            <h3>ПРАВИЛА</h3>
-            <p style="font-size: 13px; color:#ccc;">1. Трек до 13 МБ.<br>2. Формат MP3/WAV.<br>3. Тільки авторський текст.</p>
-            <button class="btn" onclick="showTab('reg')">ПОДАТИ ЗАЯВКУ</button>
+            <p onclick="showTab('admin')" style="text-align:center; font-size:10px; color:#333; margin-top:15px; cursor:pointer;">Вхід для персоналу</p>
         </div>
     </div>
 
     <div id="tab-reg" class="hidden">
         <div class="card">
-            <h2>РЕЄСТРАЦІЯ</h2>
+            <h3>РЕЄСТРАЦІЯ</h3>
             <input type="text" id="name" placeholder="Твій Нікнейм">
             <input type="text" id="city" placeholder="Твоє Місто">
+            <p style="font-size: 12px; color:#888; margin-top:10px;">ОБЕРИ ФАЙЛ ТРЕКУ:</p>
             <input type="file" id="trackFile">
-            <button class="btn" id="sendBtn" onclick="upload()">ВІДПРАВИТИ</button>
+            <button class="btn" id="sendBtn" style="margin-top:15px;" onclick="upload()">ВІДПРАВИТИ ТРЕК</button>
         </div>
     </div>
 
     <div id="tab-list" class="hidden">
         <div class="card">
-            <h2>УЧАСНИКИ</h2>
-            <div id="users-list">Тут будуть тільки схвалені артисти.</div>
+            <h3>УЧАСНИКИ В ГРІ</h3>
+            <div id="users-list">Тут будуть ті, хто пройшов відбір.</div>
+        </div>
+    </div>
+
+    <div id="tab-admin" class="hidden">
+        <div class="card" id="judge-login-form">
+            <h3>ВХІД ДЛЯ СУДДІ</h3>
+            <input type="text" id="j-user" placeholder="Логін">
+            <input type="password" id="j-pass" placeholder="Пароль">
+            <button class="btn" onclick="loginJudge()">УВІЙТИ</button>
+        </div>
+        <div id="judge-dashboard" class="hidden" style="padding:10px;">
+            <h3 id="j-welcome">Панель оцінювання</h3>
+            <div id="contestants-to-score"></div>
         </div>
     </div>
 
     <div class="bottom-nav">
-        <div class="nav-item active" id="n-home" onclick="showTab('home')">🏠 Головна</div>
-        <div class="nav-item" id="n-reg" onclick="showTab('reg')">🎤 Участь</div>
-        <div class="nav-item" id="n-list" onclick="showTab('list')">🏆 Гравці</div>
+        <div class="nav-item active" id="n-home" onclick="showTab('home')">🏠<br>Головна</div>
+        <div class="nav-item" id="n-reg" onclick="showTab('reg')">🎤<br>Участь</div>
+        <div class="nav-item" id="n-list" onclick="showTab('list')">🏆<br>Гравці</div>
     </div>
 
     <script>
         const tg = window.Telegram.WebApp;
-        // ВСТАВ СВОЄ ПОСИЛАННЯ /EXEC НИЖЧЕ
-        const URL = "ТУТ_ТВОЄ_НОВЕ_ПОСИЛАННЯ_EXEC";
+        tg.expand();
+        
+        const URL = "https://script.google.com/macros/s/AKfycbxSMlRDVtv19n-VeY7rXa4hgWrfiS9Xs0ksj35SF09r2pRsQuGf_wOZHrdSISpJs9Zi/exec";
+        let activeJudgeNick = "";
 
         function showTab(t) {
-            ['home', 'reg', 'list'].forEach(s => document.getElementById('tab-'+s).classList.add('hidden'));
-            ['home', 'reg', 'list'].forEach(n => document.getElementById('n-'+n).classList.remove('active'));
+            ['home', 'reg', 'list', 'admin'].forEach(s => document.getElementById('tab-'+s).classList.add('hidden'));
+            ['home', 'reg', 'list'].forEach(n => document.getElementById('n-'+n)?.classList.remove('active'));
             document.getElementById('tab-'+t).classList.remove('hidden');
-            document.getElementById('n-'+t).classList.add('active');
+            if(document.getElementById('n-'+t)) document.getElementById('n-'+t).classList.add('active');
             if(t === 'home' || t === 'list') loadData();
+            window.scrollTo(0,0);
         }
 
         async function loadData() {
-            const res = await fetch(URL + "?action=getData");
-            const data = await res.json();
-            
-            // Завантаження Суддів
-            const jList = document.getElementById('judges-list');
-            jList.innerHTML = "";
-            data.judges.forEach(j => {
-                jList.innerHTML += `<div class="judge-row"><span>${j[2]}</span><a href="${j[3]}" class="soc-btn">СОЦМЕРЕЖІ</a></div>`;
-            });
+            try {
+                const res = await fetch(URL + "?action=getData");
+                const data = await res.json();
+                
+                const jList = document.getElementById('judges-list');
+                jList.innerHTML = "";
+                data.judges.forEach(j => {
+                    jList.innerHTML += `<div class="judge-row"><span><b>${j[2]}</b></span><a href="${j[3]}" class="soc-link" target="_blank">СОЦМЕРЕЖІ</a></div>`;
+                });
 
-            // Завантаження Учасників
-            const uList = document.getElementById('users-list');
-            uList.innerHTML = "";
-            data.users.slice(1).forEach(u => {
-                uList.innerHTML += `<div style="padding:10px; border-bottom:1px solid #222;"><b>${u[1]}</b><br><a href="${u[3]}" target="_blank" style="color:#f39c12; font-size:12px;">🎧 Слухати</a></div>`;
-            });
+                const uList = document.getElementById('users-list');
+                uList.innerHTML = "";
+                const approved = data.users.slice(1);
+                if(approved.length > 0) {
+                    approved.forEach(u => {
+                        uList.innerHTML += `<div style="padding:12px 0; border-bottom:1px solid #222;"><b>${u[1]}</b> <small style="color:#666">(${u[2]})</small><br><a href="${u[3]}" target="_blank" style="color:#f39c12; font-size:12px;">🎧 Слухати трек</a></div>`;
+                    });
+                } else { uList.innerHTML = "Поки що немає схвалених заявок."; }
+                return data;
+            } catch(e) { console.log("Помилка даних"); }
         }
 
         async function upload() {
             const name = document.getElementById('name').value;
             const file = document.getElementById('trackFile').files[0];
-            if(!name || !file) return alert("Заповни все!");
-            if(file.size > 13*1024*1024) return alert("Макс 13 МБ!");
-
+            if(!name || !file) return alert("Заповни нік та обери трек!");
+            
             const btn = document.getElementById('sendBtn');
-            btn.innerText = "ЗАВАНТАЖЕННЯ...";
-            btn.disabled = true;
+            btn.innerText = "ЗАВАНТАЖУЄМО..."; btn.disabled = true;
 
             const reader = new FileReader();
             reader.onload = async function() {
-                const payload = {
-                    action: 'register',
-                    id: tg.initDataUnsafe?.user?.id || "USER",
-                    name: name,
-                    city: document.getElementById('city').value,
-                    fileName: file.name,
-                    fileData: reader.result
+                const payload = { 
+                    action: 'register', 
+                    id: tg.initDataUnsafe?.user?.id || "USER", 
+                    name: name, 
+                    city: document.getElementById('city').value, 
+                    fileName: file.name, 
+                    fileData: reader.result 
                 };
                 await fetch(URL, { method: 'POST', mode: 'no-cors', body: JSON.stringify(payload) });
-                alert("Успішно! Чекай на сповіщення в бот.");
+                alert("Успішно! Чекай на рішення адміна.");
                 showTab('home');
             };
             reader.readAsDataURL(file);
         }
-        
-        loadData(); // Початкове завантаження
+
+        async function loginJudge() {
+            const user = document.getElementById('j-user').value;
+            const pass = document.getElementById('j-pass').value;
+            const data = await loadData();
+            const judge = data.judges.find(j => j[0] == user && j[1] == pass);
+            
+            if(judge) {
+                activeJudgeNick = judge[2];
+                document.getElementById('j-welcome').innerText = "Вітаємо, " + activeJudgeNick;
+                document.getElementById('judge-login-form').classList.add('hidden');
+                document.getElementById('judge-dashboard').classList.remove('hidden');
+                
+                const cList = document.getElementById('contestants-to-score');
+                cList.innerHTML = "";
+                data.allUsers.slice(1).forEach((u, i) => {
+                    cList.innerHTML += `
+                        <div class="card" style="border-left: 3px solid #666;">
+                            <b>${u[1]}</b> <a href="${u[3]}" target="_blank" style="text-decoration:none;">🎧</a>
+                            <div style="display:flex; gap:10px; margin-top:10px; align-items:center;">
+                                <input type="number" id="t-${i}" class="score-input" placeholder="Тех">
+                                <input type="number" id="l-${i}" class="score-input" placeholder="Текст">
+                                <button onclick="saveScore('${u[1]}', ${i})" style="background:#f39c12; border:none; padding:8px 12px; border-radius:5px;">✅</button>
+                            </div>
+                        </div>`;
+                });
+            } else { alert("Невірний логін!"); }
+        }
+
+        async function saveScore(artist, idx) {
+            const t = document.getElementById('t-'+idx).value;
+            const l = document.getElementById('l-'+idx).value;
+            if(!t || !l) return alert("Постав бали!");
+            
+            const payload = { action: 'setScore', judge: activeJudgeNick, artist: artist, t: t, l: l, i: 0 };
+            await fetch(URL, { method: 'POST', mode: 'no-cors', body: JSON.stringify(payload) });
+            alert("Оцінку для " + artist + " збережено!");
+        }
+
+        loadData();
     </script>
 </body>
 </html>

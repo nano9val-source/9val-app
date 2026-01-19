@@ -1,170 +1,188 @@
 <!DOCTYPE html>
 <html lang="uk">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
-    <title>9VAl BATTLE | PRO SYSTEM</title>
-    <script src="https://telegram.org/js/telegram-web-app.js"></script>
-    <style>
-        :root {
-            --accent: #ff9f0a; --bg: #000; --card: #1c1c1e; --text: #fff;
-            --dim: #8e8e93; --green: #34c759; --red: #ff453a; --border: #2c2c2e;
-            --insta: linear-gradient(45deg, #f09433 0%, #e6683c 25%, #dc2743 50%, #cc2366 75%, #bc1888 100%);
-        }
-        * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; outline: none; }
-        body { font-family: -apple-system, sans-serif; background: var(--bg); color: var(--text); margin: 0; padding-bottom: 120px; }
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>9VAl BATTLE | PRO SYSTEM</title>
 
-        .tab-bar { position: fixed; bottom: 0; left: 0; right: 0; background: rgba(10,10,10,0.98); backdrop-filter: blur(20px); display: flex; padding: 12px 5px 35px; border-top: 0.5px solid var(--border); z-index: 9999; }
-        .tab-item { color: var(--dim); font-size: 9px; text-align: center; flex: 1; cursor: pointer; font-weight: 700; text-transform: uppercase; }
-        .tab-item.active { color: var(--accent); }
-        .tab-icon { font-size: 22px; display: block; margin-bottom: 4px; }
+<style>
+:root {
+    --accent:#ff9f0a;--bg:#000;--card:#1c1c1e;--text:#fff;
+    --dim:#8e8e93;--border:#2c2c2e;
+}
+*{box-sizing:border-box}
+body{margin:0;font-family:-apple-system;background:var(--bg);color:var(--text);padding-bottom:120px}
 
-        .page { display: none; padding: 20px; animation: fadeIn 0.3s ease; }
-        .page.active { display: block; }
-        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+.tab-bar{
+    position:fixed;bottom:0;left:0;right:0;
+    display:flex;background:#0a0a0a;padding:12px 5px 35px;
+    border-top:1px solid var(--border)
+}
+.tab-item{flex:1;text-align:center;font-size:10px;color:var(--dim);cursor:pointer}
+.tab-item.active{color:var(--accent)}
+.tab-icon{font-size:22px;display:block}
 
-        .glass-card { background: var(--card); border-radius: 20px; padding: 20px; margin-bottom: 15px; border: 1px solid var(--border); }
-        input, textarea { width: 100%; padding: 16px; margin: 10px 0; background: #262629; border: 1px solid #3a3a3c; border-radius: 14px; color: #fff; font-size: 16px; }
-        .btn { background: var(--accent); color: #000; border: none; padding: 18px; border-radius: 16px; width: 100%; font-weight: 800; cursor: pointer; }
-        .btn:disabled { background: #333; color: #666; cursor: not-allowed; }
+.page{display:none;padding:20px}
+.page.active{display:block}
 
-        .v-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin: 15px 0; }
-        .v-box { background: #000; padding: 10px; border-radius: 12px; border: 1px solid #333; text-align: center; }
-        .v-box label { font-size: 9px; color: var(--dim); display: block; margin-bottom: 4px; }
-        .v-box input { background: none; border: none; font-size: 22px; font-weight: 900; color: var(--accent); text-align: center; width: 100%; }
-        
-        .rank-item { display: flex; justify-content: space-between; align-items: center; padding: 15px; border-bottom: 1px solid #222; }
-        .rank-val { color: var(--accent); font-weight: 900; font-size: 20px; }
-    </style>
+.glass-card{
+    background:var(--card);border-radius:20px;
+    padding:20px;margin-bottom:15px;border:1px solid var(--border)
+}
+.btn{
+    background:var(--accent);border:none;padding:16px;
+    border-radius:14px;font-weight:800;width:100%;cursor:pointer
+}
+
+.v-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.v-box{background:#000;border:1px solid #333;border-radius:12px;padding:10px;text-align:center}
+.v-box label{font-size:9px;color:var(--dim)}
+.v-box input{background:none;border:none;color:var(--accent);font-size:22px;font-weight:900;text-align:center;width:100%}
+
+.rank-item{
+    display:flex;justify-content:space-between;
+    padding:15px;border-bottom:1px solid #222
+}
+.rank-val{color:var(--accent);font-weight:900;font-size:20px}
+</style>
 </head>
+
 <body>
 
-    <div id="p-home" class="page active">
-        <h1>9VAl BATTLE</h1>
-        <div class="glass-card" style="border-left:4px solid var(--accent)">
-            <h3 style="margin-top:0">ПРАВИЛА БАТЛУ</h3>
-            <ul style="padding-left:18px; font-size:13px; color:#ddd">
-                <li>1 авторський трек MP3</li>
-                <li>Заборонено AI-вокал та плагіат</li>
-                <li>Оцінювання: Текст / Флоу / Подача / Вайб</li>
-            </ul>
+<!-- HOME -->
+<div id="p-home" class="page active">
+    <h1>9VAl BATTLE</h1>
+    <div class="glass-card">
+        <b>ПРАВИЛА</b>
+        <ul style="font-size:13px;color:#ccc">
+            <li>1 авторський MP3 трек</li>
+            <li>Без AI та плагіату</li>
+            <li>Оцінки: Текст / Флоу / Подача / Вайб</li>
+        </ul>
+    </div>
+</div>
+
+<!-- STATS -->
+<div id="p-stats" class="page">
+    <h2>РЕЙТИНГ</h2>
+    <div class="glass-card" style="padding:0">
+        <div class="rank-item">
+            <span>1. MC RAP</span>
+            <span class="rank-val" id="finalScore">0.00</span>
+        </div>
+    </div>
+</div>
+
+<!-- ADMIN -->
+<div id="p-admin" class="page">
+    <div id="auth">
+        <h2>ВХІД СУДДІ</h2>
+        <div class="glass-card">
+            <input id="login" placeholder="Імʼя судді">
+            <input id="pass" type="password" placeholder="Пароль">
+            <button class="btn" onclick="app.login()">УВІЙТИ</button>
         </div>
     </div>
 
-    <div id="p-stats" class="page">
-        <h2>РЕЙТИНГ</h2>
-        <div class="glass-card" style="padding:0">
-            <div class="rank-item">
-                <span>1. MC RAP</span>
-                <span class="rank-val" id="display-final-score">0.00</span>
+    <div id="panel" style="display:none">
+        <h3 id="judgeName"></h3>
+        <div class="glass-card">
+            <b>ОЦІНКА: MC RAP</b>
+            <div class="v-grid">
+                <div class="v-box"><label>ТЕКСТ</label><input id="v1" type="number" value="0"></div>
+                <div class="v-box"><label>ФЛОУ</label><input id="v2" type="number" value="0"></div>
+                <div class="v-box"><label>ПОДАЧА</label><input id="v3" type="number" value="0"></div>
+                <div class="v-box"><label>ВАЙБ</label><input id="v4" type="number" value="0"></div>
             </div>
+            <button class="btn" onclick="app.saveScore()">ЗБЕРЕГТИ ОЦІНКУ</button>
         </div>
     </div>
+</div>
 
-    <div id="p-admin" class="page">
-        <div id="adm-auth">
-            <h2>ВХІД ЖУРІ</h2>
-            <div class="glass-card">
-                <input type="text" id="a-login" placeholder="Логін">
-                <input type="password" id="a-pass" placeholder="Пароль">
-                <button class="btn" onclick="app.login()">УВІЙТИ</button>
-            </div>
-        </div>
-
-        <div id="adm-panel" style="display:none;">
-            <h3 id="judge-display" style="color:var(--accent)"></h3>
-            <div class="glass-card">
-                <b>ОЦІНКА: MC RAP</b>
-                <div class="v-grid">
-                    <div class="v-box"><label>ТЕКСТ</label><input type="number" id="v1" value="0"></div>
-                    <div class="v-box"><label>ФЛОУ</label><input type="number" id="v2" value="0"></div>
-                    <div class="v-box"><label>ПОДАЧА</label><input type="number" id="v3" value="0"></div>
-                    <div class="v-box"><label>ВАЙБ</label><input type="number" id="v4" value="0"></div>
-                </div>
-                <button class="btn" onclick="app.saveScore()">ЗБЕРЕГТИ ТА ВІДПРАВИТИ</button>
-            </div>
-        </div>
+<!-- NAV -->
+<nav class="tab-bar">
+    <div class="tab-item active" onclick="app.nav('home',this)">
+        <span class="tab-icon">🏠</span>ГОЛОВНА
     </div>
+    <div class="tab-item" onclick="app.nav('stats',this)">
+        <span class="tab-icon">📊</span>ТАБЛИЦЯ
+    </div>
+    <div class="tab-item" onclick="app.nav('admin',this)">
+        <span class="tab-icon">🛡️</span>АДМІН
+    </div>
+</nav>
 
-    <nav class="tab-bar">
-        <div class="tab-item active" onclick="app.nav('home', this)"><span class="tab-icon">🏠</span>ГОЛОВНА</div>
-        <div class="tab-item" onclick="app.nav('stats', this)"><span class="tab-icon">📊</span>ТАБЛИЦЯ</div>
-        <div class="tab-item" onclick="app.nav('admin', this)"><span class="tab-icon">🛡️</span>АДМІН</div>
-    </nav>
+<script>
+const judges = [
+    {name:"TONY MUS1CZ",pass:"1"},
+    {name:"NeedForRap",pass:"1"},
+    {name:"Nano",pass:"1"},
+    {name:"KAZHAN",pass:"1"}
+];
 
-    <script>
-        const judges = [
-            { id: 1, name: "TONY MUS1CZ", pass: "1" },
-            { id: 2, name: "NeedForRap", pass: "1" },
-            { id: 3, name: "Nano", pass: "1" },
-            { id: 4, name: "KAZHAN", pass: "1" }
-        ];
+const participantScores = {
+    "MC RAP": { judges:{}, final:null }
+};
 
-        // ТВОЯ НОВА СТРУКТУРА ДАНИХ
-        const participantScores = {
-            "MC RAP": {
-                judges: {},
-                final: null
-            }
-        };
+const app = {
+    currentJudge:null,
 
-        const app = {
-            currentJudge: null,
+    nav(id,el){
+        document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
+        document.querySelectorAll('.tab-item').forEach(t=>t.classList.remove('active'));
+        document.getElementById('p-'+id).classList.add('active');
+        el.classList.add('active');
+    },
 
-            nav(id, el) {
-                document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
-                document.querySelectorAll('.tab-item').forEach(t => t.classList.remove('active'));
-                document.getElementById('p-' + id).classList.add('active');
-                el.classList.add('active');
-            },
+    login(){
+        const l=login.value,p=pass.value;
+        const j=judges.find(x=>x.name===l&&x.pass===p);
+        if(!j){alert("Доступ заборонено");return;}
+        this.currentJudge=j;
+        auth.style.display="none";
+        panel.style.display="block";
+        judgeName.innerText="СУДДЯ: "+j.name;
+    },
 
-            login() {
-                const l = document.getElementById('a-login').value;
-                const p = document.getElementById('a-pass').value;
-                const j = judges.find(i => i.name === l && i.pass === p);
-                if(j) {
-                    this.currentJudge = j;
-                    document.getElementById('adm-auth').style.display = 'none';
-                    document.getElementById('adm-panel').style.display = 'block';
-                    document.getElementById('judge-display').innerText = "СУДДЯ: " + j.name;
-                } else alert("Помилка доступу");
-            },
+    saveScore(){
+        const name=this.currentJudge.name;
+        const p="MC RAP";
 
-            // ТВОЯ ОНОВЛЕНА ФУНКЦІЯ
-            saveScore() {
-                if(!this.currentJudge) return;
+        if(participantScores[p].judges[name]){
+            alert("Ви вже голосували");
+            return;
+        }
 
-                const name = this.currentJudge.name;
-                const participant = "MC RAP";
+        const avg=(
+            +v1.value + +v2.value + +v3.value + +v4.value
+        )/4;
 
-                // Захист від повтору
-                if(participantScores[participant].judges[name]) {
-                    alert("Ви вже оцінили цього учасника!");
-                    return;
-                }
+        participantScores[p].judges[name]=avg;
 
-                const s1 = Number(document.getElementById('v1').value);
-                const s2 = Number(document.getElementById('v2').value);
-                const s3 = Number(document.getElementById('v3').value);
-                const s4 = Number(document.getElementById('v4').value);
+        alert(`Суддя ${name}: ${avg.toFixed(1)}`);
 
-                const avg = (s1 + s2 + s3 + s4) / 4;
+        v1.value=v2.value=v3.value=v4.value=0;
 
-                // Зберігаємо оцінку конкретного судді
-                participantScores[participant].judges[name] = avg;
+        this.calcFinal(p);
+    },
 
-                alert(`Суддя ${name} поставив: ${avg.toFixed(1)}`);
+    calcFinal(p){
+        const scores=Object.values(participantScores[p].judges);
+        if(scores.length<judges.length)return;
 
-                // Очистка полів
-                document.getElementById('v1').value = 0;
-                document.getElementById('v2').value = 0;
-                document.getElementById('v3').value = 0;
-                document.getElementById('v4').value = 0;
+        const final=scores.reduce((a,b)=>a+b,0)/scores.length;
+        participantScores[p].final=final;
+        finalScore.innerText=final.toFixed(2);
 
-                // Перевірка на фінал
-                this.calcFinalScore(participant);
-            },
+        alert(
+            "ВСІ СУДДІ ПРОГОЛОСУВАЛИ\n\n"+
+            Object.entries(participantScores[p].judges)
+            .map(([j,s])=>`${j}: ${s.toFixed(1)}`).join("\n")+
+            `\n\nФІНАЛ: ${final.toFixed(2)}`
+        );
+    }
+};
+</script>
 
-            // ТВОЯ ФУНКЦІЯ ПІДРАХУНКУ ФІНАЛУ
-            calcFinalScore(participant) {
-                const scores = Object.values(participantScores[participant].judges);
+</body>
+</html>

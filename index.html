@@ -74,7 +74,7 @@
         const tg = window.Telegram.WebApp;
         tg.expand();
         
-        // ТВОЄ НОВЕ ПОСИЛАННЯ
+        // ПОСИЛАННЯ ВИПРАВЛЕНО (Рядок 87)
         const URL = "https://script.google.com/macros/s/AKfycbwOLeT7GAzWnVxCLNFpRBNUrPa5HgSA0zdEo99JqFa143t9S8KAt9SPaIsVTPueSmow/exec";
 
         function showTab(t) {
@@ -97,7 +97,10 @@
                 document.getElementById('judges-list').innerHTML = data.judges.slice(1).map(j => `<div>• <b>${j[2]}</b></div>`).join('');
                 document.getElementById('users-list').innerHTML = data.users.length > 1 ? data.users.slice(1).map(u => `<div style="padding:5px 0;">${u[1]} (${u[2]})</div>`).join('') : "Заявок немає";
                 return data;
-            } catch(e) { console.error(e); }
+            } catch(e) { 
+                console.error(e);
+                document.getElementById('judges-list').innerText = "Помилка завантаження";
+            }
         }
 
         async function loginJudge() {
@@ -124,10 +127,13 @@
                             </div>
                         </div>`).join('');
                 } else {
-                    alert("Невірний пароль!");
+                    alert("Невірний логін або пароль!");
                     btn.innerText = "УВІЙТИ";
                 }
-            } catch(e) { alert("Помилка бази!"); btn.innerText = "УВІЙТИ"; }
+            } catch(e) { 
+                alert("Помилка бази! Перевірте інтернет."); 
+                btn.innerText = "УВІЙТИ"; 
+            }
         }
 
         async function upload() {

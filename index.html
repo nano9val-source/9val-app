@@ -6,9 +6,9 @@
     <title>9VAL BATTLE ARENA</title>
     <script src="https://telegram.org/js/telegram-web-app.js"></script>
     <style>
-        body { font-family: 'Segoe UI', sans-serif; background: #050505; color: #fff; margin: 0; padding: 15px; }
+        body { font-family: sans-serif; background: #050505; color: #fff; padding: 15px; }
         .nav { display: flex; justify-content: space-around; background: #1a1a1a; padding: 10px; border-radius: 10px; margin-bottom: 20px; }
-        .nav div { cursor: pointer; color: #888; font-weight: bold; }
+        .nav div { cursor: pointer; color: #888; font-weight: bold; padding: 5px; }
         .nav div.active { color: #f39c12; border-bottom: 2px solid #f39c12; }
         .card { background: #151515; border-radius: 12px; padding: 15px; margin-bottom: 15px; border-left: 5px solid #f39c12; }
         .btn { width: 100%; padding: 12px; background: #f39c12; color: #000; border: none; border-radius: 8px; font-weight: bold; cursor: pointer; margin-top: 10px; }
@@ -27,7 +27,7 @@
             <h3>ПОДАТИ ЗАЯВКУ</h3>
             <input type="text" id="name" placeholder="Твій Нікнейм">
             <input type="text" id="city" placeholder="Місто">
-            <p style="color:#f39c12; font-size: 12px; margin-bottom: 5px;">ОБЕРИ ТРЕК (MP3/WAV):</p>
+            <p style="color:#f39c12; font-size: 12px; margin-bottom: 5px;">ОБЕРИ ТРЕК (MP3/WAV, МАКС. 13 МБ):</p>
             <input type="file" id="trackFile" accept="audio/*">
             <button class="btn" id="sendBtn" onclick="upload()">ВІДПРАВИТИ ЗАЯВКУ</button>
         </div>
@@ -56,13 +56,14 @@
             const city = document.getElementById('city').value;
             const fileInput = document.getElementById('trackFile');
             const btn = document.getElementById('sendBtn');
+            const file = fileInput.files[0];
 
-            if(!name || !fileInput.files[0]) return alert("Заповни ім'я та обери файл!");
+            if(!name || !file) return alert("Заповни всі поля!");
+            if(file.size > 13 * 1024 * 1024) return alert("Файл занадто великий! Максимум 13 МБ.");
 
             btn.innerText = "ЗАВАНТАЖЕННЯ...";
             btn.disabled = true;
 
-            const file = fileInput.files[0];
             const reader = new FileReader();
             reader.onload = async function() {
                 const payload = {
@@ -75,4 +76,28 @@
                 };
 
                 try {
-                    await fetch(URL, { method: 'POST', body:
+                    await fetch(URL, { method: 'POST', body: JSON.stringify(payload) });
+                    alert("Успішно! Твій трек завантажено в базу.");
+                    location.reload();
+                } catch(e) {
+                    alert("Помилка завантаження.");
+                    btn.disabled = false;
+                }
+            };
+            reader.readAsDataURL(file);
+        }
+
+        async function loadUsers() {
+            const list = document.getElementById('users-list');
+            const res = await fetch(URL + "?action=getData");
+            const data = await res.json();
+            list.innerHTML = "";
+            data.users.slice(1).forEach(u => {
+                if(u[1]) {
+                    list.innerHTML += `<div class="card"><b>${u[1]}</b> (${u[2]})<br><a href="${u[3]}" target="_blank" style="color:#f39c12; text-decoration:none;">🎧 Слухати трек</a></div>`;
+                }
+            });
+        }
+    </script>
+</body>
+</html>

@@ -3,46 +3,45 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Battle Arena iOS Edition</title>
+    <title>Battle Arena Premium</title>
     <script src="https://telegram.org/js/telegram-web-app.js"></script>
     <style>
         :root { --accent: #f39c12; --bg: #000; --card: #1c1c1e; --radius: 20px; }
         
-        body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; background: var(--bg); color: #fff; margin: 0; padding: 15px; padding-top: 80px; -webkit-font-smoothing: antialiased; }
+        body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; background: var(--bg); color: #fff; margin: 0; padding: 15px; padding-top: 75px; -webkit-font-smoothing: antialiased; }
         
-        /* ВЕРХНЯ НАВІГАЦІЯ В СТИЛІ iOS */
-        .nav { position: fixed; top: 0; left: 0; right: 0; background: rgba(20, 20, 20, 0.8); backdrop-filter: blur(15px); display: flex; justify-content: space-around; padding: 10px 5px; border-bottom: 0.5px solid #333; z-index: 1000; }
-        .nav-item { color: #888; text-decoration: none; font-size: 11px; font-weight: 600; text-align: center; flex: 1; padding: 8px 0; border-radius: 12px; transition: 0.3s; }
-        .nav-item.active { color: var(--accent); background: rgba(255,255,255,0.05); }
+        /* ВЕРХНЯ НАВІГАЦІЯ */
+        .nav { position: fixed; top: 0; left: 0; right: 0; background: rgba(20, 20, 20, 0.85); backdrop-filter: blur(20px); display: flex; justify-content: space-around; padding: 12px 5px; border-bottom: 0.5px solid #333; z-index: 1000; }
+        .nav-item { color: #888; text-decoration: none; font-size: 11px; font-weight: 700; text-align: center; flex: 1; padding: 10px 0; border-radius: 14px; transition: 0.2s; }
+        .nav-item.active { color: var(--accent); background: rgba(255,255,255,0.08); }
 
-        h2 { font-size: 24px; font-weight: 700; margin-bottom: 20px; color: #fff; }
+        h2 { font-size: 26px; font-weight: 800; margin-bottom: 20px; letter-spacing: -0.5px; }
 
-        .tab-content { display: none; animation: fadeIn 0.3s ease; }
+        .tab-content { display: none; animation: fadeIn 0.4s ease-out; }
         .tab-content.active { display: block; }
-        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: translateY(0); } }
         
         /* КАРТКИ (iOS Style) */
-        .card { background: var(--card); border-radius: var(--radius); padding: 20px; margin-bottom: 15px; border: 0.5px solid #333; box-shadow: 0 4px 15px rgba(0,0,0,0.3); }
-        .name { font-size: 19px; font-weight: 600; margin-bottom: 5px; }
+        .card { background: var(--card); border-radius: var(--radius); padding: 20px; margin-bottom: 15px; border: 0.5px solid #38383a; box-shadow: 0 8px 24px rgba(0,0,0,0.4); }
+        .name { font-size: 20px; font-weight: 700; color: #fff; margin-bottom: 4px; }
+        .city-tag { font-size: 13px; color: var(--accent); font-weight: 600; margin-bottom: 12px; }
         
-        /* АУДІО ПЛЕЄР */
-        audio { width: 100%; height: 36px; margin: 15px 0; border-radius: 10px; filter: invert(100%) hue-rotate(180deg) brightness(1.5); }
+        /* ПЛЕЄР */
+        audio { width: 100%; height: 40px; margin: 15px 0; border-radius: 12px; filter: invert(100%) hue-rotate(180deg) brightness(1.4); }
         
-        /* ФОРМИ ТА ІНПУТИ (Круглі) */
-        input { background: #2c2c2e; border: none; color: #fff; padding: 14px 18px; border-radius: 15px; width: 100%; box-sizing: border-box; margin-bottom: 15px; font-size: 16px; }
-        input:focus { outline: 2px solid var(--accent); }
-        
-        button { background: var(--accent); color: #000; border: none; padding: 16px; border-radius: 25px; width: 100%; font-weight: 700; font-size: 16px; cursor: pointer; transition: 0.2s; }
-        button:active { transform: scale(0.97); opacity: 0.9; }
-        button:disabled { background: #555; }
+        /* ІНПУТИ ТА КНОПКИ (Круглі) */
+        input { background: #2c2c2e; border: none; color: #fff; padding: 16px; border-radius: 16px; width: 100%; box-sizing: border-box; margin-bottom: 15px; font-size: 16px; }
+        button { background: var(--accent); color: #000; border: none; padding: 18px; border-radius: 30px; width: 100%; font-weight: 800; font-size: 16px; cursor: pointer; transition: 0.3s; }
+        button:active { transform: scale(0.96); }
 
-        /* ГАЛОЧКА (Checkbox) */
-        .rules-box { display: flex; align-items: center; gap: 10px; margin-bottom: 20px; font-size: 14px; color: #aaa; }
-        .rules-box input[type="checkbox"] { width: 22px; height: 22px; margin: 0; cursor: pointer; accent-color: var(--accent); }
+        /* ЧЕКБОКС */
+        .rules-row { display: flex; align-items: center; gap: 12px; margin: 10px 0 25px 0; font-size: 14px; color: #aaa; line-height: 1.4; }
+        .rules-row input[type="checkbox"] { width: 24px; height: 24px; margin: 0; accent-color: var(--accent); cursor: pointer; }
 
-        /* Адмінка */
-        .judge-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-top: 15px; }
-        .judge-grid label { font-size: 11px; color: #888; font-weight: 600; margin-left: 5px; }
+        /* СІТКА ДЛЯ ОЦІНОК */
+        .judge-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-top: 15px; background: #2c2c2e; padding: 15px; border-radius: 15px; }
+        .judge-grid label { font-size: 10px; color: #999; font-weight: 700; text-transform: uppercase; display: block; margin-bottom: 5px; }
+        .judge-grid input { margin-bottom: 0; padding: 10px; border-radius: 10px; text-align: center; font-weight: 700; }
     </style>
 </head>
 <body>
@@ -55,35 +54,35 @@
 
     <div id="tab-results" class="tab-content active">
         <h2>Турнірна таблиця</h2>
-        <div id="results-list">Завантаження...</div>
+        <div id="results-list">Завантаження результатів...</div>
     </div>
 
     <div id="tab-reg" class="tab-content">
-        <h2>Реєстрація на баттл</h2>
+        <h2>Реєстрація</h2>
         <form id="reg-form">
             <input type="text" id="reg-name" placeholder="Твій нікнейм" required>
             <input type="text" id="reg-city" placeholder="Твоє місто" required>
-            <p style="font-size: 13px; color: #888; margin-bottom: 10px;">Вибери аудіо-файл треку:</p>
-            <input type="file" id="reg-file" accept="audio/*" required style="padding: 10px; background: transparent;">
+            <label style="font-size: 13px; color: #888; display: block; margin-bottom: 8px;">Вибери трек (аудіо):</label>
+            <input type="file" id="reg-file" accept="audio/*" required style="background: transparent; padding: 0;">
             
-            <div class="rules-box">
+            <div class="rules-row">
                 <input type="checkbox" id="reg-rules" required>
                 <span>Я згоден з правилами баттлу та рішенням суддів</span>
             </div>
             
-            <button type="submit" id="btn-submit">ВІДПРАВИТИ ТРЕК</button>
+            <button type="submit" id="btn-submit">ПОДАТИ ЗАЯВКУ</button>
         </form>
     </div>
 
     <div id="tab-admin" class="tab-content">
         <div id="login-form">
-            <h2>Вхід для персоналу</h2>
+            <h2>Вхід для судді</h2>
             <input type="text" id="log-user" placeholder="Логін">
             <input type="password" id="log-pass" placeholder="Пароль">
             <button onclick="tryLogin()">УВІЙТИ</button>
         </div>
         <div id="admin-panel" style="display:none;">
-            <h2 id="judge-name">Суддя</h2>
+            <h2 id="judge-name">Панель судді</h2>
             <div id="admin-list"></div>
         </div>
     </div>
@@ -97,7 +96,7 @@
             document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
             document.getElementById(id).classList.add('active');
             el.classList.add('active');
-            if(id === 'tab-results') loadData();
+            if(id === 'tab-results' || (id === 'tab-admin' && currentUser)) loadData();
         }
 
         function formatDriveUrl(url) {
@@ -113,4 +112,82 @@
                 const res = await fetch(API_URL + "?action=getData");
                 const data = await res.json();
                 
-                const acceptedUsers = data.users.filter(u => u[5] === "
+                // Відображення рейтингу (тільки "Прийнято")
+                const acceptedUsers = data.users.filter(u => u[5] === "Прийнято");
+                document.getElementById('results-list').innerHTML = acceptedUsers.length > 0 ? 
+                acceptedUsers.map(u => `
+                    <div class="card">
+                        <div class="name">${u[1]}</div>
+                        <div class="city-tag">📍 ${u[2]}</div>
+                        <audio controls src="${formatDriveUrl(u[3])}"></audio>
+                    </div>
+                `).join('') : "<p style='text-align:center; color:#555;'>Учасників ще не прийнято</p>";
+
+                // Відображення адмінки
+                if(currentUser) {
+                    const allUsers = data.users.slice(1);
+                    document.getElementById('admin-list').innerHTML = allUsers.map((u, i) => `
+                        <div class="card">
+                            <div class="name">${u[1]} <span style="font-size:12px; color:var(--accent); opacity:0.7;">[${u[5]}]</span></div>
+                            <audio controls src="${formatDriveUrl(u[3])}"></audio>
+                            <div class="judge-grid">
+                                <div><label>Текст</label><input type="number" value="0"></div>
+                                <div><label>Флоу</label><input type="number" value="0"></div>
+                                <div><label>Подача</label><input type="number" value="0"></div>
+                                <div><label>Вайб</label><input type="number" value="0"></div>
+                            </div>
+                            <button style="margin-top:15px; border-radius:15px; font-size:14px;" onclick="alert('Бали збережено!')">ЗБЕРЕГТИ</button>
+                        </div>
+                    `).join('');
+                }
+            } catch (e) { console.error(e); }
+        }
+
+        async function tryLogin() {
+            const u = document.getElementById('log-user').value;
+            const p = document.getElementById('log-pass').value;
+            try {
+                const res = await fetch(API_URL + "?action=getData");
+                const data = await res.json();
+                const judge = data.judges.find(j => j[0] == u && j[1] == p);
+                if(judge) {
+                    currentUser = judge[2];
+                    document.getElementById('login-form').style.display = 'none';
+                    document.getElementById('admin-panel').style.display = 'block';
+                    document.getElementById('judge-name').innerText = "Суддя: " + currentUser;
+                    loadData();
+                } else { alert("Помилка входу!"); }
+            } catch(e) { alert("Помилка зв'язку з сервером"); }
+        }
+
+        document.getElementById('reg-form').onsubmit = async (e) => {
+            e.preventDefault();
+            const btn = document.getElementById('btn-submit');
+            btn.innerText = "ЗАВАНТАЖЕННЯ...";
+            btn.disabled = true;
+
+            const file = document.getElementById('reg-file').files[0];
+            const reader = new FileReader();
+            reader.onload = async () => {
+                const payload = {
+                    name: document.getElementById('reg-name').value,
+                    city: document.getElementById('reg-city').value,
+                    fileData: reader.result.split(',')[1],
+                    fileName: file.name,
+                    mimeType: file.type
+                };
+                try {
+                    await fetch(API_URL, { method: 'POST', body: JSON.stringify(payload) });
+                    alert("Успіх! Твій трек вже на розгляді.");
+                    document.getElementById('reg-form').reset();
+                } catch(err) { alert("Помилка завантаження"); }
+                btn.innerText = "ПОДАТИ ЗАЯВКУ";
+                btn.disabled = false;
+            };
+            reader.readAsDataURL(file);
+        };
+
+        window.onload = loadData;
+    </script>
+</body>
+</html>

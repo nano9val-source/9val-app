@@ -3,46 +3,146 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>9VAl BATTLE | OFFICIAL</title>
+    <title>9VAl BATTLE | OFFICIAL APP</title>
     <script src="https://telegram.org/js/telegram-web-app.js"></script>
     <style>
-        :root { --accent: #ff9f0a; --bg: #000; --card: #1c1c1e; --text: #fff; --dim: #8e8e93; --green: #34c759; }
-        body { font-family: -apple-system, sans-serif; background: var(--bg); color: var(--text); margin: 0; padding-bottom: 100px; -webkit-user-select: none; }
-        
-        /* Навігація */
-        .nav-header { position: fixed; top: 0; left: 0; right: 0; background: rgba(0,0,0,0.9); backdrop-filter: blur(20px); z-index: 1000; display: flex; overflow-x: auto; padding: 10px; border-bottom: 0.5px solid #333; }
-        .nav-btn { padding: 10px 20px; margin-right: 8px; border-radius: 12px; font-size: 11px; font-weight: 800; white-space: nowrap; color: var(--dim); background: #111; border: 1px solid #222; }
-        .nav-btn.active { background: var(--accent); color: #000; border-color: var(--accent); }
+        :root {
+            --accent: #ff9f0a;
+            --bg: #000000;
+            --card: #1c1c1e;
+            --text: #ffffff;
+            --dim: #8e8e93;
+            --green: #34c759;
+            --insta: linear-gradient(45deg, #f09433 0%, #e6683c 25%, #dc2743 50%, #cc2366 75%, #bc1888 100%);
+        }
 
-        /* Сторінки */
-        .page { display: none; padding: 80px 15px 20px; animation: fadeIn 0.3s ease; }
+        body {
+            font-family: -apple-system, system-ui, sans-serif;
+            background-color: var(--bg);
+            color: var(--text);
+            margin: 0;
+            padding: 0;
+            overflow-x: hidden;
+            -webkit-user-select: none;
+        }
+
+        /* Навігація */
+        .nav-header {
+            position: fixed;
+            top: 0; left: 0; right: 0;
+            background: rgba(0,0,0,0.9);
+            backdrop-filter: blur(20px);
+            z-index: 1000;
+            display: flex;
+            overflow-x: auto;
+            padding: 12px 10px;
+            border-bottom: 0.5px solid #333;
+        }
+        .nav-btn {
+            padding: 10px 20px;
+            margin-right: 8px;
+            border-radius: 12px;
+            font-size: 11px;
+            font-weight: 800;
+            white-space: nowrap;
+            color: var(--dim);
+            background: #111;
+            border: 1px solid #222;
+            transition: 0.3s;
+        }
+        .nav-btn.active {
+            background: var(--accent);
+            color: #000;
+            border-color: var(--accent);
+        }
+
+        /* Контент */
+        .content { margin-top: 80px; padding: 15px; padding-bottom: 100px; }
+        .page { display: none; animation: fadeIn 0.4s ease; }
         .page.active { display: block; }
-        @keyframes fadeIn { from { opacity: 0; transform: translateY(5px); } to { opacity: 1; transform: translateY(0); } }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
 
         /* Картки */
-        .glass-card { background: var(--card); border-radius: 20px; padding: 20px; margin-bottom: 15px; border: 1px solid #2c2c2e; }
+        .glass-card {
+            background: var(--card);
+            border-radius: 20px;
+            padding: 20px;
+            margin-bottom: 15px;
+            border: 1px solid #2c2c2e;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.3);
+        }
+
+        /* Блок Суддів */
+        .judge-item {
+            display: flex;
+            align-items: center;
+            padding: 15px 0;
+            border-bottom: 1px solid rgba(255,255,255,0.05);
+        }
+        .judge-item:last-child { border: none; }
         
-        /* Судді */
-        .judge-item { display: flex; align-items: center; padding: 15px 0; border-bottom: 1px solid #2c2c2e; }
-        .judge-img { width: 60px; height: 60px; border-radius: 50%; border: 2px solid var(--accent); margin-right: 15px; background: #333; object-fit: cover; }
-        .judge-info b { font-size: 16px; display: block; }
-        .judge-info span { font-size: 11px; color: var(--accent); font-weight: bold; }
-        .insta-link { margin-left: auto; color: #fff; text-decoration: none; font-size: 10px; border: 1px solid #444; padding: 6px 10px; border-radius: 8px; }
+        .judge-img-container {
+            position: relative;
+            width: 65px;
+            height: 65px;
+            margin-right: 15px;
+        }
+        .judge-img {
+            width: 100%;
+            height: 100%;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 2px solid var(--accent);
+            box-shadow: 0 0 10px rgba(255, 159, 10, 0.2);
+        }
+        .judge-info { flex: 1; }
+        .judge-info b { font-size: 17px; display: block; letter-spacing: 0.5px; }
+        .judge-info span { font-size: 11px; color: var(--accent); font-weight: 700; text-transform: uppercase; }
+
+        .insta-badge {
+            width: 38px;
+            height: 38px;
+            background: var(--insta);
+            border-radius: 11px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-decoration: none;
+        }
+        .insta-badge img { width: 22px; filter: brightness(0) invert(1); }
 
         /* Плеєр */
-        .player-card { background: #1c1c1e; padding: 15px; border-radius: 18px; margin-bottom: 12px; border-left: 4px solid var(--accent); }
-        audio { width: 100%; height: 35px; filter: invert(1); margin-top: 10px; }
+        .player-card {
+            background: #1c1c1e;
+            padding: 18px;
+            border-radius: 20px;
+            margin-bottom: 12px;
+            border-left: 5px solid var(--accent);
+        }
+        audio { width: 100%; height: 40px; filter: invert(1); margin-top: 12px; }
 
-        /* Форми та Кнопки */
-        input { width: 100%; padding: 15px; margin: 10px 0; background: #2c2c2e; border: 1px solid #3a3a3c; border-radius: 14px; color: #fff; font-size: 16px; box-sizing: border-box; }
-        .btn-main { background: var(--accent); color: #000; border: none; padding: 18px; border-radius: 16px; width: 100%; font-weight: 900; font-size: 16px; margin-top: 10px; cursor: pointer; }
-        .btn-main:disabled { background: #444; color: #888; opacity: 0.5; }
+        /* Форми */
+        input, select {
+            width: 100%; padding: 16px; margin: 10px 0;
+            background: #2c2c2e; border: 1px solid #3a3a3c;
+            border-radius: 14px; color: #fff; font-size: 16px; box-sizing: border-box;
+        }
+        .btn-main {
+            background: var(--accent); color: #000; border: none;
+            padding: 18px; border-radius: 16px; width: 100%;
+            font-weight: 900; font-size: 16px; cursor: pointer; margin-top: 10px;
+        }
+        .btn-main:disabled { background: #444; color: #888; opacity: 0.5; cursor: not-allowed; }
 
-        /* Адмінка: Сітка оцінок */
-        .vote-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-top: 15px; }
-        .vote-box { background: #111; padding: 10px; border-radius: 12px; text-align: center; }
-        .vote-box label { font-size: 9px; color: var(--dim); display: block; margin-bottom: 5px; }
-        .vote-box input { margin: 0; padding: 5px; background: none; border: none; border-bottom: 1px solid #333; text-align: center; font-size: 18px; font-weight: bold; }
+        /* Адмінка: Оцінки */
+        .vote-grid {
+            display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-top: 15px;
+        }
+        .vote-box { background: #111; padding: 10px; border-radius: 12px; text-align: center; border: 1px solid #222; }
+        .vote-box label { font-size: 9px; color: var(--dim); display: block; margin-bottom: 4px; text-transform: uppercase; }
+        .vote-box input { margin: 0; padding: 5px; background: none; border: none; border-bottom: 1px solid #444; text-align: center; font-size: 20px; font-weight: 900; color: var(--accent); }
+
+        .status-tag { font-size: 10px; padding: 4px 10px; border-radius: 8px; font-weight: 900; background: #333; color: var(--accent); }
     </style>
 </head>
 <body>
@@ -55,161 +155,238 @@
         <div class="nav-btn" onclick="app.nav('admin', this)">🛡️ АДМІН</div>
     </nav>
 
-    <div id="page-home" class="page active">
-        <h1>9VAl BATTLE</h1>
-        <div class="glass-card">
-            <h3 style="color: var(--accent); margin-top: 0;">ПРИЗОВИЙ ФОНД: 50 000 ГРН</h3>
-            <p>Стань частиною історії українського репу. Завантажуй трек, пройди модерацію та бийся за головний приз.</p>
-            <b>ПРАВИЛА:</b>
-            <ul style="font-size: 13px; color: var(--dim); line-height: 1.8;">
-                <li>Трек до 2:00 хв. Тема вільна.</li>
-                <li>Судді оцінюють: Текст, Флоу, Подача, Вайб.</li>
-                <li>Тільки підтверджені треки потрапляють у плеєр.</li>
-            </ul>
-        </div>
-    </div>
-
-    <div id="page-judges" class="page">
-        <h2>СУДДІВСЬКА ЛАВА</h2>
-        <div class="glass-card">
-            <div class="judge-item">
-                <img src="https://drive.google.com/uc?export=view&id=1" class="judge-img" onerror="this.src='https://via.placeholder.com/60'">
-                <div class="judge-info"><b>TONY MUS1CZ</b><span>Суддя #1</span></div>
-                <a href="https://www.instagram.com/t0ny_mus1cz_prod/" class="insta-link">INSTA</a>
-            </div>
-            <div class="judge-item">
-                <img src="https://drive.google.com/uc?export=view&id=2" class="judge-img" onerror="this.src='https://via.placeholder.com/60'">
-                <div class="judge-info"><b>NeedForRap</b><span>Суддя #2</span></div>
-                <a href="https://www.instagram.com/aleksandr_kozlovvvvv/" class="insta-link">INSTA</a>
-            </div>
-            <div class="judge-item">
-                <img src="https://drive.google.com/uc?export=view&id=3" class="judge-img" onerror="this.src='https://via.placeholder.com/60'">
-                <div class="judge-info"><b>Nano</b><span>Суддя #3</span></div>
-                <a href="https://www.instagram.com/nano9val/" class="insta-link">INSTA</a>
-            </div>
-            <div class="judge-item" style="border:none">
-                <img src="https://drive.google.com/uc?export=view&id=4" class="judge-img" onerror="this.src='https://via.placeholder.com/60'">
-                <div class="judge-info"><b>KAZHAN</b><span>Суддя #4</span></div>
-                <a href="https://www.instagram.com/ka.zhan_/" class="insta-link">INSTA</a>
-            </div>
-        </div>
-    </div>
-
-    <div id="page-player" class="page">
-        <h2>ТРЕКИ УЧАСНИКІВ</h2>
-        <div id="player-list">Завантаження...</div>
-    </div>
-
-    <div id="page-reg" class="page">
-        <h2>ПОДАТИ ЗАЯВКУ</h2>
-        <div class="glass-card">
-            <form id="reg-form">
-                <input type="text" id="r-name" placeholder="Твій нікнейм" required>
-                <input type="text" id="r-city" placeholder="Місто" required>
-                <input type="file" id="r-file" accept="audio/*" required>
-                
-                <div style="display:flex; gap:10px; margin: 15px 0;">
-                    <input type="checkbox" id="r-rules" style="width:20px; height:20px;" onchange="document.getElementById('r-btn').disabled = !this.checked">
-                    <label for="r-rules" style="font-size: 11px; color: #ccc;">Я ознайомлений з правилами батлу та даю згоду на обробку даних.</label>
-                </div>
-
-                <button type="submit" class="btn-main" id="r-btn" disabled>ВІДПРАВИТИ ТРЕК</button>
-            </form>
-        </div>
-    </div>
-
-    <div id="page-admin" class="page">
-        <div id="admin-auth">
+    <div class="content">
+        
+        <div id="page-home" class="page active">
+            <h1 style="font-size: 34px; margin-bottom: 10px;">9VAl BATTLE</h1>
             <div class="glass-card">
-                <h2>ВХІД СУДДІ</h2>
-                <input type="text" id="adm-u" placeholder="Логін">
-                <input type="password" id="adm-p" placeholder="Пароль">
-                <button class="btn-main" onclick="app.login()">УВІЙТИ</button>
+                <div style="background: var(--accent); color: #000; padding: 6px 15px; border-radius: 10px; display: inline-block; font-weight: 900; margin-bottom: 15px; font-size: 14px;">ПРИЗОВИЙ ФОНД: 50 000 ГРН</div>
+                <p style="line-height: 1.6;">Вітаємо в офіційному додатку батлу. Твій шлях до фіналу починається тут. Завантажуй трек, проходь модерацію та отримуй оцінки від професійного журі.</p>
+                <h3 style="margin-top: 25px; font-size: 18px;">ПРАВИЛА ТА ЕТАПИ:</h3>
+                <ul style="padding-left: 20px; color: var(--dim); font-size: 14px; line-height: 2;">
+                    <li>Реєстрація та завантаження (MP3, до 2:00 хв).</li>
+                    <li>Суддівське прослуховування та допуск.</li>
+                    <li>Тільки учасники зі статусом "Прийнято" потрапляють у плеєр.</li>
+                </ul>
             </div>
         </div>
-        <div id="admin-panel" style="display:none;">
-            <div id="admin-list"></div>
+
+        <div id="page-judges" class="page">
+            <h2 style="text-align: center; margin-bottom: 20px;">СУДДІВСЬКИЙ СКЛАД</h2>
+            <div class="glass-card">
+                <div class="judge-item">
+                    <div class="judge-img-container">
+                        <img src="ВСТАВ_ID_ФОТО_1" class="judge-img" onerror="this.src='https://via.placeholder.com/70'">
+                    </div>
+                    <div class="judge-info"><b>TONY MUS1CZ</b><span>Суддя #1</span></div>
+                    <a href="https://www.instagram.com/t0ny_mus1cz_prod/" class="insta-badge">
+                        <img src="https://cdn-icons-png.flaticon.com/512/174/174855.png" alt="IG">
+                    </a>
+                </div>
+                <div class="judge-item">
+                    <div class="judge-img-container">
+                        <img src="ВСТАВ_ID_ФОТО_2" class="judge-img" onerror="this.src='https://via.placeholder.com/70'">
+                    </div>
+                    <div class="judge-info"><b>NeedForRap</b><span>Суддя #2</span></div>
+                    <a href="https://www.instagram.com/aleksandr_kozlovvvvv/" class="insta-badge">
+                        <img src="https://cdn-icons-png.flaticon.com/512/174/174855.png" alt="IG">
+                    </a>
+                </div>
+                <div class="judge-item">
+                    <div class="judge-img-container">
+                        <img src="ВСТАВ_ID_ФОТО_3" class="judge-img" onerror="this.src='https://via.placeholder.com/70'">
+                    </div>
+                    <div class="judge-info"><b>Nano</b><span>Суддя #3</span></div>
+                    <a href="https://www.instagram.com/nano9val/" class="insta-badge">
+                        <img src="https://cdn-icons-png.flaticon.com/512/174/174855.png" alt="IG">
+                    </a>
+                </div>
+                <div class="judge-item">
+                    <div class="judge-img-container">
+                        <img src="ВСТАВ_ID_ФОТО_4" class="judge-img" onerror="this.src='https://via.placeholder.com/70'">
+                    </div>
+                    <div class="judge-info"><b>KAZHAN</b><span>Суддя #4</span></div>
+                    <a href="https://www.instagram.com/ka.zhan_/" class="insta-badge">
+                        <img src="https://cdn-icons-png.flaticon.com/512/174/174855.png" alt="IG">
+                    </a>
+                </div>
+            </div>
         </div>
+
+        <div id="page-player" class="page">
+            <h2>ОФІЦІЙНИЙ СПИСОК</h2>
+            <div id="player-list">Завантаження учасників...</div>
+        </div>
+
+        <div id="page-reg" class="page">
+            <h2>ПОДАТИ ЗАЯВКУ</h2>
+            <div class="glass-card">
+                <form id="reg-form">
+                    <input type="text" id="r-name" placeholder="Твій нікнейм" required>
+                    <input type="text" id="r-city" placeholder="Місто" required>
+                    <label style="font-size: 11px; color: var(--dim); display: block; margin-top: 10px;">ТРЕК (MP3):</label>
+                    <input type="file" id="r-file" accept="audio/*" required>
+                    
+                    <div style="display:flex; gap:12px; margin: 20px 0; align-items: flex-start;">
+                        <input type="checkbox" id="r-rules" style="width:24px; height:24px; margin:0" onchange="document.getElementById('r-btn').disabled = !this.checked">
+                        <label for="r-rules" style="font-size: 12px; color: #ccc; line-height: 1.4;">Я ознайомився з правилами батлу та даю згоду на публікацію мого треку в плеєрі.</label>
+                    </div>
+
+                    <button type="submit" class="btn-main" id="r-btn" disabled>ВІДПРАВИТИ ТРЕК</button>
+                </form>
+            </div>
+        </div>
+
+        <div id="page-admin" class="page">
+            <div id="admin-auth">
+                <div class="glass-card">
+                    <h2>ВХІД СУДДІ</h2>
+                    <input type="text" id="adm-u" placeholder="Логін">
+                    <input type="password" id="adm-p" placeholder="Пароль">
+                    <button class="btn-main" onclick="app.login()">УВІЙТИ В ПАНЕЛЬ</button>
+                </div>
+            </div>
+            <div id="admin-panel" style="display:none;">
+                <h3 id="adm-welcome" style="margin-bottom: 20px;">Завантаження...</h3>
+                <div id="admin-list"></div>
+            </div>
+        </div>
+
     </div>
 
     <script>
         const API = "https://script.google.com/macros/s/AKfycbwLlgAFARTIJX3CPPH4eRevaqUDO9gErXoI5PiapR3i2xEJLRFyuRfApYANdVsSHAJ4/exec";
         
         const app = {
-            data: null, user: null,
+            data: null,
+            user: null,
+
             nav(id, el) {
                 document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
                 document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active'));
-                document.getElementById('page-'+id).classList.add('active');
+                document.getElementById('page-' + id).classList.add('active');
                 el.classList.add('active');
+                if(this.data) this.render();
             },
-            fix(url) { return url ? url.replace("open?id=", "uc?export=download&id=") : ""; },
+
+            fixLink(url) {
+                if(!url) return "";
+                if(url.includes('drive.google.com')){
+                    let id = url.split('id=')[1] || url.split('/d/')[1].split('/')[0];
+                    return `https://docs.google.com/uc?export=download&id=${id}`;
+                }
+                return url;
+            },
+
             async load() {
-                const res = await fetch(API + "?action=getData");
-                this.data = await res.json();
-                this.render();
+                try {
+                    const res = await fetch(API + "?action=getData");
+                    this.data = await res.json();
+                    this.render();
+                } catch(e) { console.error("Network Error"); }
             },
+
             render() {
                 const users = (this.data.allUsers || []).slice(1);
-                // Плеєр (тільки Прийняті)
-                document.getElementById('player-list').innerHTML = users.filter(u => u[4] === 'Прийнято').map(u => `
-                    <div class="player-card"><b>${u[1]}</b><br><audio controls preload="none" src="${this.fix(u[3])}"></audio></div>
-                `).join('') || "Чекаємо на перші треки...";
+                
+                // Відображення в Плеєрі (Прийняті)
+                const approved = users.filter(u => u[4] === 'Прийнято');
+                document.getElementById('player-list').innerHTML = approved.map(u => `
+                    <div class="player-card">
+                        <div style="display:flex; justify-content:space-between">
+                            <b>${u[1]}</b> <span style="font-size:12px; color:var(--accent)">${u[2]}</span>
+                        </div>
+                        <audio controls preload="none" src="${this.fixLink(u[3])}"></audio>
+                    </div>
+                `).join('') || "<p style='text-align:center; opacity:0.5'>Список порожній</p>";
 
-                // Адмін
+                // Адмін-панель
                 if(this.user) {
                     document.getElementById('admin-list').innerHTML = users.map((u, i) => `
                         <div class="glass-card">
-                            <b>${u[1]}</b> [${u[4] || 'Новий'}]
-                            <audio controls src="${this.fix(u[3])}"></audio>
+                            <div style="display:flex; justify-content:space-between; margin-bottom:10px">
+                                <b>${u[1]}</b> <span class="status-tag">${u[4] || 'Очікує'}</span>
+                            </div>
+                            <audio controls preload="none" src="${this.fixLink(u[3])}"></audio>
+                            
                             <div class="vote-grid">
                                 <div class="vote-box"><label>Текст</label><input type="number" id="v1-${i}" value="${u[5]||0}"></div>
                                 <div class="vote-box"><label>Флоу</label><input type="number" id="v2-${i}" value="${u[6]||0}"></div>
                                 <div class="vote-box"><label>Подача</label><input type="number" id="v3-${i}" value="${u[7]||0}"></div>
                                 <div class="vote-box"><label>Вайб</label><input type="number" id="v4-${i}" value="${u[8]||0}"></div>
                             </div>
-                            <div style="display:flex; gap:10px; margin-top:10px">
-                                ${u[4] !== 'Прийнято' ? `<button class="btn-main" style="background:var(--green); color:#fff" onclick="app.status(${i+2}, 'Прийнято')">ПРИЙНЯТИ</button>` : ''}
-                                <button class="btn-main" onclick="app.save(${i+2}, ${i})">ЗБЕРЕГТИ</button>
+
+                            <div style="display:flex; gap:10px; margin-top:20px;">
+                                ${u[4] !== 'Прийнято' ? `<button onclick="app.approve(${i+2})" style="flex:1; background:var(--green); border:none; border-radius:12px; color:#fff; font-weight:900; cursor:pointer">✅ ДОПУСТИТИ</button>` : ''}
+                                <button onclick="app.saveVotes(${i+2}, ${i})" style="flex:2; background:var(--accent); border:none; padding:15px; border-radius:12px; font-weight:900; cursor:pointer">ЗБЕРЕГТИ БАЛИ</button>
                             </div>
                         </div>
                     `).join('');
                 }
             },
+
+            async approve(row) {
+                await fetch(`${API}?action=vote&row=${row}&status=Прийнято`);
+                alert("Учасника допущено до батлу!");
+                this.load();
+            },
+
+            async saveVotes(row, i) {
+                const payload = {
+                    action: "vote",
+                    row: row,
+                    text: document.getElementById(`v1-${i}`).value,
+                    flow: document.getElementById(`v2-${i}`).value,
+                    podacha: document.getElementById(`v3-${i}`).value,
+                    vibe: document.getElementById(`v4-${i}`).value
+                };
+                await fetch(API, { method: 'POST', body: JSON.stringify(payload) });
+                alert("Оцінки збережено!");
+                this.load();
+            },
+
             async login() {
                 const u = document.getElementById('adm-u').value;
                 const p = document.getElementById('adm-p').value;
-                const j = this.data.judges.find(x => x[0] == u && x[1] == p);
-                if(j) { this.user = j[2]; document.getElementById('admin-auth').style.display='none'; document.getElementById('admin-panel').style.display='block'; this.render(); }
-            },
-            async status(row, val) {
-                await fetch(`${API}?action=vote&row=${row}&status=${val}`);
-                alert("Учасника прийнято!"); this.load();
-            },
-            async save(row, i) {
-                const payload = { action: "vote", row: row, 
-                    text: document.getElementById('v1-'+i).value, flow: document.getElementById('v2-'+i).value,
-                    podacha: document.getElementById('v3-'+i).value, vibe: document.getElementById('v4-'+i).value
-                };
-                await fetch(API, { method: 'POST', body: JSON.stringify(payload) });
-                alert("Збережено!"); this.load();
+                const judge = this.data.judges.find(j => j[0] == u && j[1] == p);
+                if(judge) {
+                    this.user = judge[2];
+                    document.getElementById('admin-auth').style.display = 'none';
+                    document.getElementById('admin-panel').style.display = 'block';
+                    document.getElementById('adm-welcome').innerText = "Панель: " + this.user;
+                    this.render();
+                } else alert("Помилка доступу");
             }
         };
 
         document.getElementById('reg-form').onsubmit = async (e) => {
             e.preventDefault();
-            const btn = document.getElementById('r-btn'); btn.innerText = "ВІДПРАВКА...";
+            const btn = document.getElementById('r-btn');
+            btn.innerText = "ЗАВАНТАЖЕННЯ...";
+            btn.disabled = true;
+
             const file = document.getElementById('r-file').files[0];
             const reader = new FileReader();
             reader.onload = async () => {
-                const p = { action: "register", name: document.getElementById('r-name').value, city: document.getElementById('r-city').value, fileData: reader.result.split(',')[1], fileName: file.name, mimeType: file.type };
-                await fetch(API, { method: 'POST', body: JSON.stringify(p) });
-                alert("Успішно!"); location.reload();
+                const payload = {
+                    action: "register",
+                    name: document.getElementById('r-name').value,
+                    city: document.getElementById('r-city').value,
+                    fileData: reader.result.split(',')[1],
+                    fileName: file.name,
+                    mimeType: file.type
+                };
+                await fetch(API, { method: 'POST', body: JSON.stringify(payload) });
+                alert("Трек відправлено! Чекай на рішення суддів.");
+                location.reload();
             };
             reader.readAsDataURL(file);
         };
 
-        window.onload = () => { window.Telegram.WebApp.expand(); app.load(); };
+        window.onload = () => {
+            window.Telegram.WebApp.expand();
+            app.load();
+        };
     </script>
 </body>
 </html>

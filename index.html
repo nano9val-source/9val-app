@@ -3,185 +3,187 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>9VAl BATTLE | PRO SYSTEM</title>
+<title>9VAL BATTLE</title>
 
 <style>
 :root {
-    --accent:#ff9f0a;--bg:#000;--card:#1c1c1e;--text:#fff;
-    --dim:#8e8e93;--border:#2c2c2e;
+  --accent:#ff9f0a;--bg:#000;--card:#1c1c1e;--text:#fff;
+  --dim:#8e8e93;--border:#2c2c2e;
 }
-*{box-sizing:border-box}
-body{margin:0;font-family:-apple-system;background:var(--bg);color:var(--text);padding-bottom:120px}
-
-.tab-bar{
-    position:fixed;bottom:0;left:0;right:0;
-    display:flex;background:#0a0a0a;padding:12px 5px 35px;
-    border-top:1px solid var(--border)
-}
-.tab-item{flex:1;text-align:center;font-size:10px;color:var(--dim);cursor:pointer}
-.tab-item.active{color:var(--accent)}
-.tab-icon{font-size:22px;display:block}
-
+body{margin:0;font-family:-apple-system;background:var(--bg);color:var(--text)}
 .page{display:none;padding:20px}
 .page.active{display:block}
-
-.glass-card{
-    background:var(--card);border-radius:20px;
-    padding:20px;margin-bottom:15px;border:1px solid var(--border)
-}
-.btn{
-    background:var(--accent);border:none;padding:16px;
-    border-radius:14px;font-weight:800;width:100%;cursor:pointer
-}
-
-.v-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px}
-.v-box{background:#000;border:1px solid #333;border-radius:12px;padding:10px;text-align:center}
-.v-box label{font-size:9px;color:var(--dim)}
-.v-box input{background:none;border:none;color:var(--accent);font-size:22px;font-weight:900;text-align:center;width:100%}
-
-.rank-item{
-    display:flex;justify-content:space-between;
-    padding:15px;border-bottom:1px solid #222
-}
-.rank-val{color:var(--accent);font-weight:900;font-size:20px}
+.card{background:var(--card);border:1px solid var(--border);border-radius:18px;padding:18px;margin-bottom:15px}
+input,textarea{width:100%;padding:14px;border-radius:12px;border:1px solid #333;background:#262629;color:#fff}
+button{width:100%;padding:16px;border-radius:14px;border:none;background:var(--accent);font-weight:800}
+.tab{position:fixed;bottom:0;left:0;right:0;display:flex;background:#0a0a0a}
+.tab div{flex:1;text-align:center;padding:12px;font-size:11px;color:var(--dim)}
+.tab .active{color:var(--accent)}
+.grid{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.score input{font-size:20px;text-align:center;color:var(--accent);background:#000;border:none}
+.rank{display:flex;justify-content:space-between;padding:12px;border-bottom:1px solid #222}
 </style>
 </head>
 
 <body>
 
-<!-- HOME -->
-<div id="p-home" class="page active">
-    <h1>9VAl BATTLE</h1>
-    <div class="glass-card">
-        <b>ПРАВИЛА</b>
-        <ul style="font-size:13px;color:#ccc">
-            <li>1 авторський MP3 трек</li>
-            <li>Без AI та плагіату</li>
-            <li>Оцінки: Текст / Флоу / Подача / Вайб</li>
-        </ul>
-    </div>
+<!-- ================= HOME ================= -->
+<div id="home" class="page active">
+<h1>9VAL BATTLE</h1>
+
+<div class="card">
+<b>ТЕМА ПЕРШОГО РАУНДУ:</b><br>
+<span id="round-theme" style="color:var(--accent)">Хто ти без імені</span>
 </div>
 
-<!-- STATS -->
-<div id="p-stats" class="page">
-    <h2>РЕЙТИНГ</h2>
-    <div class="glass-card" style="padding:0">
-        <div class="rank-item">
-            <span>1. MC RAP</span>
-            <span class="rank-val" id="finalScore">0.00</span>
-        </div>
-    </div>
+<div class="card">
+<h3>ПРАВИЛА</h3>
+<ul style="font-size:13px;color:#ddd">
+<li>1 авторський трек MP3</li>
+<li>Трек складається з 2 частин</li>
+<li>1 — розкриття теми</li>
+<li>2 — батлова частина</li>
+<li>AI, плагіат — заборонено</li>
+</ul>
+</div>
 </div>
 
-<!-- ADMIN -->
-<div id="p-admin" class="page">
-    <div id="auth">
-        <h2>ВХІД СУДДІ</h2>
-        <div class="glass-card">
-            <input id="login" placeholder="Імʼя судді">
-            <input id="pass" type="password" placeholder="Пароль">
-            <button class="btn" onclick="app.login()">УВІЙТИ</button>
-        </div>
-    </div>
-
-    <div id="panel" style="display:none">
-        <h3 id="judgeName"></h3>
-        <div class="glass-card">
-            <b>ОЦІНКА: MC RAP</b>
-            <div class="v-grid">
-                <div class="v-box"><label>ТЕКСТ</label><input id="v1" type="number" value="0"></div>
-                <div class="v-box"><label>ФЛОУ</label><input id="v2" type="number" value="0"></div>
-                <div class="v-box"><label>ПОДАЧА</label><input id="v3" type="number" value="0"></div>
-                <div class="v-box"><label>ВАЙБ</label><input id="v4" type="number" value="0"></div>
-            </div>
-            <button class="btn" onclick="app.saveScore()">ЗБЕРЕГТИ ОЦІНКУ</button>
-        </div>
-    </div>
+<!-- ================= REG ================= -->
+<div id="reg" class="page">
+<h2>ЗАЯВКА</h2>
+<div class="card">
+<input placeholder="Нікнейм" id="r-name">
+<input type="file">
+<label style="font-size:12px">
+<input type="checkbox"> Я згоден з правилами
+</label>
+<button onclick="alert('Заявка прийнята')">ВІДПРАВИТИ</button>
+</div>
 </div>
 
-<!-- NAV -->
-<nav class="tab-bar">
-    <div class="tab-item active" onclick="app.nav('home',this)">
-        <span class="tab-icon">🏠</span>ГОЛОВНА
-    </div>
-    <div class="tab-item" onclick="app.nav('stats',this)">
-        <span class="tab-icon">📊</span>ТАБЛИЦЯ
-    </div>
-    <div class="tab-item" onclick="app.nav('admin',this)">
-        <span class="tab-icon">🛡️</span>АДМІН
-    </div>
-</nav>
+<!-- ================= STATS ================= -->
+<div id="stats" class="page">
+<h2>РЕЙТИНГ</h2>
+<div class="card">
+<div class="rank">
+<span>MC RAP</span>
+<span id="final-score" style="color:var(--accent)">0.00</span>
+</div>
+</div>
+</div>
+
+<!-- ================= ADMIN ================= -->
+<div id="admin" class="page">
+
+<div id="login">
+<h2>ВХІД СУДДІ</h2>
+<div class="card">
+<input id="login-name" placeholder="Суддя">
+<input id="login-pass" placeholder="Пароль">
+<button onclick="login()">УВІЙТИ</button>
+</div>
+</div>
+
+<div id="panel" style="display:none">
+
+<h3 id="judge-label"></h3>
+
+<div class="card">
+<h4>ТЕМА РАУНДУ</h4>
+<input id="theme-input">
+<button onclick="saveTheme()">ЗБЕРЕГТИ ТЕМУ</button>
+</div>
+
+<div class="card">
+<h4>ОЦІНКА — MC RAP</h4>
+
+<b>РОЗКРИТТЯ ТЕМИ</b>
+<div class="grid score">
+<input id="t1" placeholder="Зміст">
+<input id="t2" placeholder="Ідея">
+<input id="t3" placeholder="Цілісність">
+</div>
+
+<b>БАТЛ</b>
+<div class="grid score">
+<input id="b1" placeholder="Текст">
+<input id="b2" placeholder="Флоу">
+<input id="b3" placeholder="Подача">
+<input id="b4" placeholder="Панчі">
+</div>
+
+<button onclick="saveScore()">ЗБЕРЕГТИ ОЦІНКУ</button>
+</div>
+
+</div>
+</div>
+
+<!-- ================= NAV ================= -->
+<div class="tab">
+<div class="active" onclick="nav('home',this)">ГОЛОВНА</div>
+<div onclick="nav('reg',this)">УЧАСТЬ</div>
+<div onclick="nav('stats',this)">РЕЙТИНГ</div>
+<div onclick="nav('admin',this)">АДМІН</div>
+</div>
 
 <script>
-const judges = [
-    {name:"TONY MUS1CZ",pass:"1"},
-    {name:"NeedForRap",pass:"1"},
-    {name:"Nano",pass:"1"},
-    {name:"KAZHAN",pass:"1"}
+const judges=[
+{name:"TONY",pass:"1"},
+{name:"NANO",pass:"1"},
+{name:"KAZHAN",pass:"1"},
+{name:"NEED",pass:"1"}
 ];
 
-const participantScores = {
-    "MC RAP": { judges:{}, final:null }
+let currentJudge=null;
+
+const data={
+theme:"Хто ти без імені",
+scores:{}
 };
 
-const app = {
-    currentJudge:null,
+function nav(id,el){
+document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
+document.querySelectorAll('.tab div').forEach(t=>t.classList.remove('active'));
+document.getElementById(id).classList.add('active');
+el.classList.add('active');
+}
 
-    nav(id,el){
-        document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
-        document.querySelectorAll('.tab-item').forEach(t=>t.classList.remove('active'));
-        document.getElementById('p-'+id).classList.add('active');
-        el.classList.add('active');
-    },
+function login(){
+const l=document.getElementById('login-name').value;
+const p=document.getElementById('login-pass').value;
+const j=judges.find(x=>x.name===l&&x.pass===p);
+if(!j)return alert("Помилка");
+currentJudge=j;
+login.style.display="none";
+panel.style.display="block";
+judge-label.innerText="СУДДЯ: "+j.name;
+theme-input.value=data.theme;
+}
 
-    login(){
-        const l=login.value,p=pass.value;
-        const j=judges.find(x=>x.name===l&&x.pass===p);
-        if(!j){alert("Доступ заборонено");return;}
-        this.currentJudge=j;
-        auth.style.display="none";
-        panel.style.display="block";
-        judgeName.innerText="СУДДЯ: "+j.name;
-    },
+function saveTheme(){
+data.theme=theme-input.value;
+round-theme.innerText=data.theme;
+alert("Тему змінено");
+}
 
-    saveScore(){
-        const name=this.currentJudge.name;
-        const p="MC RAP";
+function saveScore(){
+if(data.scores[currentJudge.name]) return alert("Ви вже голосували");
 
-        if(participantScores[p].judges[name]){
-            alert("Ви вже голосували");
-            return;
-        }
+const themeAvg=(+t1.value+ +t2.value+ +t3.value)/3;
+const battleAvg=(+b1.value+ +b2.value+ +b3.value+ +b4.value)/4;
+const final=(themeAvg+battleAvg)/2;
 
-        const avg=(
-            +v1.value + +v2.value + +v3.value + +v4.value
-        )/4;
+data.scores[currentJudge.name]=final;
 
-        participantScores[p].judges[name]=avg;
-
-        alert(`Суддя ${name}: ${avg.toFixed(1)}`);
-
-        v1.value=v2.value=v3.value=v4.value=0;
-
-        this.calcFinal(p);
-    },
-
-    calcFinal(p){
-        const scores=Object.values(participantScores[p].judges);
-        if(scores.length<judges.length)return;
-
-        const final=scores.reduce((a,b)=>a+b,0)/scores.length;
-        participantScores[p].final=final;
-        finalScore.innerText=final.toFixed(2);
-
-        alert(
-            "ВСІ СУДДІ ПРОГОЛОСУВАЛИ\n\n"+
-            Object.entries(participantScores[p].judges)
-            .map(([j,s])=>`${j}: ${s.toFixed(1)}`).join("\n")+
-            `\n\nФІНАЛ: ${final.toFixed(2)}`
-        );
-    }
-};
+if(Object.keys(data.scores).length===judges.length){
+const total=Object.values(data.scores)
+.reduce((a,b)=>a+b,0)/judges.length;
+final-score.innerText=total.toFixed(2);
+alert("ВСІ СУДДІ ПРОГОЛОСУВАЛИ");
+}else{
+alert("Оцінку збережено");
+}
+}
 </script>
 
 </body>

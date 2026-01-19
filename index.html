@@ -3,355 +3,352 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>9VAl-BATTL | OFFICIAL APP</title>
+    <title>9VAl BATTLE PRO</title>
     <script src="https://telegram.org/js/telegram-web-app.js"></script>
     <style>
         :root {
-            --accent: #f39c12;
-            --bg: #000;
-            --card: #1c1c1e;
-            --radius: 18px;
-            --text: #ffffff;
+            --accent: #ff9f0a;
+            --bg: #000000;
+            --card-bg: rgba(28, 28, 30, 0.7);
+            --blur: blur(20px);
+            --text-main: #ffffff;
+            --text-dim: #8e8e93;
         }
 
         body {
-            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+            font-family: -apple-system, system-ui, sans-serif;
             background-color: var(--bg);
-            color: var(--text);
+            color: var(--text-main);
             margin: 0;
-            padding: 15px;
-            padding-top: 85px;
-            overflow-x: hidden;
+            -webkit-font-smoothing: antialiased;
         }
 
-        /* НАВІГАЦІЯ */
-        .nav {
+        /* Навігація внизу (як у справжніх додатках) */
+        .tab-bar {
             position: fixed;
-            top: 0;
+            bottom: 0;
             left: 0;
             right: 0;
-            background: rgba(10, 10, 10, 0.9);
-            backdrop-filter: blur(15px);
+            background: rgba(10, 10, 10, 0.8);
+            backdrop-filter: var(--blur);
             display: flex;
-            overflow-x: auto;
-            padding: 12px 5px;
-            border-bottom: 0.5px solid #333;
-            z-index: 9999;
-            scrollbar-width: none;
-        }
-        .nav::-webkit-scrollbar { display: none; }
-        
-        .nav-item {
-            color: #777;
-            font-size: 10px;
-            font-weight: 800;
-            text-align: center;
-            white-space: nowrap;
-            padding: 10px 18px;
-            border-radius: 12px;
-            transition: 0.3s;
-            cursor: pointer;
-            flex-shrink: 0;
-            text-transform: uppercase;
+            justify-content: space-around;
+            padding: 10px 0 calc(env(safe-area-inset-bottom) + 10px);
+            border-top: 0.5px solid #333;
+            z-index: 1000;
         }
 
-        .nav-item.active {
-            color: var(--accent);
-            background: rgba(243, 156, 18, 0.15);
-        }
-
-        .tab-content { display: none; animation: fadeIn 0.4s ease; }
-        .tab-content.active { display: block; }
-
-        @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(10px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
-
-        .card {
-            background: var(--card);
-            border-radius: var(--radius);
-            padding: 22px;
-            margin-bottom: 15px;
-            border: 0.5px solid #333;
-        }
-
-        .prize-badge {
-            background: linear-gradient(45deg, #f39c12, #e67e22);
-            color: #000;
-            padding: 6px 16px;
-            border-radius: 20px;
-            font-weight: 900;
-            font-size: 12px;
-            display: inline-block;
-            margin-bottom: 12px;
-        }
-
-        /* СУДДІ (ОНОВЛЕНО) */
-        .judge-card {
+        .tab-item {
             display: flex;
+            flex-direction: column;
             align-items: center;
-            gap: 15px;
-            background: #252527;
-            padding: 12px;
-            border-radius: 18px;
-            margin-bottom: 12px;
-            border: 0.5px solid #3a3a3c;
-        }
-        .judge-img {
-            width: 60px;
-            height: 60px;
-            border-radius: 50%;
-            object-fit: cover;
-            border: 2px solid var(--accent);
-            background: #333;
-        }
-        .judge-info { flex-grow: 1; }
-        .judge-info b { font-size: 14px; display: block; margin-bottom: 2px; }
-        .judge-info span { font-size: 10px; color: var(--accent); text-transform: uppercase; font-weight: bold; }
-        .judge-link {
-            background: rgba(255,255,255,0.05);
-            color: #fff;
-            padding: 8px;
-            border-radius: 10px;
+            color: var(--text-dim);
             font-size: 10px;
             text-decoration: none;
-            font-weight: bold;
-            border: 0.5px solid #444;
+            transition: 0.2s;
         }
 
-        /* АДМІНКА */
-        .admin-vote-grid {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 10px;
-            margin-top: 15px;
+        .tab-item.active { color: var(--accent); }
+        .tab-item i { font-size: 20px; margin-bottom: 4px; }
+
+        /* Контейнери сторінок */
+        .page {
+            display: none;
+            padding: 20px;
+            padding-bottom: 100px;
+            animation: fadeIn 0.3s ease-out;
         }
-        .vote-item {
-            background: #111;
-            padding: 8px 12px;
-            border-radius: 12px;
-            border: 1px solid #333;
+        .page.active { display: block; }
+
+        @keyframes fadeIn { from { opacity: 0; transform: scale(0.98); } to { opacity: 1; transform: scale(1); } }
+
+        /* Скляні картки */
+        .glass-card {
+            background: var(--card-bg);
+            backdrop-filter: var(--blur);
+            border-radius: 20px;
+            padding: 20px;
+            margin-bottom: 15px;
+            border: 0.5px solid rgba(255,255,255,0.1);
         }
-        .vote-item label {
-            display: block;
+
+        .hero-title { font-size: 28px; font-weight: 800; margin-bottom: 5px; background: linear-gradient(to right, #fff, #888); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+        
+        /* СУДДІ */
+        .judge-row {
+            display: flex;
+            align-items: center;
+            padding: 12px 0;
+            border-bottom: 0.5px solid #333;
+        }
+        .judge-avatar {
+            width: 50px;
+            height: 50px;
+            border-radius: 15px;
+            background: linear-gradient(45deg, #333, #111);
+            margin-right: 15px;
+            border: 1px solid var(--accent);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+        }
+        .judge-info b { display: block; font-size: 16px; }
+        .judge-info span { font-size: 12px; color: var(--accent); }
+        .insta-btn {
+            margin-left: auto;
+            background: #fff;
+            color: #000;
+            padding: 6px 12px;
+            border-radius: 10px;
+            font-size: 11px;
+            font-weight: 700;
+            text-decoration: none;
+        }
+
+        /* Плеєр */
+        audio { width: 100%; height: 35px; filter: invert(1); margin-top: 10px; }
+        
+        .status-badge {
             font-size: 9px;
-            color: var(--accent);
+            padding: 3px 8px;
+            border-radius: 5px;
             text-transform: uppercase;
             font-weight: 800;
         }
-        .vote-item input {
-            background: transparent;
+        .status-new { background: #5856d6; }
+        .status-ok { background: #34c759; }
+
+        .btn-action {
+            background: var(--accent);
+            color: #000;
             border: none;
-            color: #fff;
-            font-size: 18px;
-            font-weight: 900;
+            padding: 15px;
+            border-radius: 15px;
             width: 100%;
+            font-weight: 700;
+            font-size: 16px;
+            margin-top: 10px;
         }
 
         input {
             width: 100%;
-            padding: 16px;
-            margin-bottom: 12px;
-            background: #2c2c2e;
-            border: 1px solid #3a3a3c;
-            border-radius: 14px;
+            padding: 15px;
+            background: #252527;
+            border: none;
+            border-radius: 12px;
             color: #fff;
+            margin-bottom: 10px;
             box-sizing: border-box;
         }
-
-        .btn-main {
-            background: var(--accent);
-            color: #000;
-            border: none;
-            padding: 18px;
-            border-radius: 16px;
-            width: 100%;
-            font-weight: 800;
-            cursor: pointer;
-        }
-
-        audio { width: 100%; height: 36px; filter: invert(1); margin: 12px 0; }
     </style>
 </head>
 <body>
 
-    <nav class="nav">
-        <div class="nav-item active" onclick="showTab('tab-home', this)">🏠 ГОЛОВНА</div>
-        <div class="nav-item" onclick="showTab('tab-bracket', this)">📊 СІТКА</div>
-        <div class="nav-item" onclick="showTab('tab-player', this)">🎧 ПЛЕЄР</div>
-        <div class="nav-item" onclick="showTab('tab-results', this)">🏆 РЕЙТИНГ</div>
-        <div class="nav-item" onclick="showTab('tab-judges', this)">👨‍⚖️ СУДДІ</div>
-        <div class="nav-item" onclick="showTab('tab-reg', this)">🎤 УЧАСТЬ</div>
-        <div class="nav-item" onclick="showTab('tab-admin', this)">🛡️ АДМІН</div>
-    </nav>
-
-    <div id="tab-home" class="tab-content active">
-        <div class="card">
-            <div class="prize-badge">ПРИЗОВИЙ ФОНД: 50 000 ГРН</div>
-            <h2>9VAL BATTLE: SEASON 1</h2>
-            <p>Стань частиною нової історії українського репу.</p>
-            <button class="btn-main" onclick="showTab('tab-reg')">ПОДАТИ ЗАЯВКУ</button>
+    <div id="page-home" class="page active">
+        <h1 class="hero-title">9VAl BATTLE</h1>
+        <div class="glass-card">
+            <div style="color: var(--accent); font-weight: 800; margin-bottom: 5px;">SEASON 1</div>
+            <p style="margin: 0; font-size: 14px; color: var(--text-dim);">Головна подія українського репу цього року. 50 000 ГРН на кону.</p>
         </div>
-    </div>
-
-    <div id="tab-bracket" class="tab-content">
-        <h2>Турнірна Сітка</h2>
-        <div class="card">Очікуйте оновлення сітки після відбору</div>
-    </div>
-
-    <div id="tab-player" class="tab-content">
-        <h2>Треки учасників</h2>
-        <div id="player-list">Завантаження...</div>
-    </div>
-
-    <div id="tab-results" class="tab-content">
-        <h2>Рейтинг балів</h2>
-        <div id="ranking-list">Завантаження...</div>
-    </div>
-
-    <div id="tab-judges" class="tab-content">
-        <h2>Суддівська колегія</h2>
         
-        <div class="judge-card">
-            <img src="https://lh3.googleusercontent.com/d/1t87R4n2396j23v2148446853_173025155183056_4838457951404293053_n" class="judge-img">
-            <div class="judge-info"><b>TONY MUS1CZ</b><span>Суддя #1</span></div>
-            <a href="https://www.instagram.com/t0ny_mus1cz_prod/" class="judge-link">INSTA</a>
-        </div>
-
-        <div class="judge-card">
-            <img src="https://lh3.googleusercontent.com/d/1f8d082_image" class="judge-img">
-            <div class="judge-info"><b>NeedForRap</b><span>Суддя #2</span></div>
-            <a href="https://www.instagram.com/aleksandr_kozlovvvvv/" class="judge-link">INSTA</a>
-        </div>
-
-        <div class="judge-card">
-            <img src="https://lh3.googleusercontent.com/d/1c448_image" class="judge-img">
-            <div class="judge-info"><b>Nano</b><span>Суддя #3</span></div>
-            <a href="https://www.instagram.com/nano9val/" class="judge-link">INSTA</a>
-        </div>
-
-        <div class="judge-card">
-            <img src="https://lh3.googleusercontent.com/d/1f8d766_image" class="judge-img">
-            <div class="judge-info"><b>KAZHAN</b><span>Суддя #4</span></div>
-            <a href="https://www.instagram.com/ka.zhan_/" class="judge-link">INSTA</a>
+        <div class="glass-card">
+            <h3>ПРАВИЛА ТА ЕТАПИ</h3>
+            <div style="font-size: 14px; line-height: 1.6;">
+                • <b>Відбір:</b> Вільна тема (до 2 хв)<br>
+                • <b>Суддівство:</b> 4 професіонали<br>
+                • <b>Критерії:</b> Текст, Флоу, Подача, Вайб
+            </div>
         </div>
     </div>
 
-    <div id="tab-reg" class="tab-content">
-        <div class="card">
-            <h2>Реєстрація</h2>
+    <div id="page-judges" class="page">
+        <h2>СУДДІВСЬКА ЛАВА</h2>
+        <div class="glass-card">
+            <div class="judge-row">
+                <div class="judge-avatar">TM</div>
+                <div class="judge-info"><b>TONY MUS1CZ</b><span>Суддя #1</span></div>
+                <a href="https://www.instagram.com/t0ny_mus1cz_prod/" class="insta-btn">INSTA</a>
+            </div>
+            <div class="judge-row">
+                <div class="judge-avatar">NR</div>
+                <div class="judge-info"><b>NeedForRap</b><span>Суддя #2</span></div>
+                <a href="https://www.instagram.com/aleksandr_kozlovvvvv/" class="insta-btn">INSTA</a>
+            </div>
+            <div class="judge-row">
+                <div class="judge-avatar">N</div>
+                <div class="judge-info"><b>Nano</b><span>Суддя #3</span></div>
+                <a href="https://www.instagram.com/nano9val/" class="insta-btn">INSTA</a>
+            </div>
+            <div class="judge-row" style="border:none">
+                <div class="judge-avatar">K</div>
+                <div class="judge-info"><b>KAZHAN</b><span>Суддя #4</span></div>
+                <a href="https://www.instagram.com/ka.zhan_/" class="insta-btn">INSTA</a>
+            </div>
+        </div>
+    </div>
+
+    <div id="page-player" class="page">
+        <h2>ТРЕКИ УЧАСНИКІВ</h2>
+        <div id="content-player">Завантаження...</div>
+    </div>
+
+    <div id="page-reg" class="page">
+        <h2>ПОДАТИ ЗАЯВКУ</h2>
+        <div class="glass-card">
             <form id="reg-form">
                 <input type="text" id="r-name" placeholder="Твій нікнейм" required>
                 <input type="text" id="r-city" placeholder="Місто" required>
+                <label style="font-size: 12px; color: var(--text-dim);">ФАЙЛ (MP3):</label>
                 <input type="file" id="r-file" accept="audio/*" required>
-                <button type="submit" id="r-btn" class="btn-main">ВІДПРАВИТИ</button>
+                <button type="submit" class="btn-action" id="r-btn">ВІДПРАВИТИ ТРЕК</button>
             </form>
         </div>
     </div>
 
-    <div id="tab-admin" class="tab-content">
-        <div id="admin-login">
-            <div class="card">
-                <h2>Вхід Судді</h2>
+    <div id="page-admin" class="page">
+        <div id="admin-auth">
+            <h2>ВХІД СУДДІ</h2>
+            <div class="glass-card">
                 <input type="text" id="adm-u" placeholder="Логін">
                 <input type="password" id="adm-p" placeholder="Пароль">
-                <button class="btn-main" onclick="login()">УВІЙТИ</button>
+                <button class="btn-action" onclick="app.login()">УВІЙТИ</button>
             </div>
         </div>
-        <div id="admin-work" style="display:none;">
+        <div id="admin-panel" style="display:none;">
+            <h2 id="adm-name">Адмін-панель</h2>
             <div id="admin-list"></div>
         </div>
     </div>
 
+    <nav class="tab-bar">
+        <a href="#" class="tab-item active" onclick="app.nav('home', this)"><i>🏠</i><span>Головна</span></a>
+        <a href="#" class="tab-item" onclick="app.nav('judges', this)"><i>⚖️</i><span>Судді</span></a>
+        <a href="#" class="tab-item" onclick="app.nav('player', this)"><i>🎵</i><span>Треки</span></a>
+        <a href="#" class="tab-item" onclick="app.nav('reg', this)"><i>🎤</i><span>Участь</span></a>
+        <a href="#" class="tab-item" onclick="app.nav('admin', this)"><i>🔑</i><span>Адмін</span></a>
+    </nav>
+
     <script>
         const API = "https://script.google.com/macros/s/AKfycbwLlgAFARTIJX3CPPH4eRevaqUDO9gErXoI5PiapR3i2xEJLRFyuRfApYANdVsSHAJ4/exec";
-        const tg = window.Telegram.WebApp;
-        let cacheData = null;
-        let user = localStorage.getItem('judgeName');
+        
+        const app = {
+            data: null,
+            user: null,
 
-        tg.expand();
+            async init() {
+                this.load();
+                // Telegram Web App init
+                window.Telegram.WebApp.expand();
+                window.Telegram.WebApp.backgroundColor = '#000000';
+            },
 
-        function showTab(t, el) {
-            document.querySelectorAll('.tab-content').forEach(c => c.classList.remove('active'));
-            document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
-            document.getElementById(t).classList.add('active');
-            if(el) el.classList.add('active');
-            renderData();
-        }
+            nav(pageId, el) {
+                document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+                document.querySelectorAll('.tab-item').forEach(t => t.classList.remove('active'));
+                document.getElementById('page-' + pageId).classList.add('active');
+                el.classList.add('active');
+                if(this.data) this.render();
+            },
 
-        async function fetchData(force = false) {
-            if(cacheData && !force) return cacheData;
-            try {
-                const response = await fetch(API + "?action=getData");
-                cacheData = await response.json();
-                return cacheData;
-            } catch(e) { console.error(e); }
-        }
+            async load() {
+                try {
+                    const res = await fetch(API + "?action=getData");
+                    this.data = await res.json();
+                    this.render();
+                } catch(e) { console.error("Помилка завантаження"); }
+            },
 
-        function renderData() {
-            if(!cacheData) return;
-            const users = (cacheData.allUsers || cacheData.users || []).slice(1);
-            
-            // Плеєр
-            document.getElementById('player-list').innerHTML = users.map(u => `
-                <div class="card">
-                    <b>${u[1]}</b><br><small>${u[2]}</small>
-                    <audio controls preload="none" src="${u[3].replace("open?id=", "uc?export=download&id=")}"></audio>
-                </div>
-            `).join('');
+            fixUrl(url) {
+                return url ? url.replace("open?id=", "uc?export=download&id=") : "";
+            },
 
-            // Рейтинг
-            document.getElementById('ranking-list').innerHTML = users.map(u => {
-                const s = (((Number(u[5])||0)+(Number(u[6])||0)+(Number(u[7])||0)+(Number(u[8])||0))/4).toFixed(1);
-                return `<div class="card" style="display:flex; justify-content:space-between"><b>${u[1]}</b><b>${s}</b></div>`;
-            }).join('');
-
-            // Адмінка
-            if(user) {
-                document.getElementById('admin-login').style.display = 'none';
-                document.getElementById('admin-work').style.display = 'block';
-                document.getElementById('admin-list').innerHTML = users.map((u, i) => `
-                    <div class="card">
-                        <b>${u[1]}</b>
-                        <audio controls preload="none" src="${u[3].replace("open?id=", "uc?export=download&id=")}"></audio>
-                        <div class="admin-vote-grid">
-                            <div class="vote-item"><label>Текст</label><input type="number" id="t1-${i}" value="${u[5]||0}"></div>
-                            <div class="vote-item"><label>Флоу</label><input type="number" id="t2-${i}" value="${u[6]||0}"></div>
-                            <div class="vote-item"><label>Подача</label><input type="number" id="t3-${i}" value="${u[7]||0}"></div>
-                            <div class="vote-item"><label>Вайб</label><input type="number" id="t4-${i}" value="${u[8]||0}"></div>
-                        </div>
-                        <button class="btn-main" style="margin-top:10px" onclick="vote(${i+2}, ${i})">ЗБЕРЕГТИ</button>
+            render() {
+                const users = (this.data.allUsers || []).slice(1);
+                
+                // Плеєр (тільки прийняті)
+                const approved = users.filter(u => u[4] === 'Прийнято');
+                document.getElementById('content-player').innerHTML = approved.map(u => `
+                    <div class="glass-card">
+                        <b>${u[1]}</b> <span style="float:right; color:var(--accent)">${u[2]}</span>
+                        <audio controls preload="none" src="${this.fixUrl(u[3])}"></audio>
                     </div>
-                `).join('');
+                `).join('') || "<p>Треки з'являться після перевірки суддями.</p>";
+
+                // Адмінка
+                if(this.user) {
+                    document.getElementById('admin-list').innerHTML = users.map((u, i) => `
+                        <div class="glass-card">
+                            <div style="display:flex; justify-content:space-between">
+                                <b>${u[1] || 'Новий'}</b>
+                                <span class="status-badge ${u[4] === 'Прийнято' ? 'status-ok' : 'status-new'}">${u[4] || 'На розгляді'}</span>
+                            </div>
+                            <audio controls preload="none" src="${this.fixUrl(u[3])}"></audio>
+                            <div style="display:grid; grid-template-columns: 1fr 1fr; gap:10px; margin-top:10px;">
+                                <input type="number" id="v1-${i}" value="${u[5]||0}" placeholder="Текст">
+                                <input type="number" id="v2-${i}" value="${u[6]||0}" placeholder="Флоу">
+                            </div>
+                            ${u[4] !== 'Прийнято' ? `<button class="btn-action" style="background:#34c759" onclick="app.setStatus(${i+2}, 'Прийнято')">ДОПУСТИТИ ДО БАТЛУ</button>` : ''}
+                            <button class="btn-action" style="font-size:12px; padding:10px" onclick="app.saveVote(${i+2}, ${i})">ЗБЕРЕГТИ БАЛИ</button>
+                        </div>
+                    `).join('');
+                }
+            },
+
+            async login() {
+                const u = document.getElementById('adm-u').value;
+                const p = document.getElementById('adm-p').value;
+                const judge = this.data.judges.find(j => j[0] == u && j[1] == p);
+                if(judge) {
+                    this.user = judge[2];
+                    document.getElementById('admin-auth').style.display = 'none';
+                    document.getElementById('admin-panel').style.display = 'block';
+                    document.getElementById('adm-name').innerText = "Суддя: " + this.user;
+                    this.render();
+                } else alert("Помилка доступу");
+            },
+
+            async setStatus(row, status) {
+                await fetch(API, { method: 'POST', body: JSON.stringify({ action: "vote", row: row, status: status }) });
+                this.load();
+            },
+
+            async saveVote(row, i) {
+                const payload = {
+                    action: "vote", row: row,
+                    text: document.getElementById(`v1-${i}`).value,
+                    flow: document.getElementById(`v2-${i}`).value
+                };
+                await fetch(API, { method: 'POST', body: JSON.stringify(payload) });
+                alert("Збережено");
+                this.load();
             }
-        }
+        };
 
-        async function login() {
-            const d = await fetchData(true);
-            const j = d.judges.find(i => i[0] == document.getElementById('adm-u').value && i[1] == document.getElementById('adm-p').value);
-            if(j) {
-                user = j[2];
-                localStorage.setItem('judgeName', user);
-                renderData();
-            } else alert("Невірний вхід");
-        }
-
-        async function vote(row, i) {
-            const btn = event.target; btn.innerText = "...";
-            const payload = {
-                action: "vote", row: row,
-                text: document.getElementById(`t1-${i}`).value,
-                flow: document.getElementById(`t2-${i}`).value,
-                podacha: document.getElementById(`t3-${i}`).value,
-                vibe: document.getElementById(`t4-${i}`).value
+        // Реєстрація
+        document.getElementById('reg-form').onsubmit = async (e) => {
+            e.preventDefault();
+            const btn = document.getElementById('r-btn');
+            btn.innerText = "ЗАВАНТАЖЕННЯ...";
+            const file = document.getElementById('r-file').files[0];
+            const reader = new FileReader();
+            reader.onload = async () => {
+                const payload = {
+                    action: "register",
+                    name: document.getElementById('r-name').value,
+                    city: document.getElementById('r-city').value,
+                    fileData: reader.result.split(',')[1],
+                    fileName: file.name,
+                    mimeType: file.type
+                };
+                await fetch(API, { method: 'POST', body: JSON.stringify(payload) });
+                alert("Заявка прийнята!");
+                location.reload();
             };
-            await fetch(API, { method: 'POST', body: JSON.stringify(payload) });
-            btn.innerText = "ГОТОВО ✅";
-            fetchData(true);
-        }
+            reader.readAsDataURL(file);
+        };
 
-        window.onload = async () => { await fetchData(); renderData(); };
+        window.onload = () => app.init();
     </script>
 </body>
 </html>

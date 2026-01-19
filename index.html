@@ -10,7 +10,7 @@
         body { font-family: -apple-system, system-ui, sans-serif; background: var(--bg); color: #fff; margin: 0; padding: 15px; padding-top: 85px; }
         
         /* НАВІГАЦІЯ */
-        .nav { position: fixed; top: 0; left: 0; right: 0; background: rgba(10,10,10,0.95); backdrop-filter: blur(15px); display: flex; overflow-x: auto; padding: 10px 5px; border-bottom: 0.5px solid #333; z-index: 9999; }
+        .nav { position: fixed; top: 0; left: 0; right: 0; background: rgba(10,10,10,0.95); backdrop-filter: blur(15px); display: flex; overflow-x: auto; padding: 10px 5px; border-bottom: 0.5px solid #333; z-index: 9999; scrollbar-width: none; }
         .nav-item { color: #777; font-size: 10px; font-weight: 800; text-align: center; white-space: nowrap; padding: 12px 15px; border-radius: 12px; transition: 0.3s; cursor: pointer; flex-shrink: 0; }
         .nav-item.active { color: var(--accent); background: rgba(243,156,18,0.1); }
 
@@ -55,7 +55,7 @@
     <div id="tab-home" class="tab-content active">
         <div class="card">
             <div class="prize-badge">ПРИЗ: 50 000 ГРН</div>
-            <h2 style="margin:0 0 10px 0;">BATTLE ARENA: SEASON 1</h2>
+            <h2 style="margin:0 0 10px 0;">9VAL BATTLE: SEASON 1</h2>
             <p style="font-size: 14px; color: #ccc;">Ласкаво просимо на найбільший онлайн-батл країни. Тут вирішує тільки твій скіл.</p>
             <h3>ПРАВИЛА:</h3>
             <ul class="rules-list">
@@ -111,12 +111,10 @@
                 <input type="text" id="r-city" placeholder="Місто" required>
                 <label style="font-size:12px; color:#777;">Завантаж трек (MP3):</label>
                 <input type="file" id="r-file" accept="audio/*" required>
-                
                 <div style="display:flex; gap:10px; align-items:flex-start; margin: 15px 0;">
                     <input type="checkbox" id="r-agree" style="width:20px; height:20px; margin:0;" required>
                     <label for="r-agree" style="font-size:12px; color:#aaa;">Я згоден з правилами батлу та обробкою даних</label>
                 </div>
-                
                 <button type="submit" id="r-btn" class="btn-main">ВІДПРАВИТИ</button>
             </form>
         </div>
@@ -148,29 +146,107 @@
         }
 
         async function load() {
-            const r = await fetch(API + "?action=getData");
-            const d = await r.json();
-            const all = d.allUsers || d.users;
-            const u = all.slice(1);
+            try {
+                const r = await fetch(API + "?action=getData");
+                const d = await r.json();
+                const all = d.allUsers || d.users || [];
+                if (all.length < 2) return;
+                
+                const u = all.slice(1);
 
-            // Плеєр
-            const ok = u.filter(i => i[4] === 'Прийнято');
-            document.getElementById('player-list').innerHTML = ok.map(i => `
-                <div class="card"><b>${i[1]}</b> (${i[2]})<audio controls src="${i[3]}"></audio></div>
-            `).join('');
+                // Плеєр
+                const ok = u.filter(i => i[4] === 'Прийнято');
+                const playerDiv = document.getElementById('player-list');
+                if (playerDiv) {
+                    playerDiv.innerHTML = ok.length ? ok.map(i => `
+                        <div class="card"><b>${i[1]}</b> (${i[2]})<audio controls src="${i[3]}"></audio></div>
+                    `).join('') : "Поки немає прийнятих треків";
+                }
 
-            // Рейтинг
-            const ranked = ok.map(i => ({
-                n: i[1], 
-                s: (((Number(i[5])||0)+(Number(i[6])||0)+(Number(i[7])||0)+(Number(i[8])||0))/4).toFixed(1)
-            })).sort((a,b) => b.s - a.s);
-            document.getElementById('ranking-list').innerHTML = ranked.map(i => `
-                <div class="card" style="display:flex; justify-content:space-between;"><span>${i.n}</span><b>${i.s}</b></div>
-            `).join('');
+                // Рейтинг
+                const ranked = ok.map(i => ({
+                    n: i[1], 
+                    s: (((Number(i[5])||0)+(Number(i[6])||0)+(Number(i[7])||0)+(Number(i[8])||0))/4).toFixed(1)
+                })).sort((a,b) => b.s - a.s);
+                const rankDiv = document.getElementById('ranking-list');
+                if (rankDiv) {
+                    rankDiv.innerHTML = ranked.map(i => `
+                        <div class="card" style="display:flex; justify-content:space-between;"><span>${i.n}</span><b>${i.s}</b></div>
+                    `).join('');
+                }
 
-            // Адмінка
-            if(user) {
-                document.getElementById('admin-list').innerHTML = u.map((item, idx) => `
-                    <div class="card">
-                        <b>${item[1]}</b>
-                        <div style="display:grid; grid-template-columns:1fr 1fr; gap:5px; margin-top:10px;">
+                // Адмінка
+                if(user && document.getElementById('admin-list')) {
+                    document.getElementById('admin-list').innerHTML = u.map((item, idx) => `
+                        <div class="card">
+                            <b>${item[1]}</b> [${item[4]}]
+                            <div style="display:grid; grid-template-columns:1fr 1fr; gap:5px; margin-top:10px;">
+                                <input type="number" id="t1-${idx}" value="${item[5] || 0}" placeholder="Текст">
+                                <input type="number" id="t2-${idx}" value="${item[6] || 0}" placeholder="Флоу">
+                                <input type="number" id="t3-${idx}" value="${item[7] || 0}" placeholder="Подача">
+                                <input type="number" id="t4-${idx}" value="${item[8] || 0}" placeholder="Вайб">
+                            </div>
+                            <button class="btn-main" style="padding:10px; font-size:12px; margin-top:10px;" onclick="vote(${idx+2}, ${idx})">ЗБЕРЕГТИ</button>
+                        </div>
+                    `).join('');
+                }
+            } catch(e) { console.error("Load error", e); }
+        }
+
+        async function login() {
+            const btn = event.target;
+            btn.innerText = "ВХІД...";
+            const res = await fetch(API + "?action=getData");
+            const d = await res.json();
+            const j = d.judges.find(i => i[0] == document.getElementById('adm-u').value && i[1] == document.getElementById('adm-p').value);
+            if(j) {
+                user = j[2];
+                document.getElementById('admin-login').style.display = 'none';
+                document.getElementById('admin-work').style.display = 'block';
+                document.getElementById('hello-j').innerText = "Суддя: " + user;
+                load();
+            } else {
+                alert("Помилка входу!");
+                btn.innerText = "УВІЙТИ";
+            }
+        }
+
+        async function vote(row, i) {
+            const p = {
+                action: "vote", row: row,
+                text: document.getElementById(`t1-${i}`).value,
+                flow: document.getElementById(`t2-${i}`).value,
+                podacha: document.getElementById(`t3-${i}`).value,
+                vibe: document.getElementById(`t4-${i}`).value
+            };
+            await fetch(API, { method: 'POST', body: JSON.stringify(p) });
+            alert("Збережено!");
+            load();
+        }
+
+        document.getElementById('reg-form').onsubmit = async (e) => {
+            e.preventDefault();
+            const b = document.getElementById('r-btn');
+            b.disabled = true; b.innerText = "ВІДПРАВКА...";
+            const f = document.getElementById('r-file').files[0];
+            const rd = new FileReader();
+            rd.onload = async () => {
+                const p = {
+                    action: "register",
+                    name: document.getElementById('r-name').value,
+                    city: document.getElementById('r-city').value,
+                    fileData: rd.result.split(',')[1],
+                    fileName: f.name,
+                    mimeType: f.type
+                };
+                await fetch(API, { method: 'POST', body: JSON.stringify(p) });
+                alert("Успішно!");
+                location.reload();
+            };
+            rd.readAsDataURL(f);
+        };
+
+        window.onload = load;
+    </script>
+</body>
+</html>

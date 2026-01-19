@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
-    <title>9VAl BATTLE | LIVE SYSTEM</title>
+    <title>9VAl BATTLE | PRO SYSTEM</title>
     <script src="https://telegram.org/js/telegram-web-app.js"></script>
     <style>
         :root {
@@ -34,7 +34,7 @@
         .judge-img { width: 55px; height: 55px; border-radius: 50%; border: 2px solid var(--accent); margin-right: 15px; background: #333; }
         .insta-btn { width: 40px; height: 40px; background: var(--insta); border-radius: 12px; display: flex; align-items: center; justify-content: center; margin-left: auto; text-decoration: none; font-size: 18px; color: white; }
 
-        /* ОЦІНКИ ТА РЕЙТИНГ */
+        /* ОЦІНКИ ТА ТАБЛИЦЯ */
         .v-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin: 15px 0; }
         .v-box { background: #000; padding: 10px; border-radius: 12px; border: 1px solid #333; text-align: center; }
         .v-box label { font-size: 9px; color: var(--dim); display: block; margin-bottom: 4px; }
@@ -44,7 +44,6 @@
         .rank-val { color: var(--accent); font-weight: 900; font-size: 20px; }
         
         audio { width: 100%; height: 35px; filter: invert(1); margin-top: 10px; }
-        .loading { text-align: center; padding: 20px; color: var(--accent); font-weight: bold; }
     </style>
 </head>
 <body>
@@ -53,8 +52,27 @@
         <h1 id="cms-title">9VAl BATTLE</h1>
         <div class="glass-card">
             <h3 id="cms-prize" style="color:var(--accent); margin-top:0;">ПРИЗ: 50 000 ГРН</h3>
-            <p id="cms-desc">Завантажуй свій найкращий трек та доведи, що ти номер один.</p>
+            <p id="cms-desc">Твій шлях до перемоги починається тут. Завантажуй трек та покажи свій рівень.</p>
         </div>
+
+        <div class="glass-card" style="border-left:4px solid var(--accent)">
+            <h3 style="margin-top:0">ПРАВИЛА 9VAL BATTLE</h3>
+            <ul id="cms-rules-list" style="padding-left:18px; font-size:13px; line-height:1.4; color:#ddd">
+                <li>До участі допускаються виконавці з будь-якого міста</li>
+                <li>1 авторський трек у форматі MP3</li>
+                <li>Трек не повинен бути раніше опублікований у батлах</li>
+                <li>Заборонено plagiarism, AI-вокал, куплені тексти</li>
+                <li>Без расизму, хейту та пропаганди насильства</li>
+                <li>Якість звуку — обовʼязкова</li>
+                <li>Оцінювання: Текст / Флоу / Подача / Вайб</li>
+                <li>Оцінка від 0 до 10 від кожного судді</li>
+                <li>Фінальний бал — середнє арифметичне</li>
+                <li>Рішення суддів не обговорюється</li>
+                <li>Організатор має право зняти трек без пояснень</li>
+            </ul>
+            <b style="color:var(--accent)">9VAl BATTLE — виживає найсильніший</b>
+        </div>
+
         <div class="glass-card" style="border-left: 4px solid var(--green)">
             <b>СТАТУС:</b> ПРИЙОМ ТРЕКІВ ВІДКРИТО
         </div>
@@ -63,40 +81,26 @@
     <div id="p-judges" class="page">
         <h2>ЖУРІ</h2>
         <div class="glass-card">
-            <div class="judge-row">
-                <div class="judge-img"></div>
-                <div><b>TONY MUS1CZ</b><br><small>Producer</small></div>
-                <a href="https://instagram.com/t0ny_mus1cz_prod/" class="insta-btn">📸</a>
-            </div>
-            <div class="judge-row">
-                <div class="judge-img"></div>
-                <div><b>NeedForRap</b><br><small>Analyst</small></div>
-                <a href="https://instagram.com/aleksandr_kozlovvvvv/" class="insta-btn">📸</a>
-            </div>
-            <div class="judge-row">
-                <div class="judge-img"></div>
-                <div><b>Nano</b><br><small>CEO</small></div>
-                <a href="https://instagram.com/nano9val/" class="insta-btn">📸</a>
-            </div>
-            <div class="judge-row" style="border:0">
-                <div class="judge-img"></div>
-                <div><b>KAZHAN</b><br><small>Artist</small></div>
-                <a href="https://instagram.com/ka.zhan_/" class="insta-btn">📸</a>
-            </div>
+            <div class="judge-row"><div class="judge-img"></div><div><b>TONY MUS1CZ</b><br><small>Producer</small></div><a href="https://instagram.com/t0ny_mus1cz_prod/" class="insta-btn">📸</a></div>
+            <div class="judge-row"><div class="judge-img"></div><div><b>NeedForRap</b><br><small>Analyst</small></div><a href="https://instagram.com/aleksandr_kozlovvvvv/" class="insta-btn">📸</a></div>
+            <div class="judge-row"><div class="judge-img"></div><div><b>Nano</b><br><small>CEO</small></div><a href="https://instagram.com/nano9val/" class="insta-btn">📸</a></div>
+            <div class="judge-row" style="border:0"><div class="judge-img"></div><div><b>KAZHAN</b><br><small>Artist</small></div><a href="https://instagram.com/ka.zhan_/" class="insta-btn">📸</a></div>
         </div>
     </div>
 
     <div id="p-player" class="page">
-        <h2>УЧАСНИКИ</h2>
-        <div id="tracks-live">
-            <div class="loading">Завантаження треків...</div>
+        <h2>ТРЕКИ</h2>
+        <div class="glass-card">
+            <div style="display:flex; justify-content:space-between"><b>Participant MC</b><b>8.5</b></div>
+            <audio controls></audio>
         </div>
     </div>
 
     <div id="p-stats" class="page">
-        <h2>ТУРНІРНА ТАБЛИЦЯ</h2>
-        <div class="glass-card" style="padding:0" id="ranking-live">
-            <div class="loading">Оновлення рейтингу...</div>
+        <h2>ТУРНІРНИЙ РЕЙТИНГ</h2>
+        <div class="glass-card" style="padding:0">
+            <div class="rank-item"><span>1. Winner MC</span><span class="rank-val">9.8</span></div>
+            <div class="rank-item"><span>2. Rap God</span><span class="rank-val">9.2</span></div>
         </div>
     </div>
 
@@ -108,9 +112,9 @@
             <input type="file" id="r-file" accept="audio/*">
             <div style="display:flex; gap:12px; margin: 20px 0; align-items: center;">
                 <input type="checkbox" id="r-check" style="width:24px; height:24px;" onchange="document.getElementById('r-btn').disabled = !this.checked">
-                <label style="font-size:11px; color:var(--dim)">Я згоден з правилами батлу</label>
+                <label style="font-size:11px; color:var(--dim)">Згоден з правилами 9VAL BATTLE</label>
             </div>
-            <button class="btn" id="r-btn" disabled onclick="app.uploadTrack()">ВІДПРАВИТИ</button>
+            <button class="btn" id="r-btn" disabled onclick="alert('Відправлено на модерацію!')">ВІДПРАВИТИ</button>
         </div>
     </div>
 
@@ -126,13 +130,21 @@
         <div id="adm-panel" style="display:none;">
             <h3>РЕДАКТОР CMS</h3>
             <div class="glass-card">
-                <input type="text" id="e-t" placeholder="Назва батлу">
-                <input type="text" id="e-p" placeholder="Приз">
-                <textarea id="e-d" placeholder="Опис"></textarea>
-                <button class="btn" onclick="app.saveCMS()">ОНОВИТИ КОНТЕНТ</button>
+                <label>Приз</label><input type="text" id="e-p">
+                <label>Опис</label><textarea id="e-d"></textarea>
+                <button class="btn" onclick="app.saveCMS()">ОНОВИТИ</button>
             </div>
-            <h3>МОДЕРАЦІЯ ТА ОЦІНКИ</h3>
-            <div id="adm-list"></div>
+            <h3>ОЦІНКИ (4 КРИТЕРІЇ)</h3>
+            <div class="glass-card">
+                <b>MC RAP</b>
+                <div class="v-grid">
+                    <div class="v-box"><label>ТЕКСТ</label><input type="number" value="0" id="v1"></div>
+                    <div class="v-box"><label>ФЛОУ</label><input type="number" value="0" id="v2"></div>
+                    <div class="v-box"><label>ПОДАЧА</label><input type="number" value="0" id="v3"></div>
+                    <div class="v-box"><label>ВАЙБ</label><input type="number" value="0" id="v4"></div>
+                </div>
+                <button class="btn" onclick="app.saveScore()">ЗБЕРЕГТИ БАЛ</button>
+            </div>
         </div>
     </div>
 
@@ -146,10 +158,7 @@
     </nav>
 
     <script>
-        const API_URL = "ТВІЙ_URL_GOOGLE_SCRIPT"; // Сюди вставиш посилання на скрипт таблиці
-
         const app = {
-            data: [], 
             nav(id, el) {
                 document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
                 document.querySelectorAll('.tab-item').forEach(t => t.classList.remove('active'));
@@ -160,56 +169,21 @@
                 if(document.getElementById('a-login').value === 'admin' && document.getElementById('a-pass').value === '123') {
                     document.getElementById('adm-auth').style.display = 'none';
                     document.getElementById('adm-panel').style.display = 'block';
-                    this.renderAdmin();
-                } else { alert("Помилка доступу"); }
-            },
-            // ФУНКЦІЯ ПІДРАХУНКУ ТАБЛИЦІ
-            renderRanking() {
-                const container = document.getElementById('ranking-live');
-                // Сортуємо учасників за середнім балом
-                const sorted = [...this.data].sort((a, b) => b.avg - a.avg);
-                container.innerHTML = sorted.map((u, i) => `
-                    <div class="rank-item">
-                        <span>${i+1}. ${u.name}</span>
-                        <span class="rank-val">${u.avg.toFixed(1)}</span>
-                    </div>
-                `).join('') || '<div class="loading">Учасників ще немає</div>';
-            },
-            // ФУНКЦІЯ ОНОВЛЕННЯ ПЛЕЄРА
-            renderPlayer() {
-                const container = document.getElementById('tracks-live');
-                container.innerHTML = this.data.filter(u => u.status === 'active').map(u => `
-                    <div class="glass-card">
-                        <div style="display:flex; justify-content:space-between"><b>${u.name}</b><b>${u.avg.toFixed(1)}</b></div>
-                        <audio src="${u.fileUrl}" controls></audio>
-                    </div>
-                `).join('') || '<div class="loading">Треки з’являться після модерації</div>';
-            },
-            // ЛОГІКА ЗБЕРЕЖЕННЯ 4 ОЦІНОК
-            saveScore(id) {
-                const t = document.getElementById('t'+id).value;
-                const f = document.getElementById('f'+id).value;
-                const p = document.getElementById('p'+id).value;
-                const v = document.getElementById('v'+id).value;
-                const avg = (Number(t) + Number(f) + Number(p) + Number(v)) / 4;
-                alert(`Збережено! Середній бал: ${avg.toFixed(1)}`);
-                // Тут іде запит до Google Sheets
+                    document.getElementById('e-p').value = document.getElementById('cms-prize').innerText;
+                    document.getElementById('e-d').value = document.getElementById('cms-desc').innerText;
+                } else { alert("Помилка!"); }
             },
             saveCMS() {
-                alert("Дані оновлено в базі!");
+                document.getElementById('cms-prize').innerText = document.getElementById('e-p').value;
+                document.getElementById('cms-desc').innerText = document.getElementById('e-d').value;
+                alert("Змінено!");
+            },
+            saveScore() {
+                let avg = (Number(document.getElementById('v1').value) + Number(document.getElementById('v2').value) + Number(document.getElementById('v3').value) + Number(document.getElementById('v4').value)) / 4;
+                alert("Бал збережено: " + avg.toFixed(1));
             }
         };
-
-        window.onload = () => {
-            window.Telegram.WebApp.expand();
-            // Тестові дані, щоб ти бачив як працює турнірна таблиця відразу
-            app.data = [
-                {name: "Winner MC", avg: 9.8, status: "active", fileUrl: ""},
-                {name: "Flow Master", avg: 8.5, status: "active", fileUrl: ""}
-            ];
-            app.renderRanking();
-            app.renderPlayer();
-        };
+        window.onload = () => { window.Telegram.WebApp.expand(); };
     </script>
 </body>
 </html>

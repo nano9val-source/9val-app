@@ -8,25 +8,32 @@
     <style>
         :root { --accent: #f39c12; --bg: #000; --card: #1c1c1e; --radius: 18px; }
         body { font-family: -apple-system, system-ui, sans-serif; background: var(--bg); color: #fff; margin: 0; padding: 15px; padding-top: 85px; }
+        
         .nav { position: fixed; top: 0; left: 0; right: 0; background: rgba(10,10,10,0.95); backdrop-filter: blur(15px); display: flex; overflow-x: auto; padding: 10px 5px; border-bottom: 0.5px solid #333; z-index: 9999; scrollbar-width: none; }
         .nav-item { color: #777; font-size: 10px; font-weight: 800; text-align: center; white-space: nowrap; padding: 12px 15px; border-radius: 12px; transition: 0.3s; cursor: pointer; flex-shrink: 0; }
         .nav-item.active { color: var(--accent); background: rgba(243,156,18,0.1); }
+
         .tab-content { display: none; }
         .tab-content.active { display: block; }
         .card { background: var(--card); border-radius: var(--radius); padding: 20px; margin-bottom: 15px; border: 0.5px solid #333; }
+        
         .prize-badge { background: var(--accent); color: #000; padding: 5px 15px; border-radius: 20px; font-weight: 900; display: inline-block; margin-bottom: 10px; }
         .rules-list { font-size: 13px; color: #aaa; padding-left: 20px; line-height: 1.6; }
-        .match { background: #1a1a1c; border-radius: 10px; border: 1px solid #333; margin-bottom: 10px; overflow: hidden; }
-        .match-header { background: #222; font-size: 10px; padding: 5px; text-align: center; color: var(--accent); font-weight: bold; }
-        .match-row { padding: 10px 15px; display: flex; justify-content: space-between; font-size: 14px; border-bottom: 0.5px solid #222; }
+
+        /* СУДДІ */
+        .judge-item { display: flex; align-items: center; gap: 15px; margin-bottom: 15px; background: #252527; padding: 12px; border-radius: 15px; }
+        .judge-img { width: 60px; height: 60px; border-radius: 50%; border: 2px solid var(--accent); background: #444; }
+
+        /* АДМІНКА: ЗРУЧНІ ПОЛЯ */
+        .vote-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-top: 12px; }
+        .vote-field { background: #111; padding: 6px 10px; border-radius: 10px; border: 1px solid #333; }
+        .vote-field label { font-size: 9px; color: var(--accent); display: block; text-transform: uppercase; margin-bottom: 2px; }
+        .vote-field input { width: 100%; background: transparent; border: none; color: #fff; font-size: 16px; font-weight: bold; outline: none; }
+
         input, select { width: 100%; padding: 14px; margin-bottom: 10px; background: #222; border: 1px solid #444; border-radius: 12px; color: #fff; box-sizing: border-box; }
-        .btn-main { background: var(--accent); color: #000; border: none; padding: 18px; border-radius: 15px; width: 100%; font-weight: 800; cursor: pointer; transition: 0.3s; }
-        audio { width: 100%; height: 35px; filter: invert(1); margin-top: 10px; }
+        .btn-main { background: var(--accent); color: #000; border: none; padding: 18px; border-radius: 15px; width: 100%; font-weight: 800; cursor: pointer; }
         
-        /* Спеціально для адмінки */
-        .admin-score-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-top: 10px; }
-        .score-box { background: #111; padding: 5px; border-radius: 8px; border: 1px solid #333; }
-        .score-box label { font-size: 9px; color: var(--accent); display: block; }
+        audio { width: 100%; height: 35px; filter: invert(1); margin: 10px 0; }
     </style>
 </head>
 <body>
@@ -44,20 +51,22 @@
     <div id="tab-home" class="tab-content active">
         <div class="card">
             <div class="prize-badge">ПРИЗ: 50 000 ГРН</div>
-            <h2>9VAL BATTLE: SEASON 1</h2>
-            <p>Ласкаво просимо на найбільший онлайн-батл країни.</p>
+            <h2 style="margin:0 0 10px 0;">9VAL BATTLE: SEASON 1</h2>
+            <p style="font-size: 14px; color: #ccc;">Ласкаво просимо на найбільший онлайн-батл країни.</p>
             <h3>ПРАВИЛА:</h3>
             <ul class="rules-list">
-                <li>Трек до 2-х хвилин.</li>
-                <li>Тема: "Вільна".</li>
-                <li>Судді оцінюють: Текст, Флоу, Подачу, Вайб.</li>
+                <li>Трек має бути до 2-х хвилин.</li>
+                <li>Тема відбору: "Вільна".</li>
+                <li>Судді оцінюють: Текст, Флоу, Подачу та Вайб.</li>
+                <li>У Топ-16 проходять лише найкращі за рейтингом.</li>
             </ul>
+            <button class="btn-main" onclick="showTab('tab-reg')">ПОДАТИ ЗАЯВКУ</button>
         </div>
     </div>
 
     <div id="tab-bracket" class="tab-content">
         <h2>Турнірна Сітка</h2>
-        <div class="match"><div class="match-header">1/8 ФІНАЛУ #1</div><div class="match-row"><span>TBD</span><b>0</b></div></div>
+        <div class="card" style="text-align: center;"><b>ФІНАЛ ОЧІКУЄТЬСЯ</b></div>
     </div>
 
     <div id="tab-player" class="tab-content">
@@ -72,16 +81,28 @@
 
     <div id="tab-judges" class="tab-content">
         <h2>Наші Судді</h2>
-        <div class="card">MC Solomon & Flow</div>
+        <div class="judge-item">
+            <div class="judge-img"></div>
+            <div class="judge-info"><b>MC Solomon</b><br><span>Суддя технік</span></div>
+        </div>
+        <div class="judge-item">
+            <div class="judge-img"></div>
+            <div class="judge-info"><b>Beatmaker Flow</b><br><span>Суддя вайбу</span></div>
+        </div>
     </div>
 
     <div id="tab-reg" class="tab-content">
-        <h2>Реєстрація</h2>
+        <h2>Подати заявку</h2>
         <div class="card">
             <form id="reg-form">
                 <input type="text" id="r-name" placeholder="Твій нікнейм" required>
                 <input type="text" id="r-city" placeholder="Місто" required>
+                <label style="font-size:12px; color:#777;">Завантаж трек (MP3):</label>
                 <input type="file" id="r-file" accept="audio/*" required>
+                <div style="display:flex; gap:10px; align-items:flex-start; margin: 15px 0;">
+                    <input type="checkbox" id="r-agree" style="width:20px; height:20px; margin:0;" required>
+                    <label for="r-agree" style="font-size:12px; color:#aaa;">Я згоден з правилами батлу та обробкою даних</label>
+                </div>
                 <button type="submit" id="r-btn" class="btn-main">ВІДПРАВИТИ</button>
             </form>
         </div>
@@ -89,6 +110,7 @@
 
     <div id="tab-admin" class="tab-content">
         <div id="admin-login">
+            <h2>Вхід для суддів</h2>
             <input type="text" id="adm-u" placeholder="Логін">
             <input type="password" id="adm-p" placeholder="Пароль">
             <button class="btn-main" onclick="login()">УВІЙТИ</button>
@@ -115,11 +137,10 @@
             try {
                 const r = await fetch(API + "?action=getData");
                 const d = await r.json();
-                const all = d.allUsers || d.users || [];
-                const u = all.slice(1);
+                const u = (d.allUsers || d.users || []).slice(1);
                 const ok = u.filter(i => i[4] === 'Прийнято');
 
-                // Плеєр загальний
+                // Плеєр
                 document.getElementById('player-list').innerHTML = ok.map(i => `
                     <div class="card"><b>${i[1]}</b><audio controls src="${i[3]}"></audio></div>
                 `).join('');
@@ -127,29 +148,28 @@
                 // Рейтинг
                 document.getElementById('ranking-list').innerHTML = ok.map(i => {
                     const s = (((Number(i[5])||0)+(Number(i[6])||0)+(Number(i[7])||0)+(Number(i[8])||0))/4).toFixed(1);
-                    return `<div class="card" style="display:flex; justify-content:space-between;"><span>${i[1]}</span><b>${s}</b></div>`;
-                }).join('');
+                    return `<div class="card" style="display:flex; justify-content:space-between;"><span>${i[1]}</span><b>${s} балів</b></div>`;
+                }).sort((a,b) => b.querySelector('b').innerText.split(' ')[0] - a.querySelector('b').innerText.split(' ')[0]).join('');
 
-                // АДМІНКА (Ось тут зміни, які ти просив)
-                if(user && document.getElementById('admin-list')) {
+                // АДМІНКА: ТУТ КОНТРОЛЬ І ЗРУЧНІСТЬ
+                if(user) {
                     document.getElementById('admin-list').innerHTML = u.map((item, idx) => {
-                        // Робимо посилання прямим для плеєра
-                        const streamUrl = item[3] ? item[3].replace("open?id=", "uc?export=download&id=") : "";
+                        const directUrl = item[3] ? item[3].replace("open?id=", "uc?export=download&id=") : "";
                         return `
                         <div class="card">
-                            <b>${item[1]}</b> [${item[4]}]
-                            <audio controls src="${streamUrl}"></audio>
-                            <div class="admin-score-grid">
-                                <div class="score-box"><label>Текст</label><input type="number" id="t1-${idx}" value="${item[5]||0}"></div>
-                                <div class="score-box"><label>Флоу</label><input type="number" id="t2-${idx}" value="${item[6]||0}"></div>
-                                <div class="score-box"><label>Подача</label><input type="number" id="t3-${idx}" value="${item[7]||0}"></div>
-                                <div class="score-box"><label>Вайб</label><input type="number" id="t4-${idx}" value="${item[8]||0}"></div>
+                            <div style="display:flex; justify-content:space-between;"><b>${item[1]}</b> <small style="color:var(--accent);">${item[4]}</small></div>
+                            <audio controls src="${directUrl}"></audio>
+                            <div class="vote-grid">
+                                <div class="vote-field"><label>Текст</label><input type="number" id="t1-${idx}" value="${item[5]||0}"></div>
+                                <div class="vote-field"><label>Флоу</label><input type="number" id="t2-${idx}" value="${item[6]||0}"></div>
+                                <div class="vote-field"><label>Подача</label><input type="number" id="t3-${idx}" value="${item[7]||0}"></div>
+                                <div class="vote-field"><label>Вайб</label><input type="number" id="t4-${idx}" value="${item[8]||0}"></div>
                             </div>
-                            <button class="btn-main" style="padding:10px; margin-top:10px;" onclick="vote(${idx+2}, ${idx})">ЗБЕРЕГТИ</button>
+                            <button class="btn-main" style="padding:10px; margin-top:10px; font-size:12px;" onclick="vote(${idx+2}, ${idx})">ЗБЕРЕГТИ ОЦІНКИ</button>
                         </div>`;
                     }).join('');
                 }
-            } catch(e) { console.log(e); }
+            } catch(e) { console.error(e); }
         }
 
         async function login() {
@@ -160,8 +180,9 @@
                 user = j[2];
                 document.getElementById('admin-login').style.display = 'none';
                 document.getElementById('admin-work').style.display = 'block';
+                document.getElementById('hello-j').innerText = "Вітаємо, " + user;
                 load();
-            } else alert("Помилка!");
+            } else alert("Помилка входу!");
         }
 
         async function vote(row, i) {
@@ -173,8 +194,23 @@
                 vibe: document.getElementById(`t4-${i}`).value
             };
             await fetch(API, { method: 'POST', body: JSON.stringify(p) });
-            alert("Збережено!"); load();
+            alert("Оцінки збережено!");
+            load();
         }
+
+        document.getElementById('reg-form').onsubmit = async (e) => {
+            e.preventDefault();
+            const b = document.getElementById('r-btn');
+            b.disabled = true; b.innerText = "ВІДПРАВКА...";
+            const f = document.getElementById('r-file').files[0];
+            const rd = new FileReader();
+            rd.onload = async () => {
+                const p = { action: "register", name: document.getElementById('r-name').value, city: document.getElementById('r-city').value, fileData: rd.result.split(',')[1], fileName: f.name, mimeType: f.type };
+                await fetch(API, { method: 'POST', body: JSON.stringify(p) });
+                alert("Трек відправлено!"); location.reload();
+            };
+            rd.readAsDataURL(f);
+        };
 
         window.onload = load;
     </script>

@@ -4,233 +4,200 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>9VAl BATTLE | PRO SYSTEM</title>
-<script src="https://telegram.org/js/telegram-web-app.js"></script>
 <style>
 :root {
-    --accent: #ff9f0a;
-    --bg: #000;
-    --card: #1c1c1e;
-    --text: #fff;
-    --dim: #8e8e93;
-    --green: #34c759;
-    --border: #2c2c2e;
-    --insta: linear-gradient(45deg, #f09433 0%, #e6683c 25%, #dc2743 50%, #cc2366 75%, #bc1888 100%);
+    --accent:#ff9f0a; --bg:#000; --card:#1c1c1e; --text:#fff; --dim:#8e8e93; --border:#2c2c2e;
 }
-
-* { box-sizing: border-box; outline: none; }
-body { margin:0; font-family:-apple-system,sans-serif; background:var(--bg); color:var(--text); padding-bottom:120px; }
-
-.page { display:none; padding:20px; animation:fadeIn 0.3s ease; }
-.page.active { display:block; }
-@keyframes fadeIn { from{opacity:0;} to{opacity:1;} }
-
-.glass-card { background:var(--card); border-radius:20px; padding:20px; margin-bottom:15px; border:1px solid var(--border); backdrop-filter: blur(6px); }
-
-input, textarea, select { width:100%; padding:14px; margin:10px 0; background:#262629; border:1px solid #3a3a3c; border-radius:14px; color:#fff; font-size:16px; }
-
-.btn { background:var(--accent); color:#000; border:none; padding:16px; border-radius:16px; width:100%; font-weight:800; cursor:pointer; transition:0.2s; }
-.btn:hover { opacity:0.85; }
-.btn:disabled { background:#333; color:#666; cursor:not-allowed; }
-
-.tab-bar { position:fixed; bottom:0; left:0; right:0; display:flex; background:rgba(10,10,10,0.95); padding:12px 5px 35px; border-top:0.5px solid var(--border); }
-.tab-item { flex:1; font-size:9px; font-weight:700; text-transform:uppercase; text-align:center; color:var(--dim); cursor:pointer; }
-.tab-item.active { color:var(--accent); }
-.tab-icon { font-size:22px; display:block; margin-bottom:4px; }
-
-.rank-item { display:flex; justify-content:space-between; align-items:center; padding:15px; border-bottom:1px solid #222; }
-.rank-val { color:var(--accent); font-weight:900; font-size:20px; }
-
-.v-grid { display:grid; grid-template-columns:1fr 1fr; gap:10px; margin:15px 0; }
-.v-box { background:#000; padding:10px; border-radius:12px; border:1px solid #333; text-align:center; }
-.v-box label { font-size:9px; color:var(--dim); display:block; margin-bottom:4px; }
-.v-box input { background:none; border:none; font-size:22px; font-weight:900; color:var(--accent); text-align:center; width:100%; }
-
-.judge-row { display:flex; align-items:center; padding:15px 0; border-bottom:1px solid var(--border); }
-.judge-img { width:55px; height:55px; border-radius:50%; border:2px solid var(--accent); margin-right:15px; background:#333; }
-.insta-btn { width:40px; height:40px; background:var(--insta); border-radius:12px; display:flex; align-items:center; justify-content:center; margin-left:auto; text-decoration:none; font-size:18px; color:white; }
-
-audio { width:100%; height:35px; filter:invert(1); margin-top:10px; }
+body{margin:0;padding-bottom:120px;font-family:-apple-system,sans-serif;color:var(--text);background:var(--bg);}
+.tab-bar{position:fixed;bottom:0;left:0;right:0;background:rgba(10,10,10,0.95);display:flex;padding:12px 5px 35px;border-top:0.5px solid var(--border);}
+.tab-item{flex:1;text-align:center;font-size:10px;color:var(--dim);cursor:pointer;font-weight:700;text-transform:uppercase;}
+.tab-item.active{color:var(--accent);}
+.page{display:none;padding:20px;}
+.page.active{display:block;}
+.glass-card{background:var(--card);border-radius:20px;padding:20px;margin-bottom:15px;border:1px solid var(--border);}
+.v-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin:15px 0;}
+.v-box{background:#000;padding:10px;border-radius:12px;border:1px solid #333;text-align:center;}
+.v-box label{font-size:9px;color:var(--dim);display:block;margin-bottom:4px;}
+.v-box input{background:none;border:none;font-size:20px;font-weight:900;color:var(--accent);text-align:center;width:100%;}
+.btn{background:var(--accent);color:#000;border:none;padding:16px;border-radius:16px;width:100%;font-weight:800;cursor:pointer;}
+.rank-item{display:flex;justify-content:space-between;padding:10px;border-bottom:1px solid #222;}
+.rank-val{color:var(--accent);font-weight:900;}
 </style>
 </head>
 <body>
 
-<!-- ГОЛОВНА + ВХІД АДМІНА -->
+<!-- Головна -->
 <div id="p-home" class="page active">
-    <h1 id="battle-title">9VAl BATTLE</h1>
+    <h1>9VAl BATTLE</h1>
     <div class="glass-card" style="border-left:4px solid var(--accent)">
         <h3>ПРАВИЛА БАТЛУ</h3>
-        <ul id="rules-list" style="padding-left:18px; font-size:13px; color:#ddd">
+        <ul style="padding-left:18px;font-size:13px;color:#ddd">
             <li>1 авторський трек MP3</li>
             <li>Заборонено AI-вокал та плагіат</li>
             <li>Оцінювання: Текст / Флоу / Подача / Вайб</li>
         </ul>
-        <b id="battle-prize" style="color:var(--accent)">ПРИЗ: 50 000 ГРН</b>
+        <p>Приз: <span id="cms-prize">5000₴</span></p>
     </div>
-    <div class="glass-card" style="border-left:4px solid var(--green)">
-        <b>СТАТУС:</b> ПРИЙОМ ТРЕКІВ ВІДКРИТО
-    </div>
+</div>
 
-    <!-- ВХІД СУДДІ -->
-    <div class="glass-card" id="admin-login">
-        <h3>ВХІД СУДДІ</h3>
-        <input type="text" id="a-login" placeholder="Логін">
+<!-- Таблиця -->
+<div id="p-stats" class="page">
+    <h2>РЕЙТИНГ</h2>
+    <div id="rank-list"></div>
+</div>
+
+<!-- Участь -->
+<div id="p-participate" class="page">
+    <h2>Подати заявку</h2>
+    <div class="glass-card">
+        <input type="text" id="p-nick" placeholder="Нік">
+        <input type="text" id="p-city" placeholder="Місто">
+        <input type="file" id="p-file" accept=".mp3">
+        <label style="font-size:12px"><input type="checkbox" id="p-agree"> Погоджуюсь з правилами</label>
+        <button class="btn" onclick="app.submitParticipant()">Відправити</button>
+    </div>
+</div>
+
+<!-- Адмінка -->
+<div id="p-admin" class="page">
+    <h2>Адмінка</h2>
+    <div id="adm-auth">
+        <input type="text" id="a-login" placeholder="Логін судді">
         <input type="password" id="a-pass" placeholder="Пароль">
         <button class="btn" onclick="app.login()">Увійти</button>
     </div>
 
-    <div class="glass-card" id="adm-panel" style="display:none;">
+    <div id="adm-panel" style="display:none">
         <h3 id="judge-display" style="color:var(--accent)"></h3>
-        <label>Редагувати приз</label><input type="text" id="e-p">
-        <label>Редагувати правила</label><textarea id="e-r"></textarea>
+        <h4>Редагування CMS</h4>
+        <label>Приз</label><input type="text" id="e-p">
+        <label>Правила</label><textarea id="e-r"></textarea>
         <button class="btn" onclick="app.saveCMS()">Оновити CMS</button>
+        <hr>
+        <h4>Оцінювання учасників</h4>
+        <div id="judge-tracks-list"></div>
     </div>
 </div>
 
-<!-- ПЛЕЄР -->
-<div id="p-player" class="page">
-    <h2>ТРЕКИ</h2>
-    <div class="glass-card" id="tracks-list"></div>
-</div>
-
-<!-- ТУРНІРНА ТАБЛИЦЯ -->
-<div id="p-stats" class="page">
-    <h2>РЕЙТИНГ</h2>
-    <div class="glass-card" style="padding:0" id="rank-list"></div>
-</div>
-
-<!-- УЧАСТЬ -->
-<div id="p-reg" class="page">
-    <h2>УЧАСТЬ</h2>
-    <div class="glass-card">
-        <input type="text" id="r-nick" placeholder="Твій Нік">
-        <input type="text" id="r-city" placeholder="Місто">
-        <input type="file" id="r-file" accept="audio/*">
-        <div style="display:flex; gap:12px; margin:20px 0; align-items:center;">
-            <input type="checkbox" id="r-check" style="width:24px; height:24px;" onchange="document.getElementById('r-btn').disabled=!this.checked">
-            <label style="font-size:11px; color:var(--dim)">Згоден з правилами 9VAl BATTLE</label>
-        </div>
-        <button class="btn" id="r-btn" disabled onclick="app.submitTrack()">Відправити</button>
-    </div>
-</div>
-
-<!-- СУДДІ -->
-<div id="p-judges" class="page">
-    <h2>ЖУРІ</h2>
-    <div class="glass-card" id="judges-list"></div>
-</div>
-
-<!-- TAB BAR -->
+<!-- Навігація -->
 <nav class="tab-bar">
-    <div class="tab-item active" onclick="app.nav('home', this)"><span class="tab-icon">🏠</span>ГОЛОВНА</div>
-    <div class="tab-item" onclick="app.nav('player', this)"><span class="tab-icon">🎧</span>ПЛЕЄР</div>
-    <div class="tab-item" onclick="app.nav('stats', this)"><span class="tab-icon">📊</span>ТАБЛИЦЯ</div>
-    <div class="tab-item" onclick="app.nav('reg', this)"><span class="tab-icon">🎤</span>УЧАСТЬ</div>
-    <div class="tab-item" onclick="app.nav('judges', this)"><span class="tab-icon">⚖️</span>СУДДІ</div>
+    <div class="tab-item active" onclick="app.nav('home', this)">🏠<br>Головна</div>
+    <div class="tab-item" onclick="app.nav('stats', this)">📊<br>Таблиця</div>
+    <div class="tab-item" onclick="app.nav('participate', this)">🎤<br>Участь</div>
+    <div class="tab-item" onclick="app.nav('admin', this)">🛡️<br>Адмін</div>
 </nav>
 
 <script>
 const judges = [
-    {id:1,name:"TONY MUS1CZ",pass:"1",insta:"https://instagram.com/t0ny_mus1cz_prod/"},
-    {id:2,name:"NeedForRap",pass:"1",insta:"https://instagram.com/aleksandr_kozlovvvvv/"},
-    {id:3,name:"Nano",pass:"1",insta:"https://instagram.com/nano9val/"},
-    {id:4,name:"KAZHAN",pass:"1",insta:"https://instagram.com/ka.zhan_/"}
+    {name:"TONY MUS1CZ",pass:"1"},
+    {name:"NeedForRap",pass:"1"},
+    {name:"Nano",pass:"1"},
+    {name:"KAZHAN",pass:"1"}
 ];
 
-let participantScores = {};
-let participantTracks = [];
+const participantTracks = [];
+const participantScores = {};
+
+// Генеруємо 50 учасників
+for(let i=1;i<=50;i++){
+    const nick = `MC_${i}`;
+    participantTracks.push({nick:nick,file:`tracks/${nick}.mp3`,approved:false});
+    participantScores[nick] = {judges:{},final:0};
+}
 
 const app = {
-    currentJudge: null,
+    currentJudge:null,
 
-    nav(id, el) {
+    nav(id,el){
         document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
         document.querySelectorAll('.tab-item').forEach(t=>t.classList.remove('active'));
         document.getElementById('p-'+id).classList.add('active');
         el.classList.add('active');
     },
 
-    login() {
+    login(){
         const l = document.getElementById('a-login').value;
         const p = document.getElementById('a-pass').value;
-        const j = judges.find(i=>i.name===l && i.pass===p);
+        const j = judges.find(j=>j.name===l && j.pass===p);
         if(j){
             this.currentJudge=j;
-            document.getElementById('admin-login').style.display='none';
+            document.getElementById('adm-auth').style.display='none';
             document.getElementById('adm-panel').style.display='block';
-            document.getElementById('judge-display').innerText="СУДДЯ: "+j.name;
-            document.getElementById('e-p').value=document.getElementById('battle-prize').innerText;
-            document.getElementById('e-r').value=document.getElementById('rules-list').innerText;
+            document.getElementById('judge-display').innerText="Суддя: "+j.name;
+            this.renderJudgeTracks();
         } else alert("Помилка доступу");
     },
 
-    saveCMS() {
-        document.getElementById('battle-prize').innerText=document.getElementById('e-p').value;
-        document.getElementById('rules-list').innerText=document.getElementById('e-r').value;
-        alert("CMS оновлено!");
+    submitParticipant(){
+        const nick=document.getElementById('p-nick').value.trim();
+        const city=document.getElementById('p-city').value.trim();
+        const file=document.getElementById('p-file').files[0];
+        const agree=document.getElementById('p-agree').checked;
+        if(!nick||!city||!file||!agree) return alert("Заповніть всі поля та погодьтесь з правилами");
+        participantTracks.push({nick:nick,file:URL.createObjectURL(file),approved:false});
+        participantScores[nick]={judges:{},final:0};
+        alert("Заявка на модерацію відправлена!");
     },
 
-    submitTrack() {
-        const nick = document.getElementById('r-nick').value.trim();
-        const city = document.getElementById('r-city').value.trim();
-        const fileInput = document.getElementById('r-file');
-        if(!nick || !city || !fileInput.files.length){ alert("Заповніть усі поля!"); return; }
-
-        const track = {
-            nick, city, file: URL.createObjectURL(fileInput.files[0]), approved:false
-        };
-        participantTracks.push(track);
-        participantScores[nick]={judges:{},final:null};
-        alert("Трек відправлено на модерацію!");
-        fileInput.value=""; document.getElementById('r-nick').value=""; document.getElementById('r-city').value="";
-        document.getElementById('r-check').checked=false; document.getElementById('r-btn').disabled=true;
-    },
-
-    approveTrack(nick){
-        const track = participantTracks.find(t=>t.nick===nick);
-        if(track) { track.approved=true; this.renderTracks(); this.renderRank(); }
-    },
-
-    renderTracks(){
-        const container=document.getElementById('tracks-list');
+    renderJudgeTracks(){
+        const container=document.getElementById('judge-tracks-list');
         container.innerHTML='';
         participantTracks.filter(t=>t.approved).forEach(t=>{
-            container.innerHTML+=`<div class="glass-card"><div style="display:flex; justify-content:space-between"><b>${t.nick}</b><b>${t.final? t.final.toFixed(2):"0.00"}</b></div><audio controls src="${t.file}"></audio></div>`;
+            const scores=participantScores[t.nick].judges[this.currentJudge?.name]||[0,0,0,0];
+            container.innerHTML+=`
+            <div class="glass-card" style="margin-bottom:15px;">
+                <b>${t.nick}</b> - <audio controls src="${t.file}"></audio>
+                <div class="v-grid" style="margin-top:10px;">
+                    <div class="v-box"><label>Текст</label><input type="number" min="1" max="10" value="${scores[0]}" id="s-${t.nick}-1"></div>
+                    <div class="v-box"><label>Флоу</label><input type="number" min="1" max="10" value="${scores[1]}" id="s-${t.nick}-2"></div>
+                    <div class="v-box"><label>Подача</label><input type="number" min="1" max="10" value="${scores[2]}" id="s-${t.nick}-3"></div>
+                    <div class="v-box"><label>Вайб</label><input type="number" min="1" max="10" value="${scores[3]}" id="s-${t.nick}-4"></div>
+                </div>
+                <button class="btn" style="margin-top:10px;" onclick="app.saveJudgeScore('${t.nick}')">Зберегти оцінку</button>
+            </div>`;
         });
+    },
+
+    saveJudgeScore(nick){
+        if(!this.currentJudge) return alert("Увійдіть як суддя");
+        const scores=[];
+        for(let i=1;i<=4;i++){
+            const val=Number(document.getElementById(`s-${nick}-${i}`).value);
+            if(isNaN(val)||val<1||val>10) return alert("Оцінки від 1 до 10!");
+            scores.push(val);
+        }
+        const judgeName=this.currentJudge.name;
+        if(participantScores[nick].judges[judgeName]) return alert("Ви вже оцінили цього учасника!");
+        const avg=scores.reduce((a,b)=>a+b,0)/scores.length;
+        participantScores[nick].judges[judgeName]=avg;
+        const allScores=Object.values(participantScores[nick].judges);
+        participantScores[nick].final=allScores.reduce((a,b)=>a+b,0)/allScores.length;
+        alert(`Суддя ${judgeName} поставив: ${avg.toFixed(1)}`);
+        this.renderJudgeTracks();
+        this.renderRank();
     },
 
     renderRank(){
         const container=document.getElementById('rank-list');
         container.innerHTML='';
-        const ranked = Object.entries(participantScores).map(([nick,data])=>{
-            return {nick,final:data.final||0};
-        }).sort((a,b)=>b.final-a.final);
-        ranked.forEach((r,i)=>{
-            container.innerHTML+=`<div class="rank-item"><span>${i+1}. ${r.nick}</span><span class="rank-val">${r.final.toFixed(2)}</span></div>`;
+        participantTracks.filter(t=>t.approved).sort((a,b)=>participantScores[b.nick].final-participantScores[a.nick].final)
+        .forEach((t,i)=>{
+            container.innerHTML+=`
+            <div class="rank-item">
+                <span>${i+1}. ${t.nick}</span>
+                <span class="rank-val">${participantScores[t.nick].final.toFixed(2)}</span>
+            </div>`;
         });
     },
 
-    saveScore(nick,scores){
-        if(!this.currentJudge) return;
-        const judgeName=this.currentJudge.name;
-        if(participantScores[nick].judges[judgeName]){ alert("Ви вже оцінили!"); return; }
-        const avg=(scores.reduce((a,b)=>a+b,0))/scores.length;
-        participantScores[nick].judges[judgeName]=avg;
-        participantScores[nick].final=Object.values(participantScores[nick].judges).reduce((a,b)=>a+b,0)/Object.values(participantScores[nick].judges).length;
-        alert(`Суддя ${judgeName} поставив: ${avg.toFixed(1)}`);
-        this.renderTracks(); this.renderRank();
+    saveCMS(){
+        const prize=document.getElementById('e-p').value;
+        const rules=document.getElementById('e-r').value;
+        document.getElementById('cms-prize').innerText=prize||"5000₴";
+        alert("CMS оновлено!");
     }
 };
-
-window.onload = ()=>{
-    const judgesContainer=document.getElementById('judges-list');
-    judges.forEach(j=>{
-        judgesContainer.innerHTML+=`
-        <div class="judge-row"><div class="judge-img"></div>
-        <div><b>${j.name}</b><br><small>Суддя</small></div>
-        <a href="${j.insta}" target="_blank" class="insta-btn">📸</a></div>`;
-    });
-    window.Telegram?.WebApp.expand();
-};
 </script>
+
 </body>
 </html>

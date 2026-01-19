@@ -83,7 +83,8 @@
         const tg = window.Telegram.WebApp;
         tg.expand();
         
-        const URL = "https://script.google.com/macros/s/AKfycbxSMlRDVtv19n-VeY7rXa4hgWrfiS9Xs0ksj35SF09r2pRsQuGf_wOZHrdSISpJs9Zi/exec = "";
+        const URL = "https://script.google.com/macros/s/AKfycbxSMlRDVtv19n-VeY7rXa4hgWrfiS9Xs0ksj35SF09r2pRsQuGf_wOZHrdSISpJs9Zi/exec";
+        let activeJudgeNick = "";
 
         function showTab(t) {
             ['home', 'reg', 'list', 'admin'].forEach(s => document.getElementById('tab-'+s).classList.add('hidden'));
@@ -107,7 +108,7 @@
 
                 const uList = document.getElementById('users-list');
                 uList.innerHTML = "";
-                const approved = data.users.slice(1);
+                const approved = data.users.filter((u, i) => i > 0 && u[5] === "Прийнято");
                 if(approved.length > 0) {
                     approved.forEach(u => {
                         uList.innerHTML += `<div style="padding:12px 0; border-bottom:1px solid #222;"><b>${u[1]}</b> <small style="color:#666">(${u[2]})</small><br><a href="${u[3]}" target="_blank" style="color:#f39c12; font-size:12px;">🎧 Слухати трек</a></div>`;
@@ -175,7 +176,7 @@
             const l = document.getElementById('l-'+idx).value;
             if(!t || !l) return alert("Постав бали!");
             
-            const payload = { action: 'setScore', judge: activeJudgeNick, artist: artist, t: t, l: l, i: 0 };
+            const payload = { action: 'setScore', judge: activeJudgeNick, artist: artist, t: t, l: l };
             await fetch(URL, { method: 'POST', mode: 'no-cors', body: JSON.stringify(payload) });
             alert("Оцінку для " + artist + " збережено!");
         }

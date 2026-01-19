@@ -3,148 +3,102 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>9VAL BATTLE ARENA</title>
+    <title>9VAL BATTLE</title>
     <script src="https://telegram.org/js/telegram-web-app.js"></script>
     <style>
-        body { font-family: 'Segoe UI', Roboto, sans-serif; background: #0a0a0a; color: #fff; margin: 0; padding: 0; }
-        .container { padding: 15px; padding-bottom: 80px; }
-        
-        /* Шапка */
-        .hero { background: linear-gradient(rgba(0,0,0,0.7), rgba(0,0,0,0.7)), url('https://images.unsplash.com/photo-1516280440614-37939bbacd81?q=80&w=1000&auto=format&fit=crop'); background-size: cover; padding: 40px 20px; text-align: center; border-bottom: 3px solid #f39c12; }
-        .hero h1 { margin: 0; color: #f39c12; font-size: 28px; letter-spacing: 2px; }
-        .hero p { color: #ccc; margin-top: 10px; font-size: 14px; }
-
-        /* Навігація внизу (як у справжніх App) */
-        .bottom-nav { position: fixed; bottom: 0; width: 100%; background: #111; display: flex; justify-content: space-around; padding: 10px 0; border-top: 1px solid #333; z-index: 1000; }
-        .nav-item { text-align: center; color: #888; font-size: 11px; cursor: pointer; flex: 1; }
-        .nav-item i { display: block; font-size: 20px; margin-bottom: 4px; }
+        body { font-family: sans-serif; background: #0a0a0a; color: #fff; margin: 0; padding-bottom: 80px; }
+        .card { background: #151515; border-radius: 12px; padding: 15px; margin: 15px; border-left: 4px solid #f39c12; }
+        .btn { width: 100%; padding: 15px; background: #f39c12; border: none; border-radius: 8px; font-weight: bold; cursor: pointer; }
+        input { width: 90%; padding: 12px; margin: 10px 0; background: #222; border: 1px solid #333; color: #fff; border-radius: 8px; }
+        .bottom-nav { position: fixed; bottom: 0; width: 100%; background: #111; display: flex; padding: 10px 0; border-top: 1px solid #333; }
+        .nav-item { flex: 1; text-align: center; color: #888; font-size: 12px; }
         .nav-item.active { color: #f39c12; }
-
-        /* Картки */
-        .card { background: #151515; border-radius: 15px; padding: 20px; margin-bottom: 20px; border: 1px solid #222; }
-        .card h2 { color: #f39c12; margin-top: 0; font-size: 20px; border-left: 4px solid #f39c12; padding-left: 10px; }
-        
-        .step { display: flex; align-items: center; gap: 15px; margin-bottom: 15px; }
-        .step-num { background: #f39c12; color: #000; width: 30px; height: 30px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: bold; flex-shrink: 0; }
-
-        .rules-list { padding-left: 20px; color: #ccc; line-height: 1.6; }
-        .rules-list li { margin-bottom: 8px; }
-
-        .btn { width: 100%; padding: 16px; background: #f39c12; color: #000; border: none; border-radius: 10px; font-weight: bold; cursor: pointer; font-size: 16px; transition: 0.3s; }
-        .btn:disabled { background: #444; color: #777; }
-
-        input { width: 92%; padding: 12px; margin: 10px 0; background: #222; border: 1px solid #333; color: #fff; border-radius: 8px; }
+        .judge-row { display: flex; justify-content: space-between; align-items: center; padding: 10px 0; border-bottom: 1px solid #222; }
+        .soc-btn { color: #f39c12; text-decoration: none; border: 1px solid #f39c12; padding: 3px 7px; border-radius: 4px; font-size: 11px; }
         .hidden { display: none; }
-        
-        .checkbox-row { display: flex; align-items: flex-start; gap: 10px; margin: 20px 0; color: #ccc; font-size: 14px; line-height: 1.4; }
-        .checkbox-row input { width: auto; margin: 0; margin-top: 3px; }
     </style>
 </head>
 <body>
 
-    <div id="tab-home" class="container">
-        <div class="hero">
-            <h1>9VAL BATTLE: SEASON 1</h1>
-            <p>Доведи, що твій флоу найкращий у грі</p>
+    <div id="tab-home">
+        <div style="padding: 20px; text-align: center; background: #111;">
+            <h1 style="color:#f39c12; margin:0;">9VAL BATTLE</h1>
+            <p style="font-size:12px; color:#666;">SEASON 1 | QUALIFICATION</p>
         </div>
-
-        <div class="card" style="margin-top: -20px;">
-            <h2>ПРО БАТТЛ</h2>
-            <p style="color:#ccc; font-size: 14px;">Це незалежна площадка для артистів, де вирішує лише талант. Ми збираємо найкращих, щоб визначити чемпіона сезону.</p>
-            
-            <div class="step">
-                <div class="step-num">1</div>
-                <div><b>Відбірковий етап</b><br><small>Подай заявку та пройди пре-модерацію</small></div>
-            </div>
-            <div class="step">
-                <div class="step-num">2</div>
-                <div><b>Баттлова сітка</b><br><small>Парні поєдинки на виліт</small></div>
-            </div>
-            <div class="step">
-                <div class="step-num">3</div>
-                <div><b>Фінал</b><br><small>Головний приз та статус переможця</small></div>
-            </div>
-        </div>
-
         <div class="card">
-            <h2>ПРАВИЛА</h2>
-            <ul class="rules-list">
-                <li>Трек має бути записаний під авторський або вільний біт.</li>
-                <li>Максимальна тривалість відбіркового треку — 2 хвилини.</li>
-                <li>Якість запису має дозволяти розібрати текст.</li>
-                <li>Заборонена надмірна агресія поза рамками баттлу.</li>
-                <li>Розмір файлу не повинен перевищувати <b>13 МБ</b>.</li>
-            </ul>
-
-            <div class="checkbox-row">
-                <input type="checkbox" id="agree" onchange="document.getElementById('startBtn').disabled = !this.checked">
-                <label for="agree">Я прочитав правила, погоджуюсь з умовами та готовий розривати біт.</label>
-            </div>
-
-            <button class="btn" id="startBtn" disabled onclick="showTab('reg')">ПРИЙНЯТИ УЧАСТЬ</button>
+            <h3>СУДДІВСЬКИЙ СКЛАД</h3>
+            <div id="judges-list">Завантаження суддів...</div>
+        </div>
+        <div class="card">
+            <h3>ПРАВИЛА</h3>
+            <p style="font-size: 13px; color:#ccc;">1. Трек до 13 МБ.<br>2. Формат MP3/WAV.<br>3. Тільки авторський текст.</p>
+            <button class="btn" onclick="showTab('reg')">ПОДАТИ ЗАЯВКУ</button>
         </div>
     </div>
 
-    <div id="tab-reg" class="container hidden">
+    <div id="tab-reg" class="hidden">
         <div class="card">
             <h2>РЕЄСТРАЦІЯ</h2>
-            <p style="color:#888; font-size: 13px;">Заповни дані учасника для відбіркового етапу.</p>
             <input type="text" id="name" placeholder="Твій Нікнейм">
             <input type="text" id="city" placeholder="Твоє Місто">
-            <p style="color:#f39c12; font-size: 12px; margin-bottom: 5px;">ВИБЕРИ ФАЙЛ ТРЕКУ (MP3/WAV):</p>
             <input type="file" id="trackFile">
-            <button class="btn" id="sendBtn" onclick="upload()">ПОДАТИ ЗАЯВКУ</button>
+            <button class="btn" id="sendBtn" onclick="upload()">ВІДПРАВИТИ</button>
         </div>
     </div>
 
-    <div id="tab-list" class="container hidden">
+    <div id="tab-list" class="hidden">
         <div class="card">
             <h2>УЧАСНИКИ</h2>
-            <div id="users-list">Завантаження...</div>
+            <div id="users-list">Тут будуть тільки схвалені артисти.</div>
         </div>
     </div>
 
     <div class="bottom-nav">
-        <div class="nav-item active" id="n-home" onclick="showTab('home')">🏠<br>Головна</div>
-        <div class="nav-item" id="n-reg" onclick="showTab('reg')">🎤<br>Реєстрація</div>
-        <div class="nav-item" id="n-list" onclick="showTab('list')">🏆<br>Гравці</div>
+        <div class="nav-item active" id="n-home" onclick="showTab('home')">🏠 Головна</div>
+        <div class="nav-item" id="n-reg" onclick="showTab('reg')">🎤 Участь</div>
+        <div class="nav-item" id="n-list" onclick="showTab('list')">🏆 Гравці</div>
     </div>
 
     <script>
         const tg = window.Telegram.WebApp;
-        tg.expand();
-        const URL = "https://script.google.com/macros/s/AKfycb8IQYUeoibpyzl714JiRr7Cpk9Gd_KoPs55l-EM54jR7zGMYs5-ljKhjCoHNOKVwtG/exec";
+        // ВСТАВ СВОЄ ПОСИЛАННЯ /EXEC НИЖЧЕ
+        const URL = "ТУТ_ТВОЄ_НОВЕ_ПОСИЛАННЯ_EXEC";
 
         function showTab(t) {
-            // Ховаємо всі екрани
-            document.getElementById('tab-home').classList.add('hidden');
-            document.getElementById('tab-reg').classList.add('hidden');
-            document.getElementById('tab-list').classList.add('hidden');
-            
-            // Знімаємо активність з кнопок навігації
-            document.getElementById('n-home').classList.remove('active');
-            document.getElementById('n-reg').classList.remove('active');
-            document.getElementById('n-list').classList.remove('active');
-
-            // Показуємо потрібний
-            document.getElementById('tab-' + t).classList.remove('hidden');
-            document.getElementById('n-' + t).classList.add('active');
-            
-            if(t === 'list') loadUsers();
-            window.scrollTo(0,0);
+            ['home', 'reg', 'list'].forEach(s => document.getElementById('tab-'+s).classList.add('hidden'));
+            ['home', 'reg', 'list'].forEach(n => document.getElementById('n-'+n).classList.remove('active'));
+            document.getElementById('tab-'+t).classList.remove('hidden');
+            document.getElementById('n-'+t).classList.add('active');
+            if(t === 'home' || t === 'list') loadData();
         }
 
-        function upload() {
-            const name = document.getElementById('name').value;
-            const city = document.getElementById('city').value;
-            const fileInput = document.getElementById('trackFile');
-            const file = fileInput.files[0];
+        async function loadData() {
+            const res = await fetch(URL + "?action=getData");
+            const data = await res.json();
+            
+            // Завантаження Суддів
+            const jList = document.getElementById('judges-list');
+            jList.innerHTML = "";
+            data.judges.forEach(j => {
+                jList.innerHTML += `<div class="judge-row"><span>${j[2]}</span><a href="${j[3]}" class="soc-btn">СОЦМЕРЕЖІ</a></div>`;
+            });
 
-            if(!name || !city || !file) return alert("Заповни всі поля!");
-            if(file.size > 13 * 1024 * 1024) return alert("Файл занадто великий (макс. 13 МБ)");
+            // Завантаження Учасників
+            const uList = document.getElementById('users-list');
+            uList.innerHTML = "";
+            data.users.slice(1).forEach(u => {
+                uList.innerHTML += `<div style="padding:10px; border-bottom:1px solid #222;"><b>${u[1]}</b><br><a href="${u[3]}" target="_blank" style="color:#f39c12; font-size:12px;">🎧 Слухати</a></div>`;
+            });
+        }
+
+        async function upload() {
+            const name = document.getElementById('name').value;
+            const file = document.getElementById('trackFile').files[0];
+            if(!name || !file) return alert("Заповни все!");
+            if(file.size > 13*1024*1024) return alert("Макс 13 МБ!");
 
             const btn = document.getElementById('sendBtn');
-            btn.innerText = "ЗАВАНТАЖУЄМО...";
+            btn.innerText = "ЗАВАНТАЖЕННЯ...";
             btn.disabled = true;
 
             const reader = new FileReader();
@@ -153,26 +107,18 @@
                     action: 'register',
                     id: tg.initDataUnsafe?.user?.id || "USER",
                     name: name,
-                    city: city,
+                    city: document.getElementById('city').value,
                     fileName: file.name,
                     fileData: reader.result
                 };
                 await fetch(URL, { method: 'POST', mode: 'no-cors', body: JSON.stringify(payload) });
-                alert("Заявка успішно надіслана!");
-                showTab('list');
+                alert("Успішно! Чекай на сповіщення в бот.");
+                showTab('home');
             };
             reader.readAsDataURL(file);
         }
-
-        async function loadUsers() {
-            const list = document.getElementById('users-list');
-            const res = await fetch(URL + "?action=getData");
-            const data = await res.json();
-            list.innerHTML = "";
-            data.users.slice(1).forEach(u => {
-                if(u[1]) list.innerHTML += `<div style="border-bottom:1px solid #333; padding:10px 0;"><b>${u[1]}</b> (${u[2]})<br><a href="${u[3]}" target="_blank" style="color:#f39c12; font-size:12px;">Слухати трек</a></div>`;
-            });
-        }
+        
+        loadData(); // Початкове завантаження
     </script>
 </body>
 </html>

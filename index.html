@@ -9,16 +9,14 @@
         body { font-family: 'Segoe UI', sans-serif; background: #0a0a0a; color: #fff; margin: 0; padding-bottom: 80px; overflow-x: hidden; }
         .hero { background: linear-gradient(rgba(0,0,0,0.8), rgba(0,0,0,0.8)), url('https://images.unsplash.com/photo-1516280440614-37939bbacd81?q=80&w=1000&auto=format&fit=crop'); background-size: cover; padding: 40px 20px; text-align: center; border-bottom: 2px solid #f39c12; }
         .card { background: #151515; border-radius: 15px; padding: 20px; margin: 15px; border: 1px solid #222; border-left: 5px solid #f39c12; }
-        .btn { width: 100%; padding: 16px; background: #f39c12; color: #000; border: none; border-radius: 10px; font-weight: bold; cursor: pointer; font-size: 16px; transition: 0.2s; }
-        .btn:disabled { background: #444; color: #777; cursor: not-allowed; }
+        .btn { width: 100%; padding: 16px; background: #f39c12; color: #000; border: none; border-radius: 10px; font-weight: bold; cursor: pointer; font-size: 16px; }
+        .btn:disabled { background: #444; color: #777; }
         input { width: 92%; padding: 12px; margin: 8px 0; background: #222; border: 1px solid #333; color: #fff; border-radius: 8px; }
         .bottom-nav { position: fixed; bottom: 0; width: 100%; background: #111; display: flex; padding: 12px 0; border-top: 1px solid #333; z-index: 1000; }
         .nav-item { flex: 1; text-align: center; color: #888; font-size: 11px; cursor: pointer; }
         .nav-item.active { color: #f39c12; }
         .hidden { display: none !important; }
         h3 { margin-top: 0; color: #f39c12; }
-        .judge-row { display: flex; align-items: center; justify-content: space-between; padding: 10px 0; border-bottom: 1px solid #222; }
-        .soc-link { color: #f39c12; text-decoration: none; font-size: 11px; border: 1px solid #f39c12; padding: 4px 8px; border-radius: 5px; font-weight: bold; }
     </style>
 </head>
 <body>
@@ -27,19 +25,16 @@
         <div class="hero"><h1>9VAL BATTLE</h1><p>QUALIFICATION ROUND</p></div>
         <div class="card">
             <h3>ПРО БАТТЛ</h3>
-            <p style="font-size: 14px; color:#ccc;">Покажи свій максимум. Відбірковий турнір відкритий для кожного.</p>
-            <p style="font-size: 13px; color:#f39c12;">✓ Трек до 13 МБ <br>✓ Формат MP3/WAV <br>✓ Авторський текст</p>
-            <label style="display:flex; gap:10px; font-size:13px; margin: 20px 0; color:#ccc;">
-                <input type="checkbox" id="agree" style="width:auto;" onchange="document.getElementById('toRegBtn').disabled = !this.checked"> Я прочитав правила та згоден з ними
+            <p style="font-size: 14px; color:#ccc;">Покажи свій максимум. Відбірковий турнір відкритий.</p>
+            <label style="display:flex; gap:10px; font-size:13px; margin: 20px 0;">
+                <input type="checkbox" id="agree" style="width:auto;" onchange="document.getElementById('toRegBtn').disabled = !this.checked"> Я згоден з правилами
             </label>
             <button class="btn" id="toRegBtn" disabled onclick="showTab('reg')">ПРИЙНЯТИ УЧАСТЬ</button>
         </div>
         <div class="card">
-            <h3>СУДДІВСЬКИЙ СКЛАД</h3>
-            <div id="judges-list">Завантаження суддів...</div>
-            <p onclick="showTab('admin')" style="text-align:center; font-size:12px; color:#f39c12; margin-top:20px; cursor:pointer; text-decoration: underline; font-weight: bold;">
-                🔑 ВХІД ДЛЯ ПЕРСОНАЛУ
-            </p>
+            <h3>СУДДІ</h3>
+            <div id="judges-list">Завантаження...</div>
+            <p onclick="showTab('admin')" style="text-align:center; font-size:12px; color:#f39c12; margin-top:20px; cursor:pointer; text-decoration: underline;">🔑 ВХІД ДЛЯ ПЕРСОНАЛУ</p>
         </div>
     </div>
 
@@ -48,32 +43,24 @@
             <h3>РЕЄСТРАЦІЯ</h3>
             <input type="text" id="name" placeholder="Твій Нікнейм">
             <input type="text" id="city" placeholder="Твоє Місто">
-            <p style="font-size: 12px; color:#888; margin-top:10px;">ОБЕРИ ФАЙЛ ТРЕКУ:</p>
             <input type="file" id="trackFile" accept="audio/*">
             <button class="btn" id="sendBtn" style="margin-top:15px;" onclick="upload()">ВІДПРАВИТИ ТРЕК</button>
         </div>
     </div>
 
     <div id="tab-list" class="hidden">
-        <div class="card">
-            <h3>УЧАСНИКИ В ГРІ</h3>
-            <div id="users-list">Тут будуть схвалені гравці.</div>
-        </div>
+        <div class="card"><h3>УЧАСНИКИ</h3><div id="users-list">Завантаження...</div></div>
     </div>
 
     <div id="tab-admin" class="hidden">
         <div class="card" id="judge-login-form">
-            <h3>ВХІД ДЛЯ СУДДІ</h3>
+            <h3>ВХІД СУДДІ</h3>
             <input type="text" id="j-user" placeholder="Логін">
             <input type="password" id="j-pass" placeholder="Пароль">
             <button class="btn" id="loginBtn" onclick="loginJudge()">УВІЙТИ</button>
-            <p onclick="showTab('home')" style="text-align:center; margin-top:15px; font-size:12px; color:#888;">Повернутися назад</p>
         </div>
         <div id="judge-dashboard" class="hidden">
-            <div class="card">
-                <h3 id="j-welcome">Вітаємо!</h3>
-                <div id="contestants-to-score">Завантаження заявок...</div>
-            </div>
+            <div class="card"><h3 id="j-welcome">Панель</h3><div id="contestants-to-score"></div></div>
         </div>
     </div>
 
@@ -87,58 +74,37 @@
         const tg = window.Telegram.WebApp;
         tg.expand();
         
-        // ВСТАВ СВОЄ ПОСИЛАННЯ /EXEC НИЖЧЕ:
-        const URL = "https://script.google.com/macros/s/AKfycbxIhQ7aWpsmMtVffHegXnoHMRm_PpOy9zsDEHDqczOUksWJ740_QdKMyXrDWQOuWg2K/exec";
+        // ТВОЄ НОВЕ ПОСИЛАННЯ
+        const URL = "https://script.google.com/macros/s/AKfycbxNq5rGJFbihnXDk9JVyGr_Yg7VUYjjE2N6eydNH9Qykpdi0rLOU0ZNRc6yEeFxc8Y/exec";
 
         function showTab(t) {
-            // Приховуємо абсолютно всі вкладки через display: none
             document.getElementById('tab-home').classList.add('hidden');
             document.getElementById('tab-reg').classList.add('hidden');
             document.getElementById('tab-list').classList.add('hidden');
             document.getElementById('tab-admin').classList.add('hidden');
-            
-            // Показуємо вибрану
             document.getElementById('tab-' + t).classList.remove('hidden');
             
-            // Оновлюємо кнопки меню
             document.querySelectorAll('.nav-item').forEach(el => el.classList.remove('active'));
             if(document.getElementById('n-' + t)) document.getElementById('n-' + t).classList.add('active');
             
             if(t === 'home' || t === 'list') loadData();
-            window.scrollTo(0,0);
         }
 
         async function loadData() {
             try {
                 const res = await fetch(URL + "?action=getData");
                 const data = await res.json();
-                
-                // Судді на головній
-                const jList = document.getElementById('judges-list');
-                jList.innerHTML = data.judges.slice(1).map(j => `
-                    <div class="judge-row">
-                        <span><b>${j[2]}</b></span>
-                        <a href="${j[3]}" class="soc-link" target="_blank">СОЦМЕРЕЖІ</a>
-                    </div>`).join('');
-
-                // Гравці на вкладці Гравці
-                const uList = document.getElementById('users-list');
-                const approved = data.users.filter((u, i) => i > 0);
-                uList.innerHTML = approved.length > 0 ? approved.map(u => `
-                    <div style="padding:12px 0; border-bottom:1px solid #222;">
-                        <b>${u[1]}</b> <small style="color:#666">(${u[2]})</small><br>
-                        <a href="${u[3]}" target="_blank" style="color:#f39c12; font-size:12px;">🎧 Слухати трек</a>
-                    </div>`).join('') : "Заявки обробляються...";
-                
+                document.getElementById('judges-list').innerHTML = data.judges.slice(1).map(j => `<div>• <b>${j[2]}</b></div>`).join('');
+                document.getElementById('users-list').innerHTML = data.users.length > 1 ? data.users.slice(1).map(u => `<div style="padding:5px 0;">${u[1]} (${u[2]})</div>`).join('') : "Заявок немає";
                 return data;
-            } catch(e) { console.error("Помилка даних", e); }
+            } catch(e) { console.error(e); }
         }
 
         async function loginJudge() {
             const u = document.getElementById('j-user').value.trim();
             const p = document.getElementById('j-pass').value.trim();
             const btn = document.getElementById('loginBtn');
-            btn.innerText = "ПЕРЕВІРКА...";
+            btn.innerText = "З'ЄДНАННЯ...";
             
             try {
                 const data = await loadData();
@@ -148,60 +114,41 @@
                     document.getElementById('judge-login-form').classList.add('hidden');
                     document.getElementById('judge-dashboard').classList.remove('hidden');
                     document.getElementById('j-welcome').innerText = "Суддя: " + judge[2];
-                    
-                    const cList = document.getElementById('contestants-to-score');
-                    cList.innerHTML = data.allUsers.slice(1).map((usr, i) => `
-                        <div style="margin-bottom:15px; border-bottom:1px solid #333; padding-bottom:10px;">
+                    document.getElementById('contestants-to-score').innerHTML = data.allUsers.slice(1).map((usr, i) => `
+                        <div style="margin-bottom:10px; border-bottom:1px solid #333;">
                             <b>${usr[1]}</b> <a href="${usr[3]}" target="_blank">🎧</a>
-                            <div style="display:flex; gap:10px; margin-top:5px;">
-                                <input type="number" id="t-${i}" style="width:50px; padding:5px; background:#222; border:1px solid #444; color:#fff;" placeholder="Т">
-                                <input type="number" id="l-${i}" style="width:50px; padding:5px; background:#222; border:1px solid #444; color:#fff;" placeholder="Л">
-                                <button onclick="saveScore('${judge[2]}', '${usr[1]}', ${i})" style="background:#f39c12; border:none; border-radius:5px; padding:5px 15px;">✅</button>
+                            <div style="display:flex; gap:5px; margin:5px 0;">
+                                <input type="number" id="t-${i}" style="width:40px" placeholder="Т">
+                                <input type="number" id="l-${i}" style="width:40px" placeholder="Л">
+                                <button onclick="saveScore('${judge[2]}','${usr[1]}',${i})">✅</button>
                             </div>
                         </div>`).join('');
                 } else {
-                    alert("Невірний логін або пароль!");
+                    alert("Невірний пароль!");
                     btn.innerText = "УВІЙТИ";
                 }
-            } catch(e) {
-                alert("Помилка з'єднання з базою.");
-                btn.innerText = "УВІЙТИ";
-            }
+            } catch(e) { alert("Помилка бази!"); btn.innerText = "УВІЙТИ"; }
         }
 
         async function upload() {
-            const name = document.getElementById('name').value;
             const file = document.getElementById('trackFile').files[0];
-            if(!name || !file) return alert("Введіть нік та файл!");
-            
+            if(!file) return alert("Обери файл!");
             const btn = document.getElementById('sendBtn');
             btn.innerText = "ЗАВАНТАЖЕННЯ..."; btn.disabled = true;
-
             const reader = new FileReader();
             reader.onload = async function() {
-                const payload = { 
-                    action: 'register', 
-                    name: name, 
-                    city: document.getElementById('city').value, 
-                    fileName: file.name, 
-                    fileData: reader.result,
-                    id: tg.initDataUnsafe?.user?.id || "N/A"
-                };
+                const payload = { action: 'register', name: document.getElementById('name').value, city: document.getElementById('city').value, fileName: file.name, fileData: reader.result, id: tg.initDataUnsafe?.user?.id || "N/A" };
                 await fetch(URL, { method: 'POST', mode: 'no-cors', body: JSON.stringify(payload) });
-                alert("Трек успішно надіслано на перевірку!");
-                location.reload();
+                alert("Трек надіслано!"); location.reload();
             };
             reader.readAsDataURL(file);
         }
 
-        async function saveScore(judge, artist, idx) {
-            const t = document.getElementById('t-'+idx).value;
-            const l = document.getElementById('l-'+idx).value;
-            if(!t || !l) return alert("Поставте бали!");
-            
-            const payload = { action: 'setScore', judge: judge, artist: artist, t: t, l: l };
-            await fetch(URL, { method: 'POST', mode: 'no-cors', body: JSON.stringify(payload) });
-            alert("Оцінку для " + artist + " збережено!");
+        async function saveScore(j, a, i) {
+            const t = document.getElementById('t-'+i).value;
+            const l = document.getElementById('l-'+i).value;
+            await fetch(URL, { method: 'POST', mode: 'no-cors', body: JSON.stringify({ action: 'setScore', judge: j, artist: a, t: t, l: l }) });
+            alert("Збережено!");
         }
 
         loadData();
